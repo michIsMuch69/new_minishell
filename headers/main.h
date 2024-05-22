@@ -1,26 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 11:10:46 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/22 12:00:46 by fberthou         ###   ########.fr       */
+/*   Created: 2024/05/22 11:03:18 by fberthou          #+#    #+#             */
+/*   Updated: 2024/05/22 11:06:01 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// ###### INCLUDES ######
+#ifndef MAIN_H
+# define MAIN_H
 
-#include "libft.h"
-#include "parsing.h"
-#include "struct.h"
+#define INIT_ERROR "error -> prog initialisation"
 
-// ###### INCLUDES ######
-
-t_cmd	*parse_prompt(char *prompt)
-{
-	t_cmd	*cmd;
-
-	return (cmd);
-}
+#endif
