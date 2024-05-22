@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/22 09:19:25 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/05/22 10:52:35 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ typedef struct s_command
 {
 	char *cmd;
 	char opt;
-	char *file;
+	char *arg;
 	struct s_command *next;
 }	t_cmd;
 
