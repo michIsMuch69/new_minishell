@@ -1,72 +1,70 @@
+#include "libft.h"
 #include <errno.h>
 
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <dirent.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <fcntl.h>
+#include <sys/ioctl.h>
 
+#include <dirent.h>
+#include <fcntl.h>
 #include <curses.h>
 #include <term.h>
-extern char PC;
-extern char * UP;
-extern char * BC;
-extern unsigned ospeed;
+
+#include <readline/readline.h> 
+#include <readline/history.h>
+
+#include "struct.h"
+
+size_t	ft_perror(char *err_message)
+{
+	return(write(2, err_message, ft_strlen(err_message)));
+}
 
 int main (int argc, char **argv, char **envp)
 {
+	int			 	i = 0;
+	pid_t			pid;
+	DIR				*dir;
+	struct dirent	*ry;
+	char 			*buffer;
+	char			*env;
+	t_cmd			*cmd;
+
 	if (argc != 1)
-		return (0);
+		return (ft_perror("arguments are invalid\n"));
 	
-	// int getval = tgetent(NULL, getenv("TERM"));
+	while (1)
+	{
+		env = ft_strdup(getenv("PWD"));
+		env = ft_realloc(env, (ft_strlen(env) + 3), ft_strlen(env));
+		i = ft_strlen(env);
+		env[i] = '$';
+		i++;
+		env[i] = ' ';
+		buffer = readline(env);
+		add_history(buffer);
+		printf("%s\n", buffer);
+		free(env);
+	}
 
-	// if (getval <= 0)
-	// 	perror(NULL);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// int 	i = 0;
-	// int 	val = 0;
-	// pid_t	pid;
-	// DIR		*dir;
-	// struct dirent	*ry;
-	// int fd = open("./file.txt", O_RDWR);
-	// printf("FD = %d\n\n", fd);
-	// char *path_fd = ttyname(fd);
-	// // if (!path_fd)
-	// // 	return (perror("error ->"), 0);
-	// printf("getenv = %s\n", getenv("TERM"));
-	// int				tty = isatty(fd);
-	// printf("TTY == %d, path = %s\n", tty, path_fd);
-	// close(fd);
-	// printf("TTY == %d\n", tty);
-	// pid = fork();
+	//pid = fork();
 	// if (pid == 0)
-	// 	val = execve("/usr/bin/ls", argv, envp);
+	// {
+		// val = execve("/usr/bin/ls", argv, envp);
+		// if (val == -1)
+		// 	return (printf("%s\n", strerror(errno)), 0);
+	// }
 	// if (pid > 0)
 	// 	waitpid(pid, &i, 0);
-	// printf("val = %d\n", val);
 	// dir = opendir("./");
 	// ry = readdir(dir);
 	// while (ry)
 	// {
-	// 	printf("inode nb : %ld, gap for next dirent = %ld, recording length : %d, file type : '%c', filename : '%s'\n", \
-	// 			ry->d_ino, ry->d_off, ry->d_reclen, ry->d_type, ry->d_name);
+	// 	printf("file type : '%c', filename : '%s'\n", ry->d_type, ry->d_name);
 	// 	ry = readdir(dir);
 	// }
 	// if (closedir(dir))

@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_realloc.c                                       :+:      :+:    :+:   */
+/*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 22:01:42 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/22 08:15:58 by fberthou         ###   ########.fr       */
+/*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
+/*   Updated: 2024/05/22 09:19:25 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../hdr/libft.h"
+#ifndef STRUCT_H
+# define STRUCT_H
 
-void	*ft_realloc(void *pointer, size_t memory_size, size_t src_size)
+typedef struct s_command
 {
-	void	*tmp;
+	char *cmd;
+	char opt;
+	char *file;
+	struct s_command *next;
+}	t_cmd;
 
-	tmp = ft_calloc(memory_size, sizeof(char));
-	if (!tmp)
-		return (NULL);
-	tmp = ft_memcpy(tmp, (const void *) pointer, src_size);
-	if (pointer && pointer != tmp)
-		free(pointer);
-	return (tmp);
-}
+#endif

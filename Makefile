@@ -6,7 +6,7 @@
 #    By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/05/21 15:19:25 by fberthou         ###   ########.fr        #
+#    Updated: 2024/05/22 09:22:01 by fberthou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ BUILD_EXEC_PATH			= $(BUILD_PATH)/exec
 LIB_FLAGS	=	-I$(LIBFT_HDR_PATH)
 COMPFLAGS	=	-I$(HDR_PATH) $(LIB_FLAGS) -g  #-Wall -Wextra -Werror 
 
-SRC		=	$(MAIN_PATH)/main.c \
+SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c\
 			\
 			$(PARSING_PATH)/parsing.c $(PARSING_PATH)/parsing_error.c \
 			\
@@ -55,7 +55,7 @@ all		: $(LIBFT) $(NAME)
 
 ### --- MINISHELL --- ###
 $(NAME)	: $(OBJ) $(LIBFT)
-	$(CC) $(COMPFLAGS) $^ -o $@
+	$(CC) $(COMPFLAGS) -lreadline $^ -o $@
 	@echo "$(GREEN)-- minishell ready --$(RESET_COLOR)"
 
 ### --- LIBFT --- ###
