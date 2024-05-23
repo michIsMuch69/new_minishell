@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+         #
+#    By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/05/22 09:22:01 by fberthou         ###   ########.fr        #
+#    Updated: 2024/05/23 10:39:36 by jedusser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC_PATH				= sources
 MAIN_PATH				= $(SRC_PATH)/main
 PARSING_PATH			= $(SRC_PATH)/parsing
 EXEC_PATH				= $(SRC_PATH)/exec
+BUILTINS_PATH			= $(EXEC_PATH)/builtins
 #LIBFT#
 LIBFT_PATH				= libft
 LIBFT_HDR_PATH			= $(LIBFT_PATH)/hdr
@@ -35,6 +36,7 @@ BUILD_PATH				= .build
 BUILD_MAIN_PATH			= $(BUILD_PATH)/main
 BUILD_PARS_PATH			= $(BUILD_PATH)/parsing
 BUILD_EXEC_PATH			= $(BUILD_PATH)/exec
+BUILD_BUILTS_PATH		= $(BUILD_EXEC_PATH)/builtins
 
 # --- COMPILATION FLAGS --- #
 LIB_FLAGS	=	-I$(LIBFT_HDR_PATH)
@@ -44,7 +46,7 @@ SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c\
 			\
 			$(PARSING_PATH)/parsing.c $(PARSING_PATH)/parsing_error.c \
 			\
-			$(EXEC_PATH)/exec.c
+			$(EXEC_PATH)/exec.c $(BUILTINS_PATH)/echo.c
 
 ### ---- TEMPORARY FILES ---- ###
 OBJ	= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)
@@ -64,7 +66,7 @@ $(LIBFT)	: FORCE
 
 #########     OBJECTS    #########
 $(BUILD_PATH)/%.o : $(SRC_PATH)/%.c
-	@mkdir -p $(BUILD_PATH) $(BUILD_MAIN_PATH) $(BUILD_PARS_PATH) $(BUILD_EXEC_PATH)
+	@mkdir -p $(BUILD_PATH) $(BUILD_MAIN_PATH) $(BUILD_PARS_PATH) $(BUILD_EXEC_PATH) $(BUILD_BUILTS_PATH)
 	$(CC) $(COMPFLAGS) -c $< -o $@
 
 FORCE	:
