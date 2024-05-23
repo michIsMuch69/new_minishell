@@ -30,28 +30,21 @@ int main (int argc, char **argv, char **envp)
 	char	*arguments = "ceci peut etre $PATH ecrit apres echo";
 	char	*exec_searched = "ls";
 	char 	*prompt;
-	char	*env;
-	t_cmd	*lst;
-	pid_t 	pid;
-	int 	i;
+	char 	*exec_path;
 
 	if (argc != 1)
 		return (ft_perror("arguments are invalid\n"));
 	while (1)
 	{
-		//printf("%d\n", getpid());
-		env = get_pwd();
-		prompt = readline(env);
+		prompt = readline(">>>");
 		add_history(prompt);
-		//printf("%s\n", prompt);
 		echo(arguments);
-		//printf("%d\n", exec_found("/bin"));
-		printf("%s\n", check_all_dirs(envp, exec_searched));
-		execve(check_all_dirs(envp, exec_searched), argv, envp);
-		//echo(prompt);
-		//lst = parse_prompt(prompt);
-		//exec(lst);
-		free(env);
+		exec_path = strcat(check_all_dirs(envp, exec_searched), "/");
+		exec_path = strcat(exec_path, exec_searched);
+		printf("%s\n", exec_path);
+		//printf("%s\n", check_all_dirs(envp, exec_searched));
+		execve(exec_path, argv, envp);
 	}
 	return (0);
 }
+
