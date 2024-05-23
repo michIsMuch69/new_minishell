@@ -40,6 +40,7 @@ int main (int argc, char **argv, char **envp)
 	{
 		while (1)
 		{
+			printf("%d\n", getpid());
 			env = get_pwd();
 			prompt = readline(env);
 			add_history(prompt);
