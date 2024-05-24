@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 11:03:18 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/24 10:22:17 by jedusser         ###   ########.fr       */
+/*   Created: 2024/05/24 07:55:34 by jedusser          #+#    #+#             */
+/*   Updated: 2024/05/24 08:11:00 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+// #include <unistd.h>
 
-#define INIT_ERROR "error -> prog initialisation"
-
-#endif
+// void get_pwd(char **env_p)
+// {
+// 	char *absolute_path = getcwd
+// }

@@ -6,7 +6,7 @@
 #    By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/05/23 10:39:36 by jedusser         ###   ########.fr        #
+#    Updated: 2024/05/24 08:16:14 by jedusser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,8 @@ SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c\
 			\
 			$(PARSING_PATH)/parsing.c $(PARSING_PATH)/parsing_error.c \
 			\
-			$(EXEC_PATH)/exec.c $(BUILTINS_PATH)/echo.c
+			$(EXEC_PATH)/exec.c \
+			$(BUILTINS_PATH)/builtin_echo.c $(BUILTINS_PATH)/builtin_pwd.c 
 
 ### ---- TEMPORARY FILES ---- ###
 OBJ	= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)
