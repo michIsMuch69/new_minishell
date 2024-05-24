@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:42:33 by jedusser          #+#    #+#             */
-/*   Updated: 2024/05/24 10:51:00 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/05/24 13:34:56 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,22 @@ char	*check_all_dirs(char **envp, char *exec_searched)
 	}
 	free_array(path_list);
 	return (NULL);
+}
+
+int	exec(char **envp, char **argv, char *exec_path)
+{
+	pid_t pid = fork();
+	if (pid == 0)
+	{
+		if (exec_path)
+		{
+			execve(exec_path, argv, envp);
+			printf("coucou from exec\n");
+			//free(exec_path);
+		}	
+	}
+	else
+		return (0);
 }
 
 //TO_DO : 
