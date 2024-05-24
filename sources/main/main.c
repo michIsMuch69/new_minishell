@@ -27,7 +27,7 @@ char	*check_all_dirs(char **envp, char *exec_searched);
 int main (int argc, char **argv, char **envp)
 {
 
-	char	*arguments = "ceci peut etre $PATH ecrit apres echo";
+	//char	*arguments = "ceci peut etre $PATH ecrit apres echo";
 	char	*exec_searched = "ls";
 	char 	*prompt;
 	char 	*exec_path;
@@ -38,10 +38,10 @@ int main (int argc, char **argv, char **envp)
 	{
 		prompt = readline(">>>");
 		add_history(prompt);
-		echo(arguments);
-		exec_path = strcat(check_all_dirs(envp, exec_searched), "/");
-		exec_path = strcat(exec_path, exec_searched);
-		printf("%s\n", exec_path);
+		//echo(arguments);
+		exec_path = ft_strcat(check_all_dirs(envp, exec_searched), "/");
+		exec_path = ft_strcat(exec_path, exec_searched);
+		//	printf("%s\n", exec_path);
 		//printf("%s\n", check_all_dirs(envp, exec_searched));
 		execve(exec_path	, argv, envp);
 	}
