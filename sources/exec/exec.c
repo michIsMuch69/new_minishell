@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:42:33 by jedusser          #+#    #+#             */
-/*   Updated: 2024/05/24 13:34:56 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:59:48 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <sys/wait.h>
+
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -94,14 +96,11 @@ int	exec(char **envp, char **argv, char *exec_path)
 	if (pid == 0)
 	{
 		if (exec_path)
-		{
-			execve(exec_path, argv, envp);
-			printf("coucou from exec\n");
-			//free(exec_path);
-		}	
+			return(execve(exec_path, argv, envp));
 	}
-	else
-		return (0);
+	if (pid > 0)
+		waitpid(pid, NULL, 0);
+	return (0);
 }
 
 //TO_DO : 

@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 07:55:34 by jedusser          #+#    #+#             */
-/*   Updated: 2024/05/24 08:11:00 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:46:51 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 // void get_pwd(char **env_p)
 // {
-// 	char *absolute_path = getcwd
+// 	char *absolute_path = getcwd()
 // }
