@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:42:33 by jedusser          #+#    #+#             */
-/*   Updated: 2024/05/24 07:30:34 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/05/24 07:44:51 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,26 @@
 int	ft_strcmp(char *s1, char *s2)
 {
 	int	i;
-	
+
 	i = 0;
 	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;
-	return(s1[i] - s2[i]);
+	return (s1[i] - s2[i]);
 }
 
 int	exec_found(const char *dirname, char *exec_searched)
 {
 	DIR				*dir;
 	struct dirent	*entity;
-	
+
 	dir = opendir(dirname);
-	if(!dir)
+	if (!dir)
 		return (-1);
 	entity = readdir(dir);
 	while (entity != NULL)
 	{
-		if(ft_strcmp(entity->d_name, exec_searched) == 0)
-			return(1);
+		if (ft_strcmp(entity->d_name, exec_searched) == 0)
+			return (1);
 		entity = readdir(dir);
 	}
 	closedir(dir);
@@ -49,14 +49,16 @@ char	*check_all_dirs(char **envp, char *exec_searched)
 {
 	const char	*paths = getenv("PATH");
 	char		**path_list;
+	int			i;
+
 	path_list = ft_split(paths, ':');
-	if(!path_list)
+	if (!path_list)
 		return (NULL);
-	int i = 0;
+	i = 0;
 	while (path_list[i])
 	{
-		if(exec_found(path_list[i], exec_searched) == 1)
-			return(path_list[i]);
+		if (exec_found(path_list[i], exec_searched) == 1)
+			return (path_list[i]);
 		i++;
 	}
 	return (NULL);

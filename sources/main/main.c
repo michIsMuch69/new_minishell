@@ -19,7 +19,6 @@ t_cmd	*parse_prompt(char *prompt);
 
 // ###### PROTO ######
 
-
 void echo(char *arguments);
 int	exec_found(const char *dirname, char *exec_searched);
 char	*check_all_dirs(char **envp, char *exec_searched);
