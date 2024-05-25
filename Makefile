@@ -6,7 +6,7 @@
 #    By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/05/22 09:22:01 by fberthou         ###   ########.fr        #
+#    Updated: 2024/05/25 15:46:05 by fberthou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ COMPFLAGS	=	-I$(HDR_PATH) $(LIB_FLAGS) -g  #-Wall -Wextra -Werror
 
 SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c\
 			\
-			$(PARSING_PATH)/parsing.c $(PARSING_PATH)/parsing_error.c \
+			$(PARSING_PATH)/tokenizer.c $(PARSING_PATH)/parsing_utils.c \
 			\
 			$(EXEC_PATH)/exec.c
 

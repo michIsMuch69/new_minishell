@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parsing_error.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 11:10:46 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/22 12:00:46 by fberthou         ###   ########.fr       */
+/*   Created: 2024/05/24 14:04:48 by fberthou          #+#    #+#             */
+/*   Updated: 2024/05/24 16:10:37 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// ###### INCLUDES ######
+#include <stdlib.h>
 
-#include "libft.h"
-#include "parsing.h"
-#include "struct.h"
-
-// ###### INCLUDES ######
-
-t_cmd	*parse_prompt(char *prompt)
+void	free_tab(char **tab, size_t tab_size)
 {
-	t_cmd	*cmd;
+	size_t	i;
 
-	return (cmd);
+	i = 0;
+	while (i < tab_size)
+		free(tab[i++]);
+	free(tab);
 }

@@ -6,19 +6,29 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/22 10:52:35 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/05/24 07:26:03 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
 
-typedef struct s_command
+enum e_type
 {
-	char *cmd;
-	char opt;
-	char *arg;
-	struct s_command *next;
-}	t_cmd;
+	BUILTINS,
+	H_DOC,
+	D_LIMITER,
+	E_VAR
+};
 
-#endif
+typedef struct s_data
+{
+	enum e_type	cmd_type;
+	char		*cmd;
+	char		*opt;
+	char		**args;
+	char		*infile;
+	char		*outfile;
+}	t_data;
+
+#endif 

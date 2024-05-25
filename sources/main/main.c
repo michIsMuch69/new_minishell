@@ -13,29 +13,36 @@
 
 char	*get_pwd(void);
 size_t	ft_perror(char *err_message);
-t_cmd	*parse_prompt(char *prompt);
+char	**parse_prompt(char *prompt, size_t *tab_size);
+void	free_tab(char **tab, size_t tab_size);
 
 // ###### PROTO ######
-
 
 
 int main (int argc, char **argv, char **envp)
 {
 	char 	*prompt;
 	char	*env;
-	t_cmd	*lst;
+	char	**tok_tab;
+	size_t	tab_size;
+
+	int		i;
 
 	if (argc != 1)
-		return (ft_perror("arguments are invalid\n"));	
+		return (ft_perror("arguments are invalid\n"), 1);
 	while (1)
 	{
-		env = get_pwd();
-		prompt = readline(env);
+		// env = get_pwd();
+		prompt = readline(/*env*/">>> ");
 		add_history(prompt);
-		printf("%s\n", prompt);
-		lst = parse_prompt(prompt);
+		tok_tab = parse_prompt(prompt, &tab_size);
+		if (!tok_tab)
+			return (/*free(env),*/ 2);
+		i = 0;
+		while(tok_tab[i])
+			printf("%s\n", tok_tab[i++]);
+		free_tab(tok_tab, tab_size);
 		//exec(lst);
-		free(env);
 	}
 	return (0);
 }
