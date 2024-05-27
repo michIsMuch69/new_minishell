@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:42:33 by jedusser          #+#    #+#             */
-/*   Updated: 2024/05/27 09:29:25 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/05/27 10:32:45 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ char	*check_all_dirs(char **envp, char *exec_searched)
 
 int	exec(char **envp, char **argv, char *exec_path)
 {
+	printf("%s", exec_path);
 	pid_t pid = fork();
 	if (pid == 0)
 	{
