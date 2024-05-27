@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:22:44 by jedusser          #+#    #+#             */
-/*   Updated: 2024/05/24 15:02:33 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/05/27 09:38:16 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ int main (int argc, char **argv, char **envp)
 	char 	*prompt;
 	char 	*exec_path;
 	pid_t	pid;
-	if (argc != 1)
-		return (ft_perror("arguments are invalid\n"));
+	
+	// if (argc != 1)
+	// 	return (ft_perror("arguments are invalid\n"));
 	// si argc == 1 --> peut-ette rendre l'invite a nouveau.
 	while (1)
 	{
