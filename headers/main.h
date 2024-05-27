@@ -6,13 +6,13 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:03:18 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/22 11:06:01 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/05/27 08:17:28 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAIN_H
 # define MAIN_H
 
-#define INIT_ERROR "error -> prog initialisation"
+#define INIT_ERROR "error -> env initialisation"
 
 #endif

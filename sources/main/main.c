@@ -2,7 +2,6 @@
 
 #include "libft.h"
 #include "struct.h"
-#include <stdio.h>
 #include <readline/readline.h> 
 #include <readline/history.h>
 
@@ -11,38 +10,37 @@
 
 // ###### PROTO ######
 
-char	*get_pwd(void);
 size_t	ft_perror(char *err_message);
-char	**parse_prompt(char *prompt, size_t *tab_size);
-void	free_tab(char **tab, size_t tab_size);
+char	*init_env(void);
+t_data	*parse_prompt(char *prompt);
 
 // ###### PROTO ######
 
+/*
+	* leak test with valgrind :
+	* valgrind --suppressions=run.sh --leak-check=full ./minishell
+*/
 
 int main (int argc, char **argv, char **envp)
 {
 	char 	*prompt;
 	char	*env;
-	char	**tok_tab;
-	size_t	tab_size;
-
-	int		i;
+	t_data	*args;
 
 	if (argc != 1)
 		return (ft_perror("arguments are invalid\n"), 1);
+	env = NULL;
 	while (1)
 	{
-		// env = get_pwd();
+		// env = init_env();
 		prompt = readline(/*env*/">>> ");
 		add_history(prompt);
-		tok_tab = parse_prompt(prompt, &tab_size);
-		if (!tok_tab)
+		args = parse_prompt(prompt);
+		if (!args)
 			return (/*free(env),*/ 2);
-		i = 0;
-		while(tok_tab[i])
-			printf("%s\n", tok_tab[i++]);
-		free_tab(tok_tab, tab_size);
-		//exec(lst);
+		//exec(args);
+		free(prompt);
+		free(args);
 	}
 	return (0);
 }

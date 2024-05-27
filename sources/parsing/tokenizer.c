@@ -6,19 +6,14 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:10:46 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/25 16:06:35 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/05/27 09:09:42 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // ###### INCLUDES ######
 
 #include "libft.h"
-#include "parsing.h"
-#include "struct.h"
 #include <stdlib.h>
-#include <stdbool.h>
-
-#include <string.h>
 
 // ###### INCLUDES ######
 
@@ -27,14 +22,10 @@
 
 size_t	ft_perror(char *err_message);
 void	free_tab(char **tab, size_t tab_size);
+size_t	expand_token(char *prompt, char c, size_t *i);
 
 // ###### PROTOTYPES ######
 
-static void	skip_spaces(const char *prompt, size_t *i)
-{
-	while (prompt[*i] == 32 || (prompt[*i] >= 9 && prompt[*i] <= 13))
-		(*i)++;
-}
 
 static char	*build_token(char *prompt, size_t start, size_t end)
 {
@@ -56,14 +47,31 @@ static char	*build_token(char *prompt, size_t start, size_t end)
 	return (token);
 }
 
+static char	*extract_expand_token(char *prompt, size_t *i)
+{
+	char	*token;
+	size_t	start;
+
+	start = *i;
+	(*i)++;
+	if (prompt[*i] == '\'')
+		return (build_token(prompt, start, expand_token(prompt, '\'', i)));
+	else if (prompt[*i] == '"')
+		return (build_token(prompt, start, expand_token(prompt, '"', i)));
+	else if (prompt[*i] == '{')
+		return (build_token(prompt, start, expand_token(prompt, '}', i)));
+	else
+		return (build_token(prompt, start, expand_token(prompt, ' ', i)));
+}
+
 static char	*extract_token(char *prompt, size_t *i, char c)
 {
 	size_t	start;
 
-	start = (*i)++;
+	start = *i;
 	if (c == '\'' || c == '"')
 	{
-		while (prompt[*i])
+		while (prompt[++(*i)])
 		{
 			if (prompt[*i] == c && (prompt[*i + 1] == ' ' || !prompt[*i + 1]))
 				return (build_token(prompt, start, ++(*i)));
@@ -72,8 +80,11 @@ static char	*extract_token(char *prompt, size_t *i, char c)
 		}
 		return (build_token(prompt, start, *i));
 	}
+	else if (c == '$')
+		return (extract_expand_token(prompt, i));
 	else
 	{
+		(*i)++;
 		while (prompt[*i] && prompt[*i] != ' ')
 			(*i)++;
 		return (build_token(prompt, start, *i));
@@ -81,17 +92,20 @@ static char	*extract_token(char *prompt, size_t *i, char c)
 	return (NULL);
 }
 
-static char	*ft_strtok(char *prompt, size_t *i)
+static char	*split_tokens(char *prompt, size_t *i)
 {
 	size_t	start;
 
-	skip_spaces(prompt, i);
+	while (prompt[*i] == ' ' || (prompt[*i] >= '\t' && prompt[*i] <= '\r'))
+		(*i)++;
 	while (prompt[*i])
 	{
 		if (prompt[*i] == '\'')
 			return (extract_token(prompt, i, '\''));
 		else if (prompt[*i] == '"')
 			return (extract_token(prompt, i, '"'));
+		else if (prompt[*i] == '$')
+			return (extract_token(prompt, i, '$'));
 		else
 			return (extract_token(prompt, i, 0));
 		(*i)++;
@@ -99,30 +113,30 @@ static char	*ft_strtok(char *prompt, size_t *i)
 	return (NULL);
 }
 
-char	**parse_prompt(char *prompt, size_t *i_tab)
+char	**tokenizer(char *prompt)
 {
 	size_t	i;
+	size_t i_tab;
 	char	**tab_arg;
 	char	**realloc_protect;
 
 	i = 0;
-	*i_tab = 0;
+	i_tab = 0;
 
 	tab_arg = ft_calloc(sizeof(char *), 1);
 	if (!tab_arg)
 		return (ft_perror("error -> tab_arg memory allocation\n"), NULL);
-
 	while (prompt[i])
 	{
-		tab_arg[*i_tab] = ft_strtok(prompt, &i);
-		if (!tab_arg[*i_tab])
+		tab_arg[i_tab] = split_tokens(prompt, &i);
+		if (!tab_arg[i_tab])
 			break;
-		// error realloc 
-		realloc_protect = ft_realloc(tab_arg, ((*i_tab + 2) * sizeof(char *)), ((*i_tab + 1) * sizeof(char *)));
+		realloc_protect = ft_realloc(tab_arg, ((i_tab + 2) * sizeof(char *)), \
+									((i_tab + 1) * sizeof(char *)));
 		if (!realloc_protect)
-			return (free_tab(tab_arg, (*i_tab + 1)), ft_perror("error -> tab_arg memory allocation\n"), NULL);
+			return (free_tab(tab_arg, (i_tab + 1)), ft_perror("error -> tab_arg memory allocation\n"), NULL);
 		tab_arg = realloc_protect;
-		(*i_tab)++;
+		(i_tab)++;
 	}
 	return (tab_arg);
 }

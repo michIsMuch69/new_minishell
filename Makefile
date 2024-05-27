@@ -6,7 +6,7 @@
 #    By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/05/25 15:46:05 by fberthou         ###   ########.fr        #
+#    Updated: 2024/05/27 08:14:43 by fberthou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,9 +40,9 @@ BUILD_EXEC_PATH			= $(BUILD_PATH)/exec
 LIB_FLAGS	=	-I$(LIBFT_HDR_PATH)
 COMPFLAGS	=	-I$(HDR_PATH) $(LIB_FLAGS) -g  #-Wall -Wextra -Werror 
 
-SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c\
+SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c $(MAIN_PATH)/init_env.c \
 			\
-			$(PARSING_PATH)/tokenizer.c $(PARSING_PATH)/parsing_utils.c \
+			$(PARSING_PATH)/parsing.c $(PARSING_PATH)/parsing_utils.c $(PARSING_PATH)/tokenizer.c \
 			\
 			$(EXEC_PATH)/exec.c
 

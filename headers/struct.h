@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/24 07:26:03 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/05/25 17:17:06 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,4 @@ typedef struct s_data
 	char		*outfile;
 }	t_data;
 
-#endif 
+#endif
