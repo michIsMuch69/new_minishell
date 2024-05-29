@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/29 09:35:05 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/05/29 17:01:26 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,19 @@ enum e_type
 	BUILTINS,
 	H_DOC,
 	D_LIMITER,
-	E_VAR
+	E_VAR,
+	PIPE
 } ;
 
 typedef struct s_infile
 {
 	char			*filename;
-	char			*cmd;
 	struct s_infile	*next;
 }	t_infile;
 
 typedef struct s_outfile
 {
 	char				*filename;
-	char				*cmd;
 	struct s_outfile	*next;
 }	t_outfile;
 
@@ -49,10 +48,10 @@ typedef struct s_data
 	t_outfile	*outfile;
 }	t_data;
 
-typedef struct s_token
+typedef struct s_table
 {
 	char	**tab;
 	size_t	size;
-} t_token;
+} t_table;
 
 #endif

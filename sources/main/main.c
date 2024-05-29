@@ -12,7 +12,8 @@
 
 size_t	ft_perror(char *err_message);
 char	*init_env(void);
-t_data	*parse_prompt(char *prompt);
+int		parse_prompt(char *prompt, char **envp, t_data **data);
+void	free_struct(t_data *ptr, size_t tab_size);
 
 // ###### PROTO ######
 
@@ -24,23 +25,25 @@ t_data	*parse_prompt(char *prompt);
 int main (int argc, char **argv, char **envp)
 {
 	char 	*prompt;
-	char	*env;
-	t_data	*args;
+	char	*env_name; // optional
+	int		struct_tabsize;
+	t_data	*data;
 
 	if (argc != 1)
 		return (ft_perror("arguments are invalid\n"), 1);
-	env = NULL;
+	env_name = NULL;
 	while (1)
 	{
-		// env = init_env();
-		prompt = readline(/*env*/">>> ");
+		// env_name = init_env();
+		prompt = readline(/*env_name*/">>> ");
 		add_history(prompt);
-		args = parse_prompt(prompt);
-		if (!args)
-			return (/*free(env),*/ 2);
-		//exec(args);
+		struct_tabsize = parse_prompt(prompt, envp, &data);
+		if (struct_tabsize == -1)
+			return (/*free(env_name)*/free(prompt), 2);
+		//exec(data, tab_size);
 		free(prompt);
-		free(args);
+		
+		free_struct(&data, struct_tabsize);
 	}
 	return (0);
 }
