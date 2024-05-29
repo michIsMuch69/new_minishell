@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/25 17:17:06 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/05/29 09:35:05 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,44 @@
 
 enum e_type
 {
+	ERROR = -1,
+	COMMAND,
 	BUILTINS,
 	H_DOC,
 	D_LIMITER,
 	E_VAR
-};
+} ;
+
+typedef struct s_infile
+{
+	char			*filename;
+	char			*cmd;
+	struct s_infile	*next;
+}	t_infile;
+
+typedef struct s_outfile
+{
+	char				*filename;
+	char				*cmd;
+	struct s_outfile	*next;
+}	t_outfile;
 
 typedef struct s_data
 {
 	enum e_type	cmd_type;
 	char		*cmd;
-	char		*opt;
+	
+	char		**opt;
 	char		**args;
-	char		*infile;
-	char		*outfile;
+
+	t_infile	*infile;
+	t_outfile	*outfile;
 }	t_data;
+
+typedef struct s_token
+{
+	char	**tab;
+	size_t	size;
+} t_token;
 
 #endif
