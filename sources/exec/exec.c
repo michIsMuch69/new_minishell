@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:42:33 by jedusser          #+#    #+#             */
-/*   Updated: 2024/05/27 10:32:45 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/05/30 13:42:53 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	exec_found(const char *dirname, char *exec_searched)
 char	*check_all_dirs(char **envp, char *exec_searched)
 {
 	const char	*paths = getenv("PATH");
+	printf("%s\n", getenv("PATH"));
 	char		**path_list;
 	int			i;
 
