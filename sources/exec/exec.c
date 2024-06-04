@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/04 16:10:07 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:23:28 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int		exec(t_data *data, int tab_size)
 	//print_tab(data->args);
 	cmd_path = ft_concat_path(directory, data[0].args.tab[0]);
 	
-	printf("cmd_path = %s\n", cmd_path);
+	//printf("cmd_path = %s\n", cmd_path);
 	print_struct(data, tab_size);
 	execve(cmd_path, data[0].args.tab, data[0].env.tab);
 	return (0);
