@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/29 17:01:26 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/04 09:37:28 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,10 @@ typedef struct s_outfile
 
 typedef struct s_data
 {
-	enum e_type	cmd_type;
-	char		*cmd;
-	
-	char		**opt;
-	char		**args;
+	enum e_type	cmd_type; 
+	char		*cmd; // chemin commande non init
+		
 
-	t_infile	*infile;
-	t_outfile	*outfile;
 }	t_data;
 
 typedef struct s_table
