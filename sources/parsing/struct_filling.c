@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:41:19 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/04 09:32:45 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:39:04 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ bool	fill_struct(t_data *curr_struc, t_table *tokens, size_t *i_tokens)
 	size_t	i;
 
 	i = 0;
-	curr_struc->cmd = tokens->tab[(*i_tokens)++];
+	//curr_struc->cmd = tokens->tab[(*i_tokens)++];
 	while (*i_tokens < tokens->size)
 	{
 		if (find_type(tokens->tab[*i_tokens]) == PIPE)
@@ -91,7 +91,7 @@ bool	fill_struct(t_data *curr_struc, t_table *tokens, size_t *i_tokens)
 		}
 		(*i_tokens)++;
 	}
-	curr_struc->args.size = (i + 1);
+	curr_struc->args.size = i + 1;
 	return (0);
 }
 

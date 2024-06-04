@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:07:06 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/28 18:08:53 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/04 13:41:06 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static bool	quoting_count(char *token, char c)
 static char	*simple_quote(char *token)
 {
 	if (quoting_count(token, '\''))
-		return (ft_perror("-> syntaxe error\n"), NULL);
+		return (ft_perror("error -> syntax\n"), NULL);
 	return (final_build(token, '\''));
 }
 

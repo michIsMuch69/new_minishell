@@ -1,28 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/24 10:22:44 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/04 13:42:42 by jedusser         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 // ###### INCLUDES ######
 
 #include "libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <dirent.h>
-#include <fcntl.h>
 #include "struct.h"
-#include <stddef.h>
+#include <readline/readline.h> 
+#include <readline/history.h>
 
 // ###### INCLUDES ######
 
@@ -50,7 +31,7 @@ void	print_tab(t_table tab)
 	size_t	i = 0;
 
 	while(i < tab.size)
-		printf("tab[%zu] == %s\n",i,  tab.tab[i++]);
+		printf("%s\n", tab.tab[i++]);
 }
 
 // function only for tests
@@ -61,7 +42,7 @@ void	print_struct(t_data *data, int tab_size)
 	
 	while (i < tab_size)
 	{
-		printf("cmd  = %s\n\n", data[i].cmd);
+		printf("cmd  = %s\n\n", data[i].cmd_path);
 		y = 0;
 		if (data[i].args.tab)
 		{
@@ -139,7 +120,5 @@ int main (int argc, char **argv, char **envp)
 		free(prompt);
 		free_struct(data, tab_size);
 	}
-	free(prompt);
 	return (0);
 }
-

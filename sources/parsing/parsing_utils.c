@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:04:48 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/31 09:58:03 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/04 13:49:09 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 
 // ###### INCLUDES ######
 
+// ###### PROTOTYPES ######
+
+size_t	ft_perror(char *err_message);
+
+// ###### PROTOTYPES ######
+
 char	*final_build(char *token, char c)
 {
 	size_t	i;
@@ -29,24 +35,27 @@ char	*final_build(char *token, char c)
 	size = 0;
 	while (token[i])
 	{
-		if (token[i] != c)
+		if (token[i++] != c)
 			size++;
-		i++;
 	}
 	final = ft_calloc(sizeof(char), (size + 1));
 	if (!final)
-		return (NULL);
+		return (ft_perror("error -> malloc final_build\n"), NULL);
 	i = 0;
 	size = 0;
 	while (token[i])
 	{
-		while(token[i] && token[i] != c)
+		if (token[i] != c)
 		{
-			final[size] = token[i];
-			size++;
-			i++;
+			while(token[i] && token[i] != c)
+			{
+				final[size] = token[i];
+				size++;
+				i++;
+			}
 		}
-		i++;
+		else
+			i++;
 	}
 	return (final);
 }

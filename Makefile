@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+         #
+#    By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/06/04 12:05:37 by jedusser         ###   ########.fr        #
+#    Updated: 2024/05/29 14:52:17 by fberthou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,6 @@ SRC_PATH				= sources
 MAIN_PATH				= $(SRC_PATH)/main
 PARSING_PATH			= $(SRC_PATH)/parsing
 EXEC_PATH				= $(SRC_PATH)/exec
-BUILTINS_PATH			= $(EXEC_PATH)/builtins
 #LIBFT#
 LIBFT_PATH				= libft
 LIBFT_HDR_PATH			= $(LIBFT_PATH)/hdr
@@ -36,7 +35,6 @@ BUILD_PATH				= .build
 BUILD_MAIN_PATH			= $(BUILD_PATH)/main
 BUILD_PARS_PATH			= $(BUILD_PATH)/parsing
 BUILD_EXEC_PATH			= $(BUILD_PATH)/exec
-BUILD_BUILTS_PATH		= $(BUILD_EXEC_PATH)/builtins
 
 # --- COMPILATION FLAGS --- #
 LIB_FLAGS	=	-I$(LIBFT_HDR_PATH)
@@ -49,8 +47,7 @@ SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c $(MAIN_PATH)/init_env.c \
 			$(PARSING_PATH)/parser.c $(PARSING_PATH)/quoting.c \
 			$(PARSING_PATH)/struct_filling.c \
 			\
-			$(EXEC_PATH)/exec.c \
-			$(BUILTINS_PATH)/builtin_echo.c $(BUILTINS_PATH)/builtin_pwd.c 
+			$(EXEC_PATH)/exec.c
 
 ### ---- TEMPORARY FILES ---- ###
 OBJ	= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)
@@ -70,7 +67,7 @@ $(LIBFT)	: FORCE
 
 #########     OBJECTS    #########
 $(BUILD_PATH)/%.o : $(SRC_PATH)/%.c
-	@mkdir -p $(BUILD_PATH) $(BUILD_MAIN_PATH) $(BUILD_PARS_PATH) $(BUILD_EXEC_PATH) $(BUILD_BUILTS_PATH)
+	@mkdir -p $(BUILD_PATH) $(BUILD_MAIN_PATH) $(BUILD_PARS_PATH) $(BUILD_EXEC_PATH)
 	$(CC) $(COMPFLAGS) -c $< -o $@
 
 FORCE	:
