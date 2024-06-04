@@ -6,19 +6,47 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/22 10:52:35 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/04 12:00:28 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
 
-typedef struct s_command
+#include <stdbool.h>
+
+typedef struct s_table
 {
-	char *cmd;
-	char opt;
-	char *arg;
-	struct s_command *next;
-}	t_cmd;
+	char	**tab;
+	int		size;
+} t_table;
+
+enum e_rtype
+{
+	ERROR = -1,
+	COMMAND,
+	PIPE,
+	DELIMITER,
+	APPEND,
+	INFILE,
+	OUTFILE
+};
+
+typedef struct s_redir
+{
+	enum e_rtype	type;
+	char			*filename;
+	bool			in_out;
+	struct s_redir	*next;
+} t_redir;
+
+typedef struct s_data
+{
+	enum e_rtype	cmd_type;
+	char			*cmd;
+	t_table			args;
+	t_table			env;
+	t_redir			*redir;
+} t_data;
 
 #endif

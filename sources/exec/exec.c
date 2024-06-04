@@ -5,106 +5,33 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 16:42:33 by jedusser          #+#    #+#             */
-/*   Updated: 2024/05/30 13:42:53 by jedusser         ###   ########.fr       */
+/*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
+/*   Updated: 2024/06/04 12:05:20 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// ###### INCLUDES ######
+
 #include "libft.h"
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <sys/wait.h>
+#include "struct.h"
+
+// ###### INCLUDES ######
 
 
-int	ft_strcmp(char *s1, char *s2)
+// ###### PROTO ######
+
+size_t	ft_perror(char *err_message);
+
+void	print_struct(t_data *data, int tab_size);
+void	print_tab(t_table tab);
+
+// ###### PROTO ######
+
+
+int		exec(t_data *data, int tab_size)
 {
-	int	i;
-
-	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return (s1[i] - s2[i]);
-}
-
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-		free(array[i++]);
-	free(array);
-}
-// this function checks if exec is found within a directory.
-
-int	exec_found(const char *dirname, char *exec_searched)
-{
-	DIR				*dir;
-	struct dirent	*entity;
-
-	dir = opendir(dirname);
-	if (!dir)
-	{
-		//perror("Failed to open directory");
+	if (!data)
 		return (-1);
-	}
-	entity = readdir(dir);
-	while (entity != NULL)
-	{
-		if (ft_strcmp(entity->d_name, exec_searched) == 0)
-		{
-			closedir(dir);
-			return (1);
-		}
-		entity = readdir(dir);
-	}
-	closedir(dir);
+	print_struct(data, tab_size);
 	return (0);
 }
-
-// this function checks if exec is found in all concerned directories 
-// and returns the directory where it has been found.
-
-char	*check_all_dirs(char **envp, char *exec_searched)
-{
-	const char	*paths = getenv("PATH");
-	printf("%s\n", getenv("PATH"));
-	char		**path_list;
-	int			i;
-
-	path_list = ft_split(paths, ':');
-	if (!path_list)
-		return (NULL);
-	i = 0;
-	while (path_list[i])
-	{
-		if (exec_found(path_list[i], exec_searched) == 1)
-		{
-			return (path_list[i]);
-			break ;
-		}
-		i++;
-	}
-	free_array(path_list);
-	return (NULL);
-}
-
-int	exec(char **envp, char **argv, char *exec_path)
-{
-	printf("%s", exec_path);
-	pid_t pid = fork();
-	if (pid == 0)
-	{
-		if (exec_path)
-			return(execve(exec_path, argv, envp));
-	}
-	if (pid > 0)
-		waitpid(pid, NULL, 0);
-	return (0);
-}
-
-//TO_DO : 
-// -check absolutely if file is an executable (entity->d_type)//
-// an if rights are OK

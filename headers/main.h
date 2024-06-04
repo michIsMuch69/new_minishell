@@ -6,13 +6,13 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:03:18 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/24 10:22:17 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/04 12:05:42 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAIN_H
 # define MAIN_H
 
-#define INIT_ERROR "error -> prog initialisation"
+#define INIT_ERROR "error -> env initialisation"
 
 #endif
