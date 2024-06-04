@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:41:19 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/31 17:44:45 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/04 09:32:45 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,7 @@ bool	fill_struct(t_data *curr_struc, t_table *tokens, size_t *i_tokens)
 	size_t	i;
 
 	i = 0;
-	curr_struc->cmd = ft_strdup(tokens->tab[(*i_tokens)++]);
-	if (!curr_struc->cmd)
-		return (1);
+	curr_struc->cmd = tokens->tab[(*i_tokens)++];
 	while (*i_tokens < tokens->size)
 	{
 		if (find_type(tokens->tab[*i_tokens]) == PIPE)
@@ -84,9 +82,7 @@ bool	fill_struct(t_data *curr_struc, t_table *tokens, size_t *i_tokens)
 				return (ft_perror("error -> alloc struct arg tab"), 1);
 			while (*i_tokens < tokens->size && find_type(tokens->tab[*i_tokens]) == COMMAND)
 			{
-				curr_struc->args.tab[i] = ft_strdup(tokens->tab[*i_tokens]);
-				if (!curr_struc->args.tab[i])
-					return (ft_perror("error -> alloc struct arg tab"), 1); // !! maybe leak or double free
+				curr_struc->args.tab[i] = tokens->tab[*i_tokens];
 				if (!curr_struc->args.tab[i][0])
 					return (0);
 				i++;
@@ -99,23 +95,23 @@ bool	fill_struct(t_data *curr_struc, t_table *tokens, size_t *i_tokens)
 	return (0);
 }
 
-int	set_table(t_data **data, t_table *tokens, size_t i_tokens, size_t data_size)
+int	init_table(t_data **data, t_table *tokens, size_t i_tokens, size_t i_data)
 {
 	while (i_tokens < tokens->size)
 	{
-		data[data_size]->cmd_type = find_type(tokens->tab[i_tokens]);
-		if (data[data_size]->cmd_type == PIPE) // if pipe is the first token -> syntax error
+		data[i_data]->cmd_type = find_type(tokens->tab[i_tokens]);
+		if (data[i_data]->cmd_type == PIPE) // if pipe is the first token -> syntax error
 		{
-			data[data_size] = realloc_tab(*data);
-			if (!data[data_size])
-				return (free_struct(*data, (data_size + 1)), ft_perror("error -> realloc\n") -1);
-			data_size++;
-			data[data_size]->env = data[0]->env;
-			return (set_table(data, tokens, i_tokens, data_size)); // realloc tab + 1 + recall fill_struct
+			data[i_data] = realloc_tab(*data);
+			if (!data[i_data])
+				return (free_struct(*data, (i_data + 1)), ft_perror("error -> realloc\n") -1);
+			i_data++;
+			data[i_data]->env = data[0]->env;
+			return (init_table(data, tokens, i_tokens, i_data)); // realloc tab + 1 + recall fill_struct
 		}
 		else
-			if (fill_struct(data[data_size], tokens, &i_tokens) == 1)
-				return (free_struct(*data, (data_size + 1)), -1);
+			if (fill_struct(data[i_data], tokens, &i_tokens) == 1)
+				return (free_struct(*data, (i_data + 1)), -1);
 	}
-	return (data_size + 1);
+	return (i_data + 1);
 }
