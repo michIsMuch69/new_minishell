@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:04:48 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/28 14:55:35 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/05/31 09:58:03 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	include_expand(char *token) //return the $ sign position
 	return (-1);
 }
 
-size_t	expand_token(char *prompt, char c, size_t *i)
+size_t	find_end(char *prompt, char c, size_t *i)
 {
 	while (prompt[++(*i)])
 	{

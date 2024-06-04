@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 07:33:24 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/29 17:19:29 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:29:04 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,81 +25,82 @@
 // ###### PROTOTYPES ######
 
 size_t	ft_perror(char *err_message);
-void	free_all(t_table tab, t_data *ptr, size_t tab_size);
+void	free_tab(char **tab, int tab_size);
+void	free_struct(t_data *struc, size_t tab_size);
 
 t_table	tokenizer(char *prompt);
 t_table	*token_cleaner(t_table tokens, char **envp);
 
-
-int	fill_struct(t_data **struc_tab, t_table *tokens, char **envp);
+int	set_table(t_data **data, t_table *tokens, size_t start, size_t data_size);
 
 // ###### PROTOTYPES ######
 
 
 // function only for tests
-void	print_tab(char **table)
+void	print_tab(t_table tab)
 {
 	size_t	i = 0;
 
-	while(table[i])
-		printf("%s\n", table[i++]);
+	printf("tab_size : %d\n", tab.size);
+	while(i <= tab.size)
+		printf("%s\n", tab.tab[i++]);
 }
 
 // function only for tests
-void	print_struct(t_data *data, size_t tab_size)
-{
-	size_t	i = 0;
-	size_t	y = 0;
+// void	print_struct(t_data *data, size_t tab_size)
+// {
+// 	size_t	i = 0;
+// 	size_t	y = 0;
 	
-	while (i < tab_size)
-	{
-		printf("type = %d\n", data[i].cmd_type);
-		printf("cmd = %s\n", data[i].cmd);
-		if (data[i].opt)
-			while (data[i].opt[y])
-				printf("opt = %s\n", data[i].opt[y++]);
-		y = 0;
-		if (data[i].args)
-			while (data[i].args[y])
-				printf("arg = %s\n", data[i].args[y++]);
-		y = 0;
-		i++;
-	}
-}
-
-
+// 	while (i < tab_size)
+// 	{
+// 		printf("type = %d\n\n", (int) data[i].cmd_type);
+// 		printf("cmd  = %s\n\n", data[i].cmd);
+// 		y = 0;
+// 		if (data[i].args.tab[y])
+// 			while (y < data[i].args.size)
+// 				printf("arg  = %s\n", data[i].args.tab[y++]);
+// 		printf("\n");
+// 		y = 0;
+// 		if (data[i].env)
+// 			while (data[i].env[y])
+// 				printf("arg  = %s\n", data[i].env[y++]);
+// 		i++;
+// 	}
+// }
 
 /*
 	* parse_prompt ft -> have to return an int ? YES !
 */
 
-int	parse_prompt(char *prompt, char **envp, t_data **data)
+int	parse_prompt(char *prompt, char **env, t_data **data)
 {
-	t_table	*tok;
-	int		i_struc;
+	t_table	*args;
+	int		struc_tab_size;
 
 // ### token initialization ### //
 	t_table	token; // only for test
 
 	token = tokenizer(prompt);
-	if (!token.size && !token.tab)
+	if (!token.tab)
 		return (-1);
 
 	// print tab only for test //
-	//print_tab(token.tab);
+	print_tab(token);
 
 // ### token initialization END ### //
 
-
+	printf("<- tokens\n\nclean tokens ->\n");
 
 // ### clean tokens to real cmd ### //
 
-	tok = token_cleaner(token, envp);
-	if (!tok)
-		return (free_all(token, NULL, 0), -1); // free all is temporary, t_table token.tab is free in token_cleaner
+	args = token_cleaner(token, env);
+	if (!args)
+		return (free_tab(token.tab, token.size), -1); // free all is temporary, t_table token.tab is free in token_cleaner
 
 	// print tab only for test //
-	print_tab(tok->tab);
+	print_tab(*args);
+	free_tab(token.tab, token.size);
 
 // ### clean tokens to real cmd END ### //
 
@@ -107,22 +108,19 @@ int	parse_prompt(char *prompt, char **envp, t_data **data)
 
 // ### structure initialization ### //
 
-	i_struc = fill_struct(data, tok, envp);
-	if (i_struc == -1)
-	{
-		free_all(*tok, NULL, 0);
-		free(tok);
-		free_all(token, NULL, 0);
-		return (-1);
-	}
-	i_struc++;
+	struc_tab_size = set_table(data, args, 0, 0);
+	if (struc_tab_size == -1)
+		return (free_tab(args->tab, args->size), free(args), -1);
 
 	// print struct only for test //
+	printf("struc_tab_size = %d\n", struc_tab_size);
 	// print_struct(main_s, *i);
+	
 // ### structure initialization END ### //
 
 
-	free_all(*tok, NULL, 0);
-	free(tok);
-	return (free_all(token, NULL, 0), i_struc);
+	free_tab(args->tab, args->size);
+	free(args);
+
+	return (struc_tab_size);
 }

@@ -11,9 +11,11 @@
 // ###### PROTO ######
 
 size_t	ft_perror(char *err_message);
-char	*init_env(void);
 int		parse_prompt(char *prompt, char **envp, t_data **data);
-void	free_struct(t_data *ptr, size_t tab_size);
+void	free_struct(t_data *struc, size_t tab_size);
+void	free_tab(char **tab, int tab_size);
+
+void	print_tab(t_table tab);
 
 // ###### PROTO ######
 
@@ -22,28 +24,67 @@ void	free_struct(t_data *ptr, size_t tab_size);
 	* valgrind --suppressions=run.sh --leak-check=full ./minishell
 */
 
+t_table	ft_tabdup(char **envp)
+{
+	t_table	tab_env;
+	size_t	i;
+
+	i = 0;
+	if (!envp)
+		return (tab_env.tab = NULL, tab_env);
+	while (envp[i++])
+		;
+	tab_env.tab = ft_calloc(i + 1	, sizeof(char *));
+	if (!tab_env.tab)
+		return (tab_env);
+	i = 0;
+	while (envp[i])
+	{
+		tab_env.tab[i] = ft_strdup(envp[i]);
+		if (!tab_env.tab[i])
+			return (free_tab(tab_env.tab, i), tab_env);
+		i++;
+	}
+	tab_env.size = i;
+	return (tab_env);
+}
+
+t_data	*init_data(char **envp)
+{
+	t_data	*data;
+
+	data = ft_calloc(1, sizeof(t_data));
+	if (!data)
+		return (NULL);
+	data->env = ft_tabdup(envp);
+	if (!data->env.tab)
+		return (free(data), NULL);
+	return (data);
+}
+
 int main (int argc, char **argv, char **envp)
 {
 	char 	*prompt;
-	char	*env_name; // optional
-	int		struct_tabsize;
+	int		tab_size;
 	t_data	*data;
 
 	if (argc != 1)
 		return (ft_perror("arguments are invalid\n"), 1);
-	env_name = NULL;
+	//print_tab(data->env);
 	while (1)
 	{
-		// env_name = init_env();
-		prompt = readline(/*env_name*/">>> ");
+		data = init_data(envp);
+		if (!data)
+			return (ft_perror("error -> init structure\n"), 2);
+		prompt = readline("mini$hell> ");
 		add_history(prompt);
-		struct_tabsize = parse_prompt(prompt, envp, &data);
-		if (struct_tabsize == -1)
-			return (/*free(env_name)*/free(prompt), 2);
+		tab_size = parse_prompt(prompt, envp, &data);
+		if (tab_size == -1)
+			return (free(prompt), 3);
 		//exec(data, tab_size);
 		free(prompt);
-		
-		free_struct(&data, struct_tabsize);
+
+		free_struct(data, tab_size);
 	}
 	return (0);
 }
