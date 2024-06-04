@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:26:45 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/31 12:28:20 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/04 10:53:55 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 // ###### PROTOTYPES ######
 
-void	free_tab(char **tab, int tab_size);
+void	free_tab(t_table tab);
 void	free_struct(t_data *struc, size_t tab_size);
 char	*quote_management(char *token, char **envp);
 size_t	ft_perror(char *err_message);
@@ -63,7 +63,7 @@ t_table	*token_cleaner(t_table tokens, char **env)
 	{
 		table->tab[table->size] = clean_token(tokens.tab[table->size], env);
 		if (!table->tab[table->size])
-			return (free_tab(table->tab, table->size), NULL);
+			return (free_tab(*table), NULL);
 		(table->size)++;
 	}
 	return (/*free_all(tokens, NULL, 0),*/ table); // free tokens in ft_parse_prompt during prog builting and test

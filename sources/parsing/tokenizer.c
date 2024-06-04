@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:10:46 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/31 17:40:32 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/04 11:40:09 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 // ###### PROTOTYPES ######
 
 size_t	ft_perror(char *err_message);
-void	free_tab(char **tab, int tab_size);	
+void	free_tab(t_table tab);	
 size_t	find_end(char *prompt, char c, size_t *i);
 
 // ###### PROTOTYPES ###### 
@@ -84,7 +84,8 @@ static int	extract_token(char *prompt, size_t *i, char c, t_table *token)
 	else
 	{
 		(*i)++;
-		while (prompt[*i] && prompt[*i] != 32 && prompt[*i] != 9 && prompt[*i] != 10)
+		while (prompt[*i] && prompt[*i] != 32 && \
+				prompt[*i] != 9 && prompt[*i] != 10)
 			(*i)++;
 		return (build_token(prompt, start, *i, token));
 	}
@@ -128,13 +129,13 @@ t_table	tokenizer(char *prompt)
 	{
 		ret_value = split_tokens(prompt, &i, &token);
 		if (ret_value == -1)
-			return (free_tab(token.tab, token.size), token);
+			return (free_tab(token), token);
 		if (ret_value == 0)
 			break ;
 		tmp = ft_realloc(token.tab, ((token.size + 2) * sizeof(char *)), \
 									((token.size + 1) * sizeof(char *)));
 		if (!tmp)
-			return (free_tab(token.tab, token.size), ft_perror("error -> tab_arg memory allocation\n"), token);
+			return (free_tab(token), ft_perror("error -> tab_arg memory allocation\n"), token);
 		token.tab = tmp;
 		(token.size)++;
 	}
