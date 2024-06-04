@@ -6,18 +6,23 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:22:44 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/04 13:14:26 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/04 13:42:42 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // ###### INCLUDES ######
 
 #include "libft.h"
-#include "struct.h"
-#include <readline/readline.h> 
-#include <readline/history.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <dirent.h>
+#include <fcntl.h>
+#include "struct.h"
+#include <stddef.h>
 
 // ###### INCLUDES ######
 
@@ -28,8 +33,6 @@ size_t	ft_perror(char *err_message);
 int		parse_prompt(char *prompt, char **envp, t_data **data);
 void	free_struct(t_data *struc, size_t tab_size);
 void	free_tab(t_table tab);
-int		pipex_main(int argc, char **argv, char **envp);
-
 int		exec(t_data *data, int tab_size);
 
 void	print_tab(t_table tab);
@@ -47,7 +50,7 @@ void	print_tab(t_table tab)
 	size_t	i = 0;
 
 	while(i < tab.size)
-		printf("%s\n", tab.tab[i++]);
+		printf("tab[%zu] == %s\n",i,  tab.tab[i++]);
 }
 
 // function only for tests
@@ -133,7 +136,6 @@ int main (int argc, char **argv, char **envp)
 		if (tab_size == -1)
 			return (free(prompt), 3);
 		exec(data, tab_size);
-		//pipex_main(argc, argv, envp);
 		free(prompt);
 		free_struct(data, tab_size);
 	}
