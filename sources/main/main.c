@@ -42,7 +42,7 @@ void	print_struct(t_data *data, int tab_size)
 	
 	while (i < tab_size)
 	{
-		printf("cmd  = %s\n\n", data[i].cmd);
+		printf("cmd  = %s\n\n", data[i].cmd_path);
 		y = 0;
 		if (data[i].args.tab)
 		{
@@ -122,4 +122,3 @@ int main (int argc, char **argv, char **envp)
 	}
 	return (0);
 }
-

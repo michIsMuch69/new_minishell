@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 10:56:02 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/04 11:38:31 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:43:22 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ void	free_struct(t_data *struc, size_t tab_size)
 	i = 0;
 	while (i < tab_size)
 	{
-		if (struc[i].cmd)
+		if (struc[i].cmd_path)
 		{
-			free(struc[i].cmd);
-			struc[i].cmd = NULL;
+			free(struc[i].cmd_path);
+			struc[i].cmd_path = NULL;
 		}
 		if (struc[i].args.tab)
 		{

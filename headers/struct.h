@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/04 12:00:28 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:39:26 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_redir
 typedef struct s_data
 {
 	enum e_rtype	cmd_type;
-	char			*cmd;
+	char			*cmd_path;
 	t_table			args;
 	t_table			env;
 	t_redir			*redir;

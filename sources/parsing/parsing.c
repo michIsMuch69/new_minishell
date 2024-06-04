@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 07:33:24 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/04 12:00:51 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/04 13:33:07 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ int	parse_prompt(char *prompt, char **env, t_data **data)
 		return (-1);
 
 	// print tab only for test //
-	// print_tab(token);
+	print_tab(token);
 
 // ### token initialization END ### //
 
-	// printf("<- tokens\n\nclean tokens ->\n");
+	printf("<- tokens\n\nclean tokens ->\n");
 
 // ### clean tokens to real cmd / args ### //
 
@@ -68,7 +68,7 @@ int	parse_prompt(char *prompt, char **env, t_data **data)
 		return (free_tab(token), -1); // free all is temporary, t_table token.tab is free in token_cleaner
 
 	// print tab only for test //
-	// print_tab(*args);
+	print_tab(*args);
 	free_tab(token);
 
 // ### clean tokens to real cmd / args END ### //
