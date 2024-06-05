@@ -31,22 +31,21 @@ void	print_tab(t_table tab)
 	size_t	i = 0;
 
 	while(i < tab.size)
-		printf("%s\n", tab.tab[i++]);
+		printf("argument nb %zu %s\n", i, tab.tab[i++]);
 }
 
 // function only for tests
 void	print_struct(t_data *data, int tab_size)
 {
 	size_t	i = 0;
-	size_t	y = 0;
+	//size_t	y = 0;
 	
 	while (i < tab_size)
 	{
-		printf("cmd  = %s\n\n", data[i].cmd_path);
-		y = 0;
+		printf("tab_size = %d\n", tab_size);
 		if (data[i].args.tab)
 		{
-			printf("args list :\n");
+			printf("args_list :\n");
 			print_tab(data[i].args);
 		}
 		printf("\n");

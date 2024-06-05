@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/04 16:23:28 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/05 09:18:39 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,16 +128,25 @@ int		exec(t_data *data, int tab_size)
 {
 	char	*cmd_path;
 	char	*directory;
+	pid_t	pid;
 
 	if (!data)
 		return (-1);
 	directory = check_all_dirs(data[0].args.tab[0]);
-	//print_tab(data->args);
 	cmd_path = ft_concat_path(directory, data[0].args.tab[0]);
-	
-	//printf("cmd_path = %s\n", cmd_path);
-	print_struct(data, tab_size);
-	execve(cmd_path, data[0].args.tab, data[0].env.tab);
+	printf("cmd_path = %s\n", cmd_path);
+	pid = fork();
+	if (pid == 0)
+	{
+		printf("hello before execve\n");
+		print_struct(data, tab_size);
+		if(execve(cmd_path, data[0].args.tab, data[0].env.tab) == -1)
+			return(1);
+	}
+	else if(pid > 0)
+	{
+		waitpid(pid, NULL, 0);
+	}
 	return (0);
 }
 
