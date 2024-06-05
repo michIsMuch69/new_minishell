@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 07:33:24 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/05 09:18:00 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/05 09:31:02 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,5 @@ int	parse_prompt(char *prompt, char **env, t_data **data)
 	
 // ### structure initialization END ### //
 
-	return (free(args->tab), free(args), struc_tab_size);
+	return (free_tab(*args), free(args), struc_tab_size);
 }

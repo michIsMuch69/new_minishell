@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 10:56:02 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/04 14:43:22 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/05 11:22:55 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	free_tab(t_table tab)
 	while (i < tab.size)
 		free(tab.tab[i++]);
 	free(tab.tab);
-	tab.tab = NULL;
 }
 
 void	free_lst(t_redir *lst)
@@ -59,11 +58,14 @@ void	free_struct(t_data *struc, size_t tab_size)
 			free_tab(struc[i].args);
 			struc[i].args.tab = NULL;
 		}
-		if (struc->redir)
+		if (struc[i].redir)
 		{
-			free_lst(struc->redir);
-			struc->redir = NULL;
+			free_lst(struc[i].redir);
+			struc[i].redir = NULL;
 		}
+		if (i == 0)
+			free_tab(struc[i].env);
 		i++;
 	}
+	free(struc);
 }
