@@ -60,28 +60,23 @@ void	print_struct(t_data *data, int tab_size)
 static t_table	ft_tabdup(char **envp)
 {
 	t_table	tab_env;
-	size_t	i;
 
-	i = 0;
+	tab_env.size = 0;
 	if (!envp)
 		return (tab_env.tab = NULL, tab_env);
-	while (envp[i++])
+	while (envp[(tab_env.size)++])
 		;
-	tab_env.tab = ft_calloc(i + 1	, sizeof(char *));
+	tab_env.tab = ft_calloc(tab_env.size + 1, sizeof(char *));
 	if (!tab_env.tab)
 		return (tab_env);
-	i = 0;
-	while (envp[i])
+	tab_env.size = 0;
+	while (envp[tab_env.size])
 	{
-		tab_env.tab[i] = ft_strdup(envp[i]);
-		if (!tab_env.tab[i])
-		{
-			tab_env.size = i;
+		tab_env.tab[tab_env.size] = ft_strdup(envp[tab_env.size]);
+		if (!tab_env.tab[tab_env.size])
 			return (free_tab(tab_env), tab_env.tab = NULL, tab_env);
-		}
-		i++;
+		(tab_env.size)++;
 	}
-	tab_env.size = i;
 	return (tab_env);
 }
 
@@ -95,6 +90,25 @@ static t_data	*init_data(char **envp)
 	data->env = ft_tabdup(envp);
 	if (!data->env.tab)
 		return (free(data), NULL);
+	return (data);
+}
+
+static t_data	*reset_env(t_data *data, size_t tab_size)
+{
+	t_table	tmp;
+
+	tmp = ft_tabdup(data->env.tab);
+	if (!tmp.tab)
+	{
+		free_struct(data, tab_size);
+		return (ft_perror("error -> reset env\n"), NULL);
+	}
+	free_struct(data, tab_size);
+	data = ft_calloc(1, sizeof(t_data));
+	if (!data)
+		return (free_tab(tmp), ft_perror("error -> reset env\n"), NULL);
+	data->env.tab = tmp.tab;
+	data->env.size = tmp.size;
 	return (data);
 }
 
@@ -115,10 +129,12 @@ int main (int argc, char **argv, char **envp)
 		add_history(prompt);
 		tab_size = parse_prompt(prompt, envp, &data);
 		if (tab_size == -1)
-			return (free(prompt), 3);
+			return (free(prompt), free(data), 3);
 		exec(data, tab_size);
 		free(prompt);
-		free_struct(data, tab_size);
+		data = reset_env(data, tab_size);
+		if (!data)
+			return (4);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:41:19 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/04 14:39:04 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/05 09:43:04 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@
 // ###### PROTOTYPES ######
 
 size_t	ft_perror(char *err_message);
+void	free_tab(t_table tab);
 void	free_struct(t_data *struc, size_t tab_size);
+
+void	print_struct(t_data *data, int tab_size);
 
 // ###### PROTOTYPES ######
 
@@ -63,55 +66,53 @@ size_t	find_size(t_table tokens, int i_tokens)
 	return (size);
 }
 
-bool	fill_struct(t_data *curr_struc, t_table *tokens, size_t *i_tokens)
+bool	fill_struct(t_data *struc, t_table *tokens, size_t *i_tokens, size_t i_struc)
 {
-	size_t	i;
+	size_t	tab_size;
 
-	i = 0;
-	//curr_struc->cmd = tokens->tab[(*i_tokens)++];
-	while (*i_tokens < tokens->size)
+	if (struc->cmd_type == COMMAND)
 	{
-		if (find_type(tokens->tab[*i_tokens]) == PIPE)
-			return (0);
-		// else if (find_type(tokens->tab[*i_tokens]) != COMMAND)
-		// 	redir_management(tokens, i_tokens);
-		else
+		struc->args.size = 0;
+		tab_size = find_size(*tokens, *i_tokens);
+		struc->args.tab = ft_calloc((tab_size + 1), sizeof(char *));
+		if (!struc->args.tab)
+			return (ft_perror("error -> alloc struc arg tab\n"), 1);
+		while (struc->args.size < tab_size)
 		{
-			curr_struc->args.tab = ft_calloc((find_size(*tokens, *i_tokens) + 1), sizeof(char *));
-			if (!curr_struc->args.tab)
-				return (ft_perror("error -> alloc struct arg tab"), 1);
-			while (*i_tokens < tokens->size && find_type(tokens->tab[*i_tokens]) == COMMAND)
-			{
-				curr_struc->args.tab[i] = tokens->tab[*i_tokens];
-				if (!curr_struc->args.tab[i][0])
-					return (0);
-				i++;
-				(*i_tokens)++;
-			}
+			struc->args.tab[struc->args.size] = ft_strdup(tokens->tab[*i_tokens]);
+			if (!struc->args.tab[struc->args.size])
+				return (ft_perror("error -> strdup\n"), 1);
+			(struc->args.size)++;
+			(*i_tokens)++;
 		}
-		(*i_tokens)++;
 	}
-	curr_struc->args.size = i + 1;
 	return (0);
 }
 
+
 int	init_table(t_data **data, t_table *tokens, size_t i_tokens, size_t i_data)
 {
+	t_data			*tmp;
+	enum e_rtype	type;
+
 	while (i_tokens < tokens->size)
 	{
-		data[i_data]->cmd_type = find_type(tokens->tab[i_tokens]);
-		if (data[i_data]->cmd_type == PIPE) // if pipe is the first token -> syntax error
+		type = find_type(tokens->tab[i_tokens]);
+		if (type == PIPE) // if pipe is the first token -> syntax error
 		{
-			data[i_data] = realloc_tab(*data);
-			if (!data[i_data])
-				return (free_struct(*data, (i_data + 1)), ft_perror("error -> realloc\n") -1);
-			i_data++;
-			data[i_data]->env = data[0]->env;
-			return (init_table(data, tokens, i_tokens, i_data)); // realloc tab + 1 + recall fill_struct
+			tmp = ft_realloc(*data, (sizeof(t_data) * (i_data + 2)), (sizeof(t_data) * (i_data + 1))); //realloc_tab(*data);
+			if (!tmp)
+				return (ft_perror("error -> realloc\n"), free_struct(*data, i_data + 1), -1);
+			tmp[i_data + 1].env = tmp[0].env;
+			*data = tmp;
+			return (init_table(data, tokens, ++i_tokens, ++i_data)); // realloc tab + 1 + recall fill_struct
 		}
 		else
-			if (fill_struct(data[i_data], tokens, &i_tokens) == 1)
-				return (free_struct(*data, (i_data + 1)), -1);
+		{
+			(*data)[i_data].cmd_type = type;
+			if (fill_struct(&(*data)[i_data], tokens, &i_tokens, i_data) == 1)
+				return (free_struct(*data, i_data + 1), -1);
+		}
 	}
 	return (i_data + 1);
 }
