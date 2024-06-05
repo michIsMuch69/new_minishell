@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/fberthou/42_common_core/4_circle/minishell/sources/main",
-      "program": "/home/fberthou/42_common_core/4_circle/minishell/sources/main/build/Debug/outDebug",
+      "cwd": "/home/jedusser/Documents/minishell/sources/exec",
+      "program": "/home/jedusser/Documents/minishell/sources/exec/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
