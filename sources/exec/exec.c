@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/05 15:51:06 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:00:33 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,10 +171,10 @@ int	pipex(int tab_size, t_data *data)
 	while (i < tab_size)
 	{
 		if (pipe(fds) == -1)
-			return (perror("pipe failed"), free_tab(data[i].args), -1);
+			return (perror("pipe failed"), -1);
 		pid = fork();
 		if (pid == -1)
-			return (perror("fork failed"), free_tab(data[i].args), -1);
+			return (perror("fork failed"), -1);
 		else if (pid == 0)
 		{
 			if(handle_child(i, fds, tab_size, prev_fd, data))
@@ -219,12 +219,12 @@ int		exec(int i, t_data *data, int tab_size)
 		return (perror("Data structure is not properly initalized"), -1);
 	directory = check_all_dirs(data[i].args.tab[0]);
 	if (!directory)
-		return (perror("Failed to find directory"),free_tab(data[i].args), -1);
+		return (perror("Failed to find directory"), -1);
 	cmd_path = ft_concat_path(directory, data[i].args.tab[0]);
 	if (!cmd_path)
-		return (free(directory), free_tab(data[i].args), -1);
+		return (free(directory), -1);
 	if (execve(cmd_path, data[i].args.tab, data[i].env.tab) == -1)
-		return (perror("execve failed"), free_tab(data[i].args), free(cmd_path), -1);
+		return (perror("execve failed"), free(cmd_path), -1);
 
 	return (0);
 }
