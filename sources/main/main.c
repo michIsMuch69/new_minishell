@@ -15,6 +15,7 @@ int		parse_prompt(char *prompt, char **envp, t_data **data);
 void	free_struct(t_data *struc, size_t tab_size);
 void	free_tab(t_table tab);
 int		exec(t_data *data, int tab_size);
+int		pipex(int tab_size, t_data *data);
 
 void	print_tab(t_table tab);
 
@@ -130,7 +131,7 @@ int main (int argc, char **argv, char **envp)
 		tab_size = parse_prompt(prompt, envp, &data);
 		if (tab_size == -1)
 			return (free(prompt), free(data), 3);
-		exec(data, tab_size);
+		pipex(tab_size, data);
 		free(prompt);
 		data = reset_env(data, tab_size);
 		if (!data)

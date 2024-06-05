@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/05 14:52:57 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/05 15:51:06 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@ size_t	ft_perror(char *err_message);
 
 void	print_struct(t_data *data, int tab_size);
 void	print_tab(t_table tab);
+int		exec(int i, t_data *data, int tab_size);
+void	free_tab(t_table tab);
+
+
 
 // ###### PROTO ######
 
@@ -107,7 +111,85 @@ char	*check_all_dirs(char *exec_searched)
 	free_array(path_list);
 	return (result);
 }
+int	handle_child(int i, int fds[2], int tab_size, int prev_fd, t_data *data)
+{
+	// if (i == 0) //  1st cmd
+	// {
+	// 	int	input_fd = open("file1.txt", O_RDONLY);
+	// 	dup2(input_fd, STDIN_FILENO);
+	// }
+	/*else*/ if (i > 0) //not first cmd.
+	{
+		dup2(prev_fd, STDIN_FILENO); // --> proteger appel a pid, apres refacto);
+		close(prev_fd);
+	}
+	if (i < tab_size - 1) // not last cmd.
+	{
+		dup2(fds[1], STDOUT_FILENO);
+		close(fds[1]);
+	}
+	// else
+	// {
+	// 	int	output_fd = open("file2.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	// 	dup2(output_fd, STDOUT_FILENO);
+	// }
+	if (exec(i, data, tab_size) == -1)
+		return (-1);
+	close(fds[0]);
+	return (0);
+}
 
+void	handle_parent(int i, int fds[2], int prev_fd, int tab_size)
+{
+	if (i > 0)
+		close(prev_fd);
+	if (i < tab_size - 1)
+		close(fds[1]);
+}
+
+void	wait_all(int tab_size)
+{
+	int	i;
+
+	i = 0;
+	while (i < tab_size)
+	{
+		waitpid(-1, NULL, 0);
+		i++;
+	}
+}
+
+int	pipex(int tab_size, t_data *data)
+{
+	int		i;
+	int		prev_fd;
+	int		fds[2];
+	pid_t	pid;
+
+	prev_fd = 0;
+	i = 0;
+	while (i < tab_size)
+	{
+		if (pipe(fds) == -1)
+			return (perror("pipe failed"), free_tab(data[i].args), -1);
+		pid = fork();
+		if (pid == -1)
+			return (perror("fork failed"), free_tab(data[i].args), -1);
+		else if (pid == 0)
+		{
+			if(handle_child(i, fds, tab_size, prev_fd, data))
+				return (-1);
+		}
+		else
+		{
+			handle_parent(i, fds, prev_fd, tab_size); //retour d'erreur ?
+			prev_fd = fds[0];
+		}
+		i++;
+	}
+	wait_all(tab_size);
+	return (0);
+}
 char	*ft_concat_path(char *directory, char *prompt)
 {
 	size_t	total_length;
@@ -117,6 +199,7 @@ char	*ft_concat_path(char *directory, char *prompt)
 	exec_path = malloc(total_length);
 	if (!exec_path)
 	{
+		perror("Memory allocation failed for exec_path");
 		free(directory);
 		return (NULL);
 	}
@@ -127,48 +210,21 @@ char	*ft_concat_path(char *directory, char *prompt)
 	return (exec_path);
 }
 
-int		exec(t_data *data, int tab_size)
+int		exec(int i, t_data *data, int tab_size)
 {
-	char	*directory1;
-	char	*directory2;
-	char	*cmd_path1;
-	char	*cmd_path2;
-	pid_t	pid;
-	int		i;
+	char	*directory;
+	char	*cmd_path;
+	
+	if (!data || !data[i].args.tab)
+		return (perror("Data structure is not properly initalized"), -1);
+	directory = check_all_dirs(data[i].args.tab[0]);
+	if (!directory)
+		return (perror("Failed to find directory"),free_tab(data[i].args), -1);
+	cmd_path = ft_concat_path(directory, data[i].args.tab[0]);
+	if (!cmd_path)
+		return (free(directory), free_tab(data[i].args), -1);
+	if (execve(cmd_path, data[i].args.tab, data[i].env.tab) == -1)
+		return (perror("execve failed"), free_tab(data[i].args), free(cmd_path), -1);
 
-	i = 0;
-	if (!data)
-		return (-1);
-	printf("%d\n", tab_size);
-	
-	directory1 = check_all_dirs(data[0].args.tab[0]);
-	if (!directory1)
-		return (-1);
-		
-	directory2 = check_all_dirs(data[1].args.tab[0]);
-	if (!directory2)
-		return (-1);
-		
-	printf("Directory = %s\n", directory1);
-	printf("Directory = %s\n", directory2);
-	
-	cmd_path1 = ft_concat_path(directory1, data[0].args.tab[0]);
-	if (!cmd_path1)
-		return (-1);
-		
-	cmd_path2 = ft_concat_path(directory2, data[1].args.tab[0]);
-	if (!cmd_path2)
-		return (-1);
-		
-	printf("cmd_path = %s\n", cmd_path1);
-	printf("cmd_path = %s\n", cmd_path2);
-	
-	pid = fork();
-	if (pid == 0)
-	{
-		execve(cmd_path1, data[0].args.tab, data[0].env.tab);
-	}
-	else
-		waitpid(pid, NULL, 0);
 	return (0);
 }
