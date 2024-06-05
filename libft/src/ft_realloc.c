@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 22:01:42 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/05 09:38:01 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/05/22 08:15:58 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*ft_realloc(void *pointer, size_t memory_size, size_t src_size)
 	if (!tmp)
 		return (NULL);
 	tmp = ft_memcpy(tmp, (const void *) pointer, src_size);
-	if (pointer)
+	if (pointer && pointer != tmp)
 		free(pointer);
 	return (tmp);
 }
