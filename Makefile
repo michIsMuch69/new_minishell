@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+         #
+#    By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/05/29 14:52:17 by fberthou         ###   ########.fr        #
+#    Updated: 2024/06/06 09:24:30 by jedusser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c $(MAIN_PATH)/init_env.c \
 			$(PARSING_PATH)/parser.c $(PARSING_PATH)/quoting.c \
 			$(PARSING_PATH)/struct_filling.c \
 			\
-			$(EXEC_PATH)/exec.c
+			$(EXEC_PATH)/exec.c $(EXEC_PATH)/build_exec_path.c $(EXEC_PATH)/exec_utils.c
 
 ### ---- TEMPORARY FILES ---- ###
 OBJ	= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)

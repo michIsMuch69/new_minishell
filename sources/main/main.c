@@ -1,9 +1,6 @@
 // ###### INCLUDES ######
 
-#include "libft.h"
-#include "struct.h"
-#include <readline/readline.h> 
-#include <readline/history.h>
+#include "exec.h"
 
 // ###### INCLUDES ######
 
@@ -14,7 +11,8 @@ size_t	ft_perror(char *err_message);
 int		parse_prompt(char *prompt, char **envp, t_data **data);
 void	free_struct(t_data *struc, size_t tab_size);
 void	free_tab(t_table tab);
-int		exec(t_data *data, int tab_size);
+
+
 int		pipex(int tab_size, t_data *data);
 
 void	print_tab(t_table tab);
