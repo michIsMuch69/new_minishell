@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:26:45 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/05 09:21:10 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:06:14 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_table	*token_cleaner(t_table tokens, char **env)
 	{
 		table->tab[table->size] = clean_token(tokens.tab[table->size], env);
 		if (!table->tab[table->size])
-			return (free_tab(*table), NULL);
+			return (free_tab(*table), free(table), NULL);
 		(table->size)++;
 	}
 	return (/*free_all(tokens, NULL, 0),*/ table); // free tokens in ft_parse_prompt during prog builting and test

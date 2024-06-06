@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/04 14:39:26 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:26:42 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,11 @@ enum e_rtype
 	ERROR = -1,
 	COMMAND,
 	PIPE,
+	INPUT,
+	OUTPUT,
 	DELIMITER,
-	APPEND,
-	INFILE,
-	OUTFILE
+	APPEND
 };
-
-typedef struct s_redir
-{
-	enum e_rtype	type;
-	char			*filename;
-	bool			in_out;
-	struct s_redir	*next;
-} t_redir;
 
 typedef struct s_data
 {
@@ -46,7 +38,8 @@ typedef struct s_data
 	char			*cmd_path;
 	t_table			args;
 	t_table			env;
-	t_redir			*redir;
+	t_table			input;
+	t_table			output;
 } t_data;
 
 #endif

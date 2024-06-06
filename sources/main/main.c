@@ -11,7 +11,7 @@
 // ###### PROTO ######
 
 size_t	ft_perror(char *err_message);
-int		parse_prompt(char *prompt, char **envp, t_data **data);
+int		parse_prompt(char **prompt, char **envp, t_data **data);
 void	free_struct(t_data *struc, size_t tab_size);
 void	free_tab(t_table tab);
 int		exec(t_data *data, int tab_size);
@@ -42,12 +42,25 @@ void	print_struct(t_data *data, int tab_size)
 	
 	while (i < tab_size)
 	{
-		printf("cmd  = %s\n\n", data[i].cmd_path);
+		printf("\nSTRUC %zu\n\n", i+1);
+		printf("cmd  = %s\n", data[i].cmd_path);
 		y = 0;
 		if (data[i].args.tab)
 		{
 			printf("args list :\n");
 			print_tab(data[i].args);
+		}
+		if (data[i].input.tab)
+		{
+			printf("\n");
+			printf("inputs :\n");
+			print_tab(data[i].input);
+		}
+		if (data[i].output.tab)
+		{
+			printf("\n");
+			printf("output :\n");
+			print_tab(data[i].output);
 		}
 		printf("\n");
 		// y = 0;
@@ -127,10 +140,10 @@ int main (int argc, char **argv, char **envp)
 	{
 		prompt = readline("mini$hell> ");
 		add_history(prompt);
-		tab_size = parse_prompt(prompt, envp, &data);
+		tab_size = parse_prompt(&prompt, data->env.tab, &data);
 		if (tab_size == -1)
-			return (free(prompt), free(data), 3);
-		exec(data, tab_size);
+			return (free_struct(data, 1), free(prompt), 3);
+		// exec(data, tab_size);
 		free(prompt);
 		data = reset_env(data, tab_size);
 		if (!data)
