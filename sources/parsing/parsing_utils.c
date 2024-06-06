@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:04:48 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/04 13:49:09 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/06 19:02:44 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char	*final_build(char *token, char c)
 
 	i = 0;
 	size = 0;
+	if (!token)
+		return (NULL);
 	while (token[i])
 	{
 		if (token[i++] != c)
@@ -60,26 +62,27 @@ char	*final_build(char *token, char c)
 	return (final);
 }
 
-int	include_expand(char *token) //return the $ sign position
+void	clear_buff(char *buffer, size_t start, size_t size)
 {
-	int	i;
-
-	i = 0;
-	while (token[i])
+	while (start < size)
 	{
-		if (token[i] == '$')
-			return (i);
-		i++;
+		buffer[start] = '\0';
+		start++;
 	}
-	return (-1);
 }
 
 size_t	find_end(char *prompt, char c, size_t *i)
 {
+	if (c == '<' || c == '>')
+	{
+		while (prompt[*i] && prompt[*i] != 32 && prompt[*i] != 9)
+			(*i)++;
+		return (*i);
+	}
 	while (prompt[++(*i)])
 	{
-		if (prompt[*i] == c)
-			return (++(*i));
+		if (prompt[*i] == c || prompt[*i] == '<' || prompt[*i] == '>' || prompt[*i] == '|')
+			return (*i);
 	}
-	return (++(*i));
+	return (*i);
 }
