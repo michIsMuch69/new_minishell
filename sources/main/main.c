@@ -123,6 +123,7 @@ static t_data	*reset_env(t_data *data, size_t tab_size)
 	data->env.size = tmp.size;
 	return (data);
 }
+void skip_redir_symbol(int i, t_data *data);
 
 int main (int argc, char **argv, char **envp)
 {
@@ -140,9 +141,12 @@ int main (int argc, char **argv, char **envp)
 		prompt = readline("mini$hell> ");
 		add_history(prompt);
 		tab_size = parse_prompt(&prompt, data->env.tab, &data);
+
 		if (tab_size == -1)
 			return (free_struct(data, 1), free(prompt), 3);
+		skip_redir_symbol(0, data);
 		// exec(data, tab_size);
+		pipex(tab_size, data);
 		free(prompt);
 		data = reset_env(data, tab_size);
 		if (!data)

@@ -6,30 +6,56 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/06 10:30:42 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/07 10:30:36 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
+char	*skip_redir_symbol(int i, t_data *data)
+{
+	// if plus de 2 chevrons --> return -1
+	// else return nb de char of file
+	printf("file avant ==== %s\n", data[i].output.tab[0]);
+	char	*file;
+	
+	file = malloc((ft_strlen(data[i].output.tab[0]) - 1) * sizeof(char));	
+	file = ft_strcpy(file, &(data[i].output.tab[0][1]));
+	
+	printf("file apres ==== %s\n", file);
+	return (file);
+
+}
+
 int	handle_child(int i, int fds[2], int tab_size, int prev_fd, t_data *data)
 {
 	
-	
-	// if (i == 0) //  1st cmd
-	// {
-	// 	int	input_fd = open("file1.txt", O_RDONLY);
-	// 	dup2(input_fd, STDIN_FILENO);
-	// }
-	
-	/*else*/
-	if (i > 0) //not first cmd.
+	int	input_fd; 
+	int	output_fd;
+
+	char *output_file = skip_redir_symbol(i, data);
+	printf("outputfile in handle_child = %s\n", output_file);
+	if (data[i].input.tab && data[i].input.tab[i])
+	{
+		input_fd = open(data[i].input.tab[0], O_RDONLY);
+		if(dup2(input_fd, STDIN_FILENO))
+			return (-1);
+		close(input_fd);
+	}
+	else if (i > 0) //not first cmd.
 	{
 		if(dup2(prev_fd, STDIN_FILENO) == -1)
 			return (-1); // --> proteger appel a pid, apres refacto);
 		close(prev_fd);
 	}
-	if (i < tab_size - 1) // not last cmd.
+	if(data[i].output.tab && data[i].output.tab[i])
+	{
+		output_fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if(dup2(output_fd, STDOUT_FILENO) == -1)
+			return (-1);
+		close(output_fd);
+	}
+	else if (i < tab_size - 1) // not last cmd.
 	{
 		if(dup2(fds[1], STDOUT_FILENO) == -1)
 			return (-1);

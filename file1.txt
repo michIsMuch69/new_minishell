@@ -1,0 +1,10 @@
+>file1.txt
+file1.txt
+headers
+libft
+Makefile
+minishell
+redirectionsplan.txt
+run.sh
+sources
+test.txt
