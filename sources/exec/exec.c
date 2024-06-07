@@ -6,21 +6,41 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/07 10:30:36 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/07 14:38:14 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+#include <stdbool.h>
 
-char	*skip_redir_symbol(int i, t_data *data)
+int	arrow_count(char *str, char c)
 {
-	// if plus de 2 chevrons --> return -1
-	// else return nb de char of file
-	printf("file avant ==== %s\n", data[i].output.tab[0]);
-	char	*file;
+	int	i;
 	
-	file = malloc((ft_strlen(data[i].output.tab[0]) - 1) * sizeof(char));	
-	file = ft_strcpy(file, &(data[i].output.tab[0][1]));
+	i = 0;
+	while (str[i++] == c)
+		;
+	return (i);
+}
+
+char	*skip_redir_symbol(char *token_file, bool direction)
+{
+	char	*file;
+	int		i;
+	int		tok_nb;
+	int		size;
+	
+	if (direction == 1)
+		tok_nb = arrow_count(token_file, '>');
+	else 
+		tok_nb = arrow_count(token_file, '<');
+	if (tok_nb > 2)
+		return (NULL);
+	size = ft_strlen(token_file) - tok_nb + 1;
+	file = ft_calloc(size , sizeof(char));
+	if (!file)
+		return (NULL);	
+	file = ft_strcpy(file, &token_file[tok_nb - 1]);
 	
 	printf("file apres ==== %s\n", file);
 	return (file);
@@ -33,10 +53,11 @@ int	handle_child(int i, int fds[2], int tab_size, int prev_fd, t_data *data)
 	int	input_fd; 
 	int	output_fd;
 
-	char *output_file = skip_redir_symbol(i, data);
-	printf("outputfile in handle_child = %s\n", output_file);
-	if (data[i].input.tab && data[i].input.tab[i])
+	
+	if (data[i].input.size)
 	{
+		char *input_file = skip_redir_symbol(data[i].input.tab[0], 0);
+		
 		input_fd = open(data[i].input.tab[0], O_RDONLY);
 		if(dup2(input_fd, STDIN_FILENO))
 			return (-1);
@@ -48,8 +69,9 @@ int	handle_child(int i, int fds[2], int tab_size, int prev_fd, t_data *data)
 			return (-1); // --> proteger appel a pid, apres refacto);
 		close(prev_fd);
 	}
-	if(data[i].output.tab && data[i].output.tab[i])
+	if(data[i].output.size)
 	{
+		char *output_file = skip_redir_symbol(data[i].output.tab[0], 1);
 		output_fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if(dup2(output_fd, STDOUT_FILENO) == -1)
 			return (-1);
@@ -91,7 +113,7 @@ int	pipex(int tab_size, t_data *data)
 
 	prev_fd = 0;
 	i = 0;
-	while (i < tab_size)
+	while (i < tab_size )
 	{
 		if (pipe(fds) == -1)
 			return (perror("pipe failed"), -1);
