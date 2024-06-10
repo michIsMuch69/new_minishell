@@ -6,7 +6,7 @@
 #    By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/06/07 07:54:00 by jedusser         ###   ########.fr        #
+#    Updated: 2024/06/10 10:45:46 by jedusser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ all		: $(LIBFT) $(NAME)
 
 ### --- MINISHELL --- ###
 $(NAME)	: $(OBJ) $(LIBFT)
-	$(CC) $(COMPFLAGS) -lreadline $^ -o $@
+	$(CC) $(COMPFLAGS)  $^ -lreadline -o $@
 	@echo "$(GREEN)-- minishell ready --$(RESET_COLOR)"
 
 ### --- LIBFT --- ###

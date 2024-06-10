@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/07 14:38:14 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/10 10:49:51 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	handle_child(int i, int fds[2], int tab_size, int prev_fd, t_data *data)
 	{
 		char *input_file = skip_redir_symbol(data[i].input.tab[0], 0);
 		
-		input_fd = open(data[i].input.tab[0], O_RDONLY);
+		input_fd = open(input_file, O_RDONLY);
 		if(dup2(input_fd, STDIN_FILENO))
 			return (-1);
 		close(input_fd);
@@ -83,16 +83,14 @@ int	handle_child(int i, int fds[2], int tab_size, int prev_fd, t_data *data)
 			return (-1);
 		close(fds[1]);
 	}
-	// else
-	// {
-	// 	int	output_fd = open("file2.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	// 	dup2(output_fd, STDOUT_FILENO);
-	// }
 	if (exec(i, data, tab_size) == -1)
 		return (-1);
 	close(fds[0]);
 	return (0);
 }
+// test : 
+// -  cat < file2.txt | rev > file1.txt
+
 
 void	handle_parent(int i, int fds[2], int prev_fd, int tab_size)
 {
