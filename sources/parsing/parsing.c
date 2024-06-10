@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 07:33:24 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/07 07:57:50 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:54:46 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	parse_prompt(char **prompt, char **env, t_data **data)
 	if (!token.tab)
 		return (-1);
 
-	print_tab(token);
+	//print_tab(token);
 
 // ### token initialization END ### //
 
@@ -92,7 +92,7 @@ int	parse_prompt(char **prompt, char **env, t_data **data)
 
 	// print struct only for test //
 	// printf("struc_tab_size = %d\n", struc_tab_size);
-	print_struct(*data, struc_tab_size);
+	//print_struct(*data, struc_tab_size);
 	
 // ### structure initialization END ### //
 

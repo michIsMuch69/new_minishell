@@ -6,90 +6,15 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/10 12:27:44 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:42:31 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include <stdbool.h>
 
-int	arrow_count(char *str, char c)
-{
-	int	i;
 
-	i = 0;
-	while (str[i++] == c)
-		;
-	return (i);
-}
 
-char	*skip_redir_symbol(char *token_file, bool direction)
-{
-	char	*file;
-	int		i;
-	int		tok_nb;
-	int		size;
-
-	if (direction == 1)
-		tok_nb = arrow_count(token_file, '>');
-	else
-		tok_nb = arrow_count(token_file, '<');
-	if (tok_nb > 2)
-		return (NULL);
-	size = ft_strlen(token_file) - tok_nb + 1;
-	file = ft_calloc(size, sizeof(char));
-	if (!file)
-		return (NULL);
-	file = ft_strcpy(file, &token_file[tok_nb - 1]);
-	return (file);
-}
-
-int	redir_input(t_data *data, int i, int prev_fd)
-{
-	int		input_fd;
-	char	*input_file;
-
-	if (data[i].input.size)
-	{
-		input_file = skip_redir_symbol(data[i].input.tab[0], 0);
-		input_fd = open(input_file, O_RDONLY);
-		if (input_fd == -1)
-			return (perror("Failed to open input file"), -1);
-		if (dup2(input_fd, STDIN_FILENO) == -1)
-			return (perror("Failed to redirect standard input"), close(input_fd), -1);
-	}
-	else if (i > 0)
-	{
-		if (dup2(prev_fd, STDIN_FILENO) == -1)
-			return (perror("Failed to duplicate previous fd for  input"), -1);
-		close(prev_fd);
-	}
-	return (0);
-}
-
-int	redir_output(t_data *data, int i, int tab_size, int *fds)
-{
-	int		output_fd;
-	char	*output_file;
-
-	if (data[i].output.size)
-	{
-		output_file = skip_redir_symbol(data[i].output.tab[0], 1);
-		output_fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (output_fd == -1)
-			return (perror("Failed to open output file"), -1);
-		if (dup2(output_fd, STDOUT_FILENO) == -1)
-			return (perror("Failed to redirect standard output"), -1);
-		close(output_fd);
-	}
-	else if (i < tab_size - 1)
-	{
-		if (dup2(fds[1], STDOUT_FILENO) == -1)
-			return (perror("Failed to duplicate pipe fd for output"), -1);
-		close(fds[1]);
-	}
-	return (0);
-}
 
 void	handle_child(int i, int fds[2], int tab_size, int prev_fd, t_data *data)
 {
@@ -110,8 +35,7 @@ void	handle_parent(int i, int fds[2], int prev_fd, int tab_size)
 {
 	if (i > 0)
 		close(prev_fd);
-	if (i < tab_size)
-		close(fds[1]);
+	close(fds[1]);
 }
 
 int	pipex(int tab_size, t_data *data)
@@ -152,7 +76,7 @@ int	exec(int i, t_data *data, int tab_size)
 		return (perror("Data structure is not properly initalized"), -1);
 	directory = check_all_dirs(data[i].args.tab[0]);
 	if (!directory)
-		return (perror("Failed to find directory"), -1);
+		return (perror("Command not found"), -1);
 	cmd_path = ft_concat_path(directory, data[i].args.tab[0]);
 	if (!cmd_path)
 		return (free(directory), -1);

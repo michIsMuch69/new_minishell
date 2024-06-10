@@ -15,7 +15,7 @@ void	free_struct(t_data *struc, size_t tab_size);
 void	free_tab(t_table tab);
 
 
-int		pipex(int tab_size, t_data *data);
+int		pipex(int tab_size, t_data *data, char **envp);
 
 void	print_tab(t_table tab);
 
@@ -146,7 +146,7 @@ int main (int argc, char **argv, char **envp)
 		if (tab_size == -1)
 			return (free_struct(data, 1), free(prompt), 3);
 		// exec(data, tab_size);
-		pipex(tab_size, data);
+		pipex(tab_size, data, envp);
 		free(prompt);
 		data = reset_env(data, tab_size);
 		if (!data)
