@@ -142,7 +142,6 @@ int main (int argc, char **argv, char **envp)
 		prompt = readline("mini$hell> ");
 		add_history(prompt);
 		tab_size = parse_prompt(&prompt, data->env.tab, &data);
-
 		if (tab_size == -1)
 			return (free_struct(data, 1), free(prompt), 3);
 		// exec(data, tab_size);

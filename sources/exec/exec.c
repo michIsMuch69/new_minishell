@@ -6,15 +6,11 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/10 14:42:31 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:00:30 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-#include <stdbool.h>
-
-
-
 
 void	handle_child(int i, int fds[2], int tab_size, int prev_fd, t_data *data)
 {
@@ -35,7 +31,8 @@ void	handle_parent(int i, int fds[2], int prev_fd, int tab_size)
 {
 	if (i > 0)
 		close(prev_fd);
-	close(fds[1]);
+	else
+		close(fds[1]);
 }
 
 int	pipex(int tab_size, t_data *data)
