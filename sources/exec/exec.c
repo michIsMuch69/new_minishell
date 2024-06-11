@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/11 11:45:18 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/11 13:47:58 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	pipex(int tab_size, t_data *data)
 
 	prev_fd = 0;
 	i = 0;
-	while (i < tab_size )
+	while (i < tab_size)
 	{
 		if (pipe(fds) == -1)
 			return (perror("Pipe failed"), -1);
