@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/11 11:31:57 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/11 11:45:18 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ void	handle_parent(int i, int *fds, int prev_fd, int tab_size)
 {
 	if (i > 0)
 		close(prev_fd);
-	else
-		close(fds[1]);
+	close(fds[1]);
 }
 
 int	pipex(int tab_size, t_data *data)
@@ -44,7 +43,7 @@ int	pipex(int tab_size, t_data *data)
 
 	prev_fd = 0;
 	i = 0;
-	while (i < tab_size)
+	while (i < tab_size )
 	{
 		if (pipe(fds) == -1)
 			return (perror("Pipe failed"), -1);

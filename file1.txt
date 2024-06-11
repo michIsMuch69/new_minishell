@@ -1,0 +1,12 @@
+file1.txt
+file2.tx
+file2.txt
+headers
+libft
+Makefile
+minishell
+minishell_tester
+redirectionsplan.txt
+run.sh
+sources
+test.txt
