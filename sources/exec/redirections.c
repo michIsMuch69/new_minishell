@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/11 08:06:58 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/11 08:48:06 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,15 @@ char	*skip_redir_symbol(char *token_file, bool direction)
 		tok_nb = arrow_count(token_file, '>');
 	else
 		tok_nb = arrow_count(token_file, '<');
-	if (tok_nb > 2)
+	printf("tok-nb == %d\n",tok_nb -1);
+	if (tok_nb > 3)
 		return (NULL);
-	size = ft_strlen(token_file) - tok_nb + 1;
+	size = (ft_strlen(token_file) - tok_nb) + 1;
 	file = ft_calloc(size, sizeof(char));
 	if (!file)
 		return (NULL);
 	file = ft_strcpy(file, &token_file[tok_nb - 1]);
+	printf("file == %s\n", file);
 	return (file);
 }
 
@@ -65,7 +67,10 @@ int	redir_output(t_data *data, int i, int tab_size, int *fds)
 	if (data[i].output.size)
 	{
 		output_file = skip_redir_symbol(data[i].output.tab[0], 1);
-		output_fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (arrow_count(data[i].output.tab[0], '>') - 1 == 1)
+			output_fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (arrow_count(data[i].output.tab[0], '>') - 1 == 2)
+			output_fd = open(output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (output_fd == -1)
 			return (perror("Failed to open output file"), -1);
 		if (dup2(output_fd, STDOUT_FILENO) == -1)
