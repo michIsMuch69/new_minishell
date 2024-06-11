@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/11 13:47:58 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:30:58 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	exec(int i, t_data *data, int tab_size)
 	char	*cmd_path;
 
 	if (!data || !data[i].args.tab)
-		return (perror("Data structure is not properly initalized"), -1);
+		return (-1);
 	directory = check_all_dirs(data[i].args.tab[0]);
 	if (!directory)
 		return (perror("Command not found"), -1);
