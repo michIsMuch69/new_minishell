@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 08:58:51 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/10 17:28:32 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/11 08:08:18 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ char	*ft_concat_path(char *directory, char *prompt)
 	ft_strcpy(exec_path, directory);
 	ft_strcat(exec_path, "/");
 	ft_strcat(exec_path, prompt);
-	printf("exec_path == %s\n", exec_path);
 	free(directory);
 	return (exec_path);
 }

@@ -1,10 +1,12 @@
-Makefile
-run.sh
-minishell
-minishell_tester
-sources
+exec_path == /usr/bin/ls
+file1.txt
+file2.txt
 headers
 libft
-file2.txt
+Makefile
+minishell
+minishell_tester
 redirectionsplan.txt
+run.sh
+sources
 test.txt
