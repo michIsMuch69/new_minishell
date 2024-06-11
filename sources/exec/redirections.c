@@ -6,35 +6,11 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/11 08:48:06 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/11 11:30:34 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
 #include "exec.h"
-
-char	*skip_redir_symbol(char *token_file, bool direction)
-{
-	char	*file;
-	int		i;
-	int		tok_nb;
-	int		size;
-
-	if (direction == 1)
-		tok_nb = arrow_count(token_file, '>');
-	else
-		tok_nb = arrow_count(token_file, '<');
-	printf("tok-nb == %d\n",tok_nb -1);
-	if (tok_nb > 3)
-		return (NULL);
-	size = (ft_strlen(token_file) - tok_nb) + 1;
-	file = ft_calloc(size, sizeof(char));
-	if (!file)
-		return (NULL);
-	file = ft_strcpy(file, &token_file[tok_nb - 1]);
-	printf("file == %s\n", file);
-	return (file);
-}
 
 int	redir_input(t_data *data, int i, int prev_fd)
 {

@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 08:58:22 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/10 14:42:45 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/11 10:10:38 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@
 #include <fcntl.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <stdbool.h>
 
+void	print_tab(t_table tab);
+void	print_struct(t_data *data, int tab_size);
 
 /*===========================build_exec_path.c===============================*/
 
@@ -38,6 +41,8 @@ char	*check_all_dirs(char *exec_searched);
 int		ft_strcmp(char *s1, char *s2);
 void	free_array(char **array);
 void	wait_all(int tab_size);
+char	*skip_redir_symbol(char *token_file, bool direction);
+
 
 /*===========================redirections.c===============================*/
 

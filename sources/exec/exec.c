@@ -6,28 +6,28 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/10 18:00:30 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/11 11:31:57 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	handle_child(int i, int fds[2], int tab_size, int prev_fd, t_data *data)
+int	handle_child(int i, int *fds, int tab_size, int prev_fd, t_data *data)
 {
 	if (redir_input(data, i, prev_fd) == -1)
-		exit(EXIT_FAILURE);
+		return (-1);
 	if (redir_output(data, i, tab_size, fds) == -1)
-		exit(EXIT_FAILURE);
+		return (-1);
 	if (exec(i, data, tab_size) == -1)
-		exit(EXIT_FAILURE);
+		return (-1);
 	close(fds[0]);
 	close(fds[1]);
-	exit(EXIT_SUCCESS);
+	return (0);
 }
 // test : 
 // -  cat < file2.txt | rev > file1.txt
 
-void	handle_parent(int i, int fds[2], int prev_fd, int tab_size)
+void	handle_parent(int i, int *fds, int prev_fd, int tab_size)
 {
 	if (i > 0)
 		close(prev_fd);
@@ -77,6 +77,7 @@ int	exec(int i, t_data *data, int tab_size)
 	cmd_path = ft_concat_path(directory, data[i].args.tab[0]);
 	if (!cmd_path)
 		return (free(directory), -1);
+	//print_struct(data, tab_size);
 	if (execve(cmd_path, data[i].args.tab, data[i].env.tab) == -1)
 		return (perror("execve failed"), free(cmd_path), -1);
 	return (0);

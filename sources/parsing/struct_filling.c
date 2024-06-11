@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:41:19 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/07 07:54:46 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/11 10:47:25 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ bool	fill_tab(t_table *tab, char *token)
 						(sizeof(char *) * (tab->size)));
 		if (!tmp)
 			return (ft_perror("error -> realloc args table\n"), 1);
+		tmp[tab->size + 1] = NULL;
 		tab->tab = tmp;
 	}
 	tab->tab[tab->size] = ft_strdup(token);
