@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 16:27:19 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/12 12:12:11 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:37:05 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	cut_str(char **token, int start, int end)
 	}
 	free(token[0]);
 	token[0] = tmp;
-	//printf("cut str token = %s\n", tmp);
+	printf("cut str token = %s\n", tmp);
 	return (0);
 }
 
@@ -138,33 +138,63 @@ int	extract_var(char **token, char **env, int start, int end)
 	return (join_str(token, start, end, var_content)); // join var_content to the token
 }
 
-int	expand_management(t_table *token, int i_tok, char **envp, char c)
+int	expand_management(char **token, char **envp, char c)
 {
 	int	i;
 	int	start;
 
 	i = 0;
-	while (token->tab[i_tok][i])
+	while (token[0][i])
 	{
-		if (c == '"' && token->tab[i_tok][i] == '$')
+		if (c == '"' && token[0][i] == '$')
 		{
 			start = i++;
-			if (token->tab[i_tok][i] >= 48 && token->tab[i_tok][i] <= 57)
+			if (token[0][i] >= 48 && token[0][i] <= 57)
 			{
-				if (cut_str(&(token->tab)[i_tok], start, (i + 1)) == -1) // ignore the $7 and keep the rest of the string
+				if (cut_str(token, start, (i + 1)) == -1) // ignore the $7 and keep the rest of the string
 					return (-1);
 			}
-			else if (token->tab[i_tok][i] == 9 || token->tab[i_tok][i] == 32)
+			else if (token[0][i] == 9 || token[0][i] == 32)
 				return (0);
-			while (token->tab[i_tok][i] && token->tab[i_tok][i] != 9 && \
-				token->tab[i_tok][i] != 32 && token->tab[i_tok][i] != '|' && \
-				token->tab[i_tok][i] != '$' && token->tab[i_tok][i] != c)
-				i++;
-			if (extract_var(&(token->tab)[i_tok], envp, start, i) == -1) // change the value or cut it if not in envp
-				return (-1);
+			else
+			{
+				while (token[0][i] && token[0][i] != 9 && \
+					token[0][i] != 32 && token[0][i] != '|' && \
+					token[0][i] != '$' && token[0][i] != c)
+					i++;
+				if (extract_var(token, envp, start, i) == -1) // change the value or cut it if not in envp
+					return (-1);
+			}
+			i = -1;
+			printf("token = %s\n", token[0]);
 		}
-		if (token->tab[i_tok][i])
-			i++;
+		else if (!c && token[0][i] == '$')
+		{
+			start = i++;
+			if (token[0][i] >= 48 && token[0][i] <= 57)
+			{
+				if (cut_str(token, start, (i + 1)) == -1) // ignore the $7 and keep the rest of the string
+					return (-1);
+			}
+			else if ((token[0][i] < 65 || token[0][i] > 90) && \
+					(token[0][i] < 97 || token[0][i] > 122))
+			{
+				if (cut_str(token, start, (i + 1)) == -1) // ignore the $7 and keep the rest of the string
+					return (-1);
+			}
+			else
+			{
+				while (token[0][i] && token[0][i] != 9 && \
+					token[0][i] != 32 && token[0][i] != '|' && \
+					token[0][i] != '$')
+					i++;
+				if (extract_var(token, envp, start, i) == -1) // change the value or cut it if not in envp
+					return (-1);
+			}
+			i = -1;
+			printf("token = %s\n", token[0]);
+		}
+		i++;
 	}
 	return (0);
 }

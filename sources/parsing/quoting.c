@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:07:06 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/11 14:51:48 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:01:22 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 size_t	ft_perror(char *err_message);
 
-int		expand_management(t_table *token, int i_tok, char **envp, char c);
+int		expand_management(char **token, char **envp, char c);
 char	*final_build(char *token, char c);
 
 
@@ -48,16 +48,16 @@ static bool	quoting_count(char *token, char c)
 	return (0);
 }
 
-static int	double_quote(t_table *token, int i_tok, char **envp, t_table *args)
+static int	double_quote(char **token, char **envp, t_table *args)
 {
 	int	tmp;
 
-	if (quoting_count(token->tab[i_tok], '"'))
+	if (quoting_count(token[0], '"'))
 		return (ft_perror("error -> syntax\n"), 1);
-	tmp = expand_management(token, i_tok, envp, '"');
+	tmp = expand_management(token, envp, '"');
 	if (tmp == -1)
 		return (-1);
-	args->tab[args->size] = final_build(token->tab[i_tok], '"');
+	args->tab[args->size] = final_build(token[0], '"');
 	if (!args->tab[args->size])
 		return (ft_perror("error-> alloc db quotes\n"), -1);
 	return (0);
@@ -75,11 +75,11 @@ static int	simple_quote(char *token, t_table *args)
 	return (0);
 }
 
-int	quote_management(t_table *token, int i_token, char **envp, t_table *args)
+int	quote_management(char **token, char **envp, t_table *args)
 {
-	if (token->tab[i_token][0] == '\'')
-		return (simple_quote(token->tab[i_token], args));
-	else if (token->tab[i_token][0] == '"')
-		return (double_quote(token, i_token, envp, args));
+	if (token[0][0] == '\'')
+		return (simple_quote(token[0], args));
+	else if (token[0][0] == '"')
+		return (double_quote(token, envp, args));
 	return (0);
 }

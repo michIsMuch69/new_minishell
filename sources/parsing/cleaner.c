@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:26:45 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/11 11:09:37 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:33:22 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,23 @@
 size_t	ft_perror(char *err_message);
 void	free_tab(t_table tab);
 
-int		quote_management(t_table *token, int i_token, char **envp, t_table *args);
+int		quote_management(char **token, char **envp, t_table *args);
 int		expand_management(char **token, char **envp, char c);
 
 // ###### PROTOTYPES ######
 
 
-static int	clean_token(t_table *token, int i_tok, char **envp, t_table *args)
+static int	clean_token(char **token, char **envp, t_table *args)
 {
 	int	ret_value;
 
-	if (token->tab[i_tok][0] == '\'' || token->tab[i_tok][0] == '"')
-		return (quote_management(token, i_tok, envp, args));
+	if (token[0][0] == '\'' || token[0][0] == '"')
+		return (quote_management(token, envp, args));
 	else
 	{
-		args->tab[args->size] = ft_strdup(token->tab[i_tok]);
+		if (expand_management(token, envp, 0) == -1)
+			return (-1);
+		args->tab[args->size] = ft_strdup(token[0]);
 		if (!args->tab[args->size])
 			return (-1);
 	}
@@ -59,7 +61,7 @@ int	token_cleaner(t_table *tokens, char **env, t_table *args)
 	args->size = 0;
 	while (args->size < tokens->size)
 	{
-		ret_value = clean_token(tokens, args->size, env, args);
+		ret_value = clean_token(&(tokens->tab[args->size]), env, args);
 		if (ret_value == -1)
 			return (free_tab(*args), -1);
 		if (ret_value == 1)

@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:41:19 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/12 13:11:38 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:46:11 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,11 @@ bool	fill_struct(t_data *struc, t_table *tokens, int *i_tokens)
 			return (1);
 	}
 	else if (struc->cmd_type == OUTPUT || struc->cmd_type == APPEND)
+	{
+		if (fill_tab(&(struc->output), tokens->tab[*i_tokens]))
+			return (1);
+	}
+	else if (struc->cmd_type == HEREDOC)
 	{
 		if (fill_tab(&(struc->output), tokens->tab[*i_tokens]))
 			return (1);
