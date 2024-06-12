@@ -6,11 +6,32 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/12 13:19:20 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/12 13:45:54 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+
+void here_docs(void)
+{
+	char *prompt;
+	int		fd2 = open("file2.txt", O_RDWR | O_CREAT | O_APPEND, 0644);
+	char *delimiter = "eof";
+	while(1)
+	{
+		prompt = readline(">");
+		if (ft_strcmp(prompt, delimiter) == 0)
+			return (1);
+		else
+		{
+			ft_putstr_fd(prompt, fd2);
+			write(fd2, "\n", 1);
+		}
+		free(prompt);
+	}
+	close(fd2);
+	return (0);
+}
 
 int	redir_input(t_data *data, int i, int prev_fd)
 {
