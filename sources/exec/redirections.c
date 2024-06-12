@@ -6,17 +6,17 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/12 13:45:54 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:53:11 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void here_docs(void)
+int	here_docs(char * delimiter)
 {
 	char *prompt;
 	int		fd2 = open("file2.txt", O_RDWR | O_CREAT | O_APPEND, 0644);
-	char *delimiter = "eof";
+	//char *delimiter = "eof";
 	while(1)
 	{
 		prompt = readline(">");
@@ -29,7 +29,7 @@ void here_docs(void)
 		}
 		free(prompt);
 	}
-	close(fd2);
+	//close(fd2);
 	return (0);
 }
 
@@ -37,11 +37,22 @@ int	redir_input(t_data *data, int i, int prev_fd)
 {
 	int		input_fd;
 	char	*input_file;
+	char	*delimiter;
 
+	printf("input size = %d\n", data[i].input.size);
 	if (data[i].input.size)
 	{
-		input_file = skip_redir_symbol(data[i].input.tab[0], 0);
-		input_fd = open(input_file, O_RDONLY);
+		if (arrow_count(data[i].input.tab[0], '<') - 1 == 1)
+		{
+			input_file = skip_redir_symbol(data[i].input.tab[0], 0);
+			input_fd = open(input_file, O_RDONLY);	
+		}
+		if (arrow_count(data[i].input.tab[0], '<') - 1 == 2)
+		{
+			delimiter = skip_redir_symbol(data[i].input.tab[0], 0);
+			here_docs(delimiter);
+		}
+
 		if (input_fd == -1)
 			return (perror("Failed to open input file"), -1);
 		if (dup2(input_fd, STDIN_FILENO) == -1)
