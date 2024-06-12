@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:07:16 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/11 15:30:58 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/12 13:09:38 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	pipex(int tab_size, t_data *data)
 	int		fds[2];
 	pid_t	pid;
 
-	prev_fd = 0;
+	prev_fd = -1;
 	i = 0;
 	while (i < tab_size)
 	{

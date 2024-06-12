@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 08:59:06 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/11 11:50:16 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/12 12:48:29 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ void	wait_all(int tab_size)
 	int	i;
 
 	i = 0;
-	while (i++ < tab_size)
+	while (i < tab_size)
+	{
 		waitpid(-1, NULL, 0);
+		i++;
+	}
 }
