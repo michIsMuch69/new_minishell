@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:04:48 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/06 19:02:44 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/10 20:25:48 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,18 @@ size_t	ft_perror(char *err_message);
 
 // ###### PROTOTYPES ######
 
-char	*final_build(char *token, char c)
+int	include_char(char *token, char c, int start)
+{
+	while (token[start])
+	{
+		if (token[start] == c)
+			return (start);
+		start++;
+	}
+	return (-1);
+}
+
+char	*init_str(char *token, char c)
 {
 	size_t	i;
 	size_t	size;
@@ -42,9 +53,21 @@ char	*final_build(char *token, char c)
 	}
 	final = ft_calloc(sizeof(char), (size + 1));
 	if (!final)
-		return (ft_perror("error -> malloc final_build\n"), NULL);
+		ft_perror("error -> malloc final_build\n");
+	return (final);
+}
+
+char	*final_build(char *token, char c)
+{
+	size_t	i;
+	size_t	size;
+	char	*final;
+
 	i = 0;
 	size = 0;
+	final = init_str(token, c);
+	if (!final)
+		return (NULL);
 	while (token[i])
 	{
 		if (token[i] != c)
@@ -65,15 +88,12 @@ char	*final_build(char *token, char c)
 void	clear_buff(char *buffer, size_t start, size_t size)
 {
 	while (start < size)
-	{
-		buffer[start] = '\0';
-		start++;
-	}
+		buffer[start++] = '\0';
 }
 
 size_t	find_end(char *prompt, char c, size_t *i)
 {
-	if (c == '<' || c == '>')
+	if (c == '<' || c == '>' || c == '$')
 	{
 		while (prompt[*i] && prompt[*i] != 32 && prompt[*i] != 9)
 			(*i)++;
@@ -81,7 +101,8 @@ size_t	find_end(char *prompt, char c, size_t *i)
 	}
 	while (prompt[++(*i)])
 	{
-		if (prompt[*i] == c || prompt[*i] == '<' || prompt[*i] == '>' || prompt[*i] == '|')
+		if (prompt[*i] == c || prompt[*i] == '<' || \
+			prompt[*i] == '>' || prompt[*i] == '|')
 			return (*i);
 	}
 	return (*i);
