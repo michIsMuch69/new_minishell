@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/12 14:53:11 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/12 15:04:02 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	redir_input(t_data *data, int i, int prev_fd)
 			delimiter = skip_redir_symbol(data[i].input.tab[0], 0);
 			here_docs(delimiter);
 		}
-
 		if (input_fd == -1)
 			return (perror("Failed to open input file"), -1);
 		if (dup2(input_fd, STDIN_FILENO) == -1)

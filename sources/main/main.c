@@ -1,3 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
+/*   Updated: 2024/06/12 14:58:12 by jedusser         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 // ###### INCLUDES ######
 
 #include "exec.h"
@@ -29,7 +42,7 @@ void	print_tab(t_table tab);
 // function only for tests
 void	print_tab(t_table tab)
 {
-	size_t	i = 0;
+	int	i = 0;
 
 	while(i < tab.size)
 		printf("%s\n", tab.tab[i++]);
@@ -38,12 +51,12 @@ void	print_tab(t_table tab)
 // function only for tests
 void	print_struct(t_data *data, int tab_size)
 {
-	size_t	i = 0;
-	size_t	y = 0;
+	int	i = 0;
+	int	y = 0;
 	
 	while (i < tab_size)
 	{
-		printf("\nSTRUC %zu\n\n", i+1);
+		printf("\nSTRUC %d\n\n", i+1);
 		printf("cmd  = %s\n", data[i].cmd_path);
 		y = 0;
 		if (data[i].args.tab)
@@ -132,6 +145,10 @@ int main (int argc, char **argv, char **envp)
 	int		tab_size;
 	t_data	*data;
 
+	static int i = 0;
+
+	(void) argc;
+	(void) argv;
 	if (argc != 1)
 		return (ft_perror("arguments are invalid\n"), 1);
 	data = init_data(envp);
@@ -140,10 +157,12 @@ int main (int argc, char **argv, char **envp)
 	while (1)
 	{
 		prompt = readline("mini$hell> ");
-		add_history(prompt);
+		add_history(prompt); // !! need to clear history
 		tab_size = parse_prompt(&prompt, data->env.tab, &data);
 		if (tab_size == -1)
-			return (free_struct(data, 1), free(prompt), 3);
+			return (free_struct(data, 1), /*free(prompt),*/ 3);
+		// if (tab_size)
+		// 	exec(data, tab_size);
 		pipex(tab_size, data, envp);
 		free(prompt);
 		data = reset_env(data, tab_size);

@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:10:46 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/06 19:31:23 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:23:48 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,17 @@ static int	split_tokens(char *prompt, size_t *i, t_table *token)
 	return (0);
 }
 
+static size_t	init_tokens(t_table *token, char *prompt)
+{
+	if (!prompt)
+		return (token->tab = NULL, -1);
+	token->size = 0;
+	token->tab = ft_calloc(1, sizeof(char *));
+	if (!token->tab)
+		return (ft_perror("error -> token memory allocation\n"), -1);
+	return (0);
+}
+
 t_table	tokenizer(char *prompt)
 {
 	size_t	i;
@@ -92,15 +103,9 @@ t_table	tokenizer(char *prompt)
 	char	**tmp;
 	int		ret_value;
 
-	i = 0;
-	token.size = 0;
-
-	if (!prompt)
-		return (token.tab = NULL, token);
-
-	token.tab = ft_calloc(1, sizeof(char *));
-	if (!token.tab)
-		return (ft_perror("error -> token memory allocation\n"), token);
+	i = init_tokens(&token, prompt);
+	if (i == -1)
+		return (token);
 	while (prompt[i])
 	{
 		ret_value = split_tokens(prompt, &i, &token);
@@ -108,13 +113,12 @@ t_table	tokenizer(char *prompt)
 			return (free_tab(token), token.tab = NULL, token);
 		if (ret_value == 0)
 			break ;
-		tmp = ft_realloc(token.tab, ((token.size + 2) * sizeof(char *)), \
-									((token.size + 1) * sizeof(char *)));
+		tmp = ft_realloc(token.tab, ((token.size + 1) * sizeof(char *)), \
+									((token.size) * sizeof(char *)));
 		if (!tmp)
-			return (free_tab(token), token.tab = NULL, ft_perror("error -> tab_arg memory allocation\n"), token);
+			return (free_tab(token), token.tab = NULL, \
+					ft_perror("error -> tab_arg memory allocation\n"), token);
 		token.tab = tmp;
 	}
 	return (token);
 }
-
-// metacharactere separators | space tab > < >> <<
