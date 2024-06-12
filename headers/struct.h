@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/06 16:26:42 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/07 09:56:00 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ enum e_rtype
 	PIPE,
 	INPUT,
 	OUTPUT,
-	DELIMITER,
+	HEREDOC,
 	APPEND
 };
 

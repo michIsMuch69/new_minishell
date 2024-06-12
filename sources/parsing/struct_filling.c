@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:41:19 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/06 18:12:26 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/12 13:11:38 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_struct(t_data *data, int tab_size);
 
 static enum e_rtype	find_type(char *token)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	if (token[i] == '|')
@@ -41,10 +41,8 @@ static enum e_rtype	find_type(char *token)
 			i++;
 		if (i == 1)
 			return (INPUT);
-		if (i == 2)
-			return (DELIMITER); // heredoc
 		else
-			return (ERROR);
+			return (HEREDOC); // heredoc
 	}
 	if (token[i] == '>')
 	{
@@ -52,10 +50,8 @@ static enum e_rtype	find_type(char *token)
 			i++;
 		if (i == 1)
 			return (OUTPUT);
-		if (i == 2)
-			return (APPEND);
 		else
-			return (ERROR);
+			return (APPEND);
 	}
 	else
 		return (COMMAND);
@@ -73,10 +69,11 @@ bool	fill_tab(t_table *tab, char *token)
 	}
 	else
 	{
-		tmp = ft_realloc(tab->tab, (sizeof(char *) * (tab->size + 1)), \
+		tmp = ft_realloc(tab->tab, (sizeof(char *) * (tab->size + 2)), \
 						(sizeof(char *) * (tab->size)));
 		if (!tmp)
 			return (ft_perror("error -> realloc args table\n"), 1);
+		tmp[tab->size + 1] = NULL;
 		tab->tab = tmp;
 	}
 	tab->tab[tab->size] = ft_strdup(token);
@@ -86,7 +83,7 @@ bool	fill_tab(t_table *tab, char *token)
 	return (0);
 }
 
-bool	fill_struct(t_data *struc, t_table *tokens, size_t *i_tokens)
+bool	fill_struct(t_data *struc, t_table *tokens, int *i_tokens)
 {
 	if (struc->cmd_type == COMMAND)
 	{
@@ -107,7 +104,7 @@ bool	fill_struct(t_data *struc, t_table *tokens, size_t *i_tokens)
 	return (0);
 }
 
-int	init_table(t_data **data, t_table *tokens, size_t i_tokens, size_t i_data)
+int	init_struct(t_data **data, t_table *tokens, int i_tokens, int i_data)
 {
 	t_data			*tmp;
 	enum e_rtype	type;
@@ -123,7 +120,7 @@ int	init_table(t_data **data, t_table *tokens, size_t i_tokens, size_t i_data)
 				return (ft_perror("error-> realloc struc tab\n"), -1);
 			tmp[i_data + 1].env = tmp[0].env;
 			*data = tmp;
-			return (init_table(data, tokens, ++i_tokens, ++i_data)); // realloc tab + 1 + recall fill_struct
+			return (init_struct(data, tokens, ++i_tokens, ++i_data)); // realloc tab + 1 + recall fill_struct
 		}
 		else
 		{
