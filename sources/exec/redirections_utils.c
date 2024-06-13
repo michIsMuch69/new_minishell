@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 09:14:53 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/12 12:59:10 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/13 10:38:38 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ char	*skip_redir_symbol(char *token_file, bool direction)
 		tok_nb = arrow_count(token_file, '<');
 	if (tok_nb > 3)
 		return (NULL);
-	size = (ft_strlen(token_file) - tok_nb) + 1;
+	size = (ft_strlen(token_file) - (tok_nb -1)) + 1;
 	file = ft_calloc(size, sizeof(char));
 	if (!file)
 		return (NULL);
 	file = ft_strcpy(file, &token_file[tok_nb - 1]);
+	//ft_printf("file == %s\n", file);
 	return (file);
 }
