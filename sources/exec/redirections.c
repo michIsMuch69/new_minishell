@@ -6,33 +6,51 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/13 11:32:12 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:13:14 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	here_docs(char * delimiter)
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+int here_docs(char *delimiter) 
 {
-	char *prompt;
-	int		fd2 = open("file2.txt", O_RDWR | O_CREAT | O_APPEND, 0644);
-	//char *delimiter = "eof";
-	
-	while(1)
+    char *prompt;
+    int fd2;
+
+    fd2 = open("temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (fd2 == -1)
+        return -1;  
+
+    while (1)
 	{
-		prompt = readline(">");
-		if (ft_strcmp(prompt, delimiter) == 0)
-			return (close(fd2), -1);
+        prompt = readline(">");
+        
+        if (strcmp(prompt, delimiter) == 0)
+            break;
 		else
 		{
 			ft_putstr_fd(prompt, fd2);
-			write(fd2, "\n", 1);
+			ft_putstr_fd("\n", fd2);
 		}
-		free(prompt);
-	}
-	close(fd2);
-	return (0);
+        free(prompt);
+    }
+    close(fd2); 
+    fd2 = open("temp.txt", O_RDONLY);
+    return fd2;
 }
+
 
 int	redir_input(t_data *data, int i, int prev_fd)
 {
@@ -51,8 +69,7 @@ int	redir_input(t_data *data, int i, int prev_fd)
 		if (arrow_count(data[i].input.tab[0], '<') - 1 == 2)
 		{
 			delimiter = skip_redir_symbol(data[i].input.tab[0], 0);
-			if (here_docs(delimiter) == -1)
-				return (-1);
+			input_fd = here_docs(delimiter);
 		}
 		if (input_fd == -1)
 			return (perror("Failed to open input file"), -1);
