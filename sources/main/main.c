@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/13 15:09:06 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/13 15:13:04 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,17 +159,17 @@ int main (int argc, char **argv, char **envp)
 		prompt = readline("mini$hell> ");
 		add_history(prompt); // !! need to clear history
 		if(ft_strcmp(prompt, "exit") == 0)
-			return (6);
+			return (free_struct(data, tab_size), 3);
 		tab_size = parse_prompt(&prompt, data->env.tab, &data);
 		if (tab_size == -1)
-			return (free_struct(data, 1), /*free(prompt),*/ 3);
+			return (free_struct(data, 1), /*free(prompt),*/ 4);
 		// if (tab_size)
 		// 	exec(data, tab_size);
 		pipex(tab_size, data, envp);
 		free(prompt);
 		data = reset_env(data, tab_size);
 		if (!data)
-			return (4);
+			return (5);
 	}
 	return (0);
 }
