@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/13 14:13:14 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:26:51 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	redir_output(t_data *data, int i, int tab_size, int *fds)
 {
 	int		output_fd;
 	char	*output_file;
-
+	
 	if (data[i].output.size)
 	{
 		output_file = skip_redir_symbol(data[i].output.tab[0], 1);
