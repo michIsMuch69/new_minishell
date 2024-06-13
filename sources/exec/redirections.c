@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/13 14:26:51 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/13 15:02:02 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	redir_input(t_data *data, int i, int prev_fd)
 	char	*input_file;
 	char	*delimiter;
 
-	printf("input size = %d\n", data[i].input.size);
 	if (data[i].input.size)
 	{
 		if (arrow_count(data[i].input.tab[0], '<') - 1 == 1)
