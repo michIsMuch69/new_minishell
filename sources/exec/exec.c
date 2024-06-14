@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   exec_handler.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,13 +12,30 @@
 
 #include "exec.h"
 
+int	exec_handler(int i, t_data *data, int tab_size)
+{
+	char	*directory;
+	char	*cmd_path;
+
+	if (!data || !data[i].args.tab)
+		return (-1);
+	directory = check_all_dirs(data[i].args.tab[0]);
+	if (!directory)
+		return (perror("Command not found"), -1);
+	cmd_path = ft_concat_path(directory, data[i].args.tab[0]);
+	if (!cmd_path)
+		return (free(directory), -1);
+	if (execve(cmd_path, data[i].args.tab, data[i].env.tab) == -1)
+		return (perror("execve failed"), free(cmd_path), -1);
+	return (0);
+}
 int	handle_child(int i, int *fds, int tab_size, int prev_fd, t_data *data)
 {
 	if (redir_input(data, i, prev_fd) == -1)
 		return (-1);
 	if (redir_output(data, i, tab_size, fds) == -1)
 		return (-1);
-	if (exec(i, data, tab_size) == -1)
+	if (exec_handler(i, data, tab_size) == -1)
 		return (-1);
 	close(fds[0]);
 	close(fds[1]);
@@ -34,7 +51,7 @@ void	handle_parent(int i, int *fds, int prev_fd, int tab_size)
 	close(fds[1]);
 }
 
-int	pipex(int tab_size, t_data *data)
+int	exec(int tab_size, t_data *data)
 {
 	int		i;
 	int		prev_fd;
@@ -63,20 +80,3 @@ int	pipex(int tab_size, t_data *data)
 	return (0);
 }
 
-int	exec(int i, t_data *data, int tab_size)
-{
-	char	*directory;
-	char	*cmd_path;
-
-	if (!data || !data[i].args.tab)
-		return (-1);
-	directory = check_all_dirs(data[i].args.tab[0]);
-	if (!directory)
-		return (perror("Command not found"), -1);
-	cmd_path = ft_concat_path(directory, data[i].args.tab[0]);
-	if (!cmd_path)
-		return (free(directory), -1);
-	if (execve(cmd_path, data[i].args.tab, data[i].env.tab) == -1)
-		return (perror("execve failed"), free(cmd_path), -1);
-	return (0);
-}

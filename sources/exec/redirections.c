@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/13 15:02:02 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/14 09:54:49 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,10 @@ int here_docs(char *delimiter)
     }
     close(fd2); 
     fd2 = open("temp.txt", O_RDONLY);
-    return fd2;
+	if (fd2 == -1)
+        return -1;  
+    return (fd2);
 }
-
 
 int	redir_input(t_data *data, int i, int prev_fd)
 {

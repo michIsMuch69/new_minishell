@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 09:14:53 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/13 10:38:38 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/14 09:42:31 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	*skip_redir_symbol(char *token_file, bool direction)
 	int		tok_nb;
 	int		size;
 
+	if (!token_file)
+		return (NULL);
 	if (direction == 1)
 		tok_nb = arrow_count(token_file, '>');
 	else

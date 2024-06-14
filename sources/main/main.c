@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/13 15:13:04 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/14 10:29:58 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	free_struct(t_data *struc, size_t tab_size);
 void	free_tab(t_table tab);
 
 
-int		pipex(int tab_size, t_data *data, char **envp);
+int		exec(int tab_size, t_data *data, char **envp);
 
 void	print_tab(t_table tab);
 
@@ -157,15 +157,15 @@ int main (int argc, char **argv, char **envp)
 	while (1)
 	{
 		prompt = readline("mini$hell> ");
-		add_history(prompt); // !! need to clear history
 		if(ft_strcmp(prompt, "exit") == 0)
-			return (free_struct(data, tab_size), 3);
+			return (free_struct(data, tab_size),  3);
+		add_history(prompt); // !! need to clear history
 		tab_size = parse_prompt(&prompt, data->env.tab, &data);
 		if (tab_size == -1)
 			return (free_struct(data, 1), /*free(prompt),*/ 4);
 		// if (tab_size)
-		// 	exec(data, tab_size);
-		pipex(tab_size, data, envp);
+		// 	exec_handler(data, tab_size);
+		exec(tab_size, data, envp);
 		free(prompt);
 		data = reset_env(data, tab_size);
 		if (!data)
