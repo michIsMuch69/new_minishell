@@ -6,7 +6,7 @@
 /*   By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/14 16:05:23 by jean-michel      ###   ########.fr       */
+/*   Updated: 2024/06/14 16:50:15 by jean-michel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,10 +159,6 @@ int main (int argc, char **argv, char **envp)
 	while (1)
 	{
 		prompt = readline("\033[32mmini$hell>\033[0m ");
-		//test
-		if(ft_strcmp(prompt, "exit") == 0)
-			return (free_struct(data, tab_size),  3);
-		//test
 		add_history(prompt); // !! need to clear history
 		tab_size = parse_prompt(&prompt, data->env.tab, &data);
 		if (tab_size == -1)
