@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 16:27:19 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/13 17:48:42 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/14 11:44:51 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,17 @@
 
 // ###### PROTOTYPES ######
 
+// main/utils.c
 size_t	ft_perror(char *err_message);
+void	free_tab(t_table tab, int start);
 
+// parsing/getenv.c
 int		ft_getenv(char *word, char **env, char **var_content);
+
+// parsing/expand_utils.c
 char	*extract_word(char *str, int start, int end);
+
+// parsing/parsing_utils.c
 int		include_char(char *token, char c, int start);
 
 // ###### PROTOTYPES ######
@@ -144,20 +151,38 @@ int	extract_var(char **token, char **env, int start, int end)
 
 // }
 
-int	outfile_management(t_table outfile)
+
+
+int	file_management(t_table file, char **envp)
 {
+	int	i;
+	int	i_tab;
+	int	ret_value;
 
-}
-
-int	infile_management(t_table infile, char **envp)
-{
-	int	i_file;
-
-	i_file = 0;
-	while (i_file < infile.size)
+	i = -1;
+	i_tab = -1;
+	while (++i_tab < file.size)
 	{
-		if (include_char(infile.tab[i_file], '$', 0) != -1)
-			return (ft_perror("ambiguous redirect"), -1);
+		if (include_char(file.tab[i_tab], '$', 0) == -1)
+			;
+		else
+		{
+			while (file.tab[i_tab][++i] && \
+				(file.tab[i_tab][i] == '<' || file.tab[i_tab][i] == '>'))
+				;
+			if (i > 1) // heredoc -> keep litteral value
+				;
+			else
+			{
+				ret_value = change_value();
+				if (ret_value == -1)
+					return (ft_perror("ambiguous redirect\n"), \
+							free_tab(file, i_tab), 0);
+				if ()
+				
+			}
+			i = -1;
+		}
 	}
 }
 
@@ -168,50 +193,17 @@ int	expand_management(t_data *data, char **envp)
 		
 		* inputs :
 			// if HEREDOC -> keep the litteral value
-			// if $NAME is not in env -> ambiguous redirect
+			// if $NAME is not in env -> ambiguous redirect -> clean tab
 			// if $NAME is in env -> change the value
 		
 		* output :
-			// if $NAME is not in env -> ambiguous redirect
+			// if $NAME is not in env -> ambiguous redirect -> clean tab
 			// if $NAME is in env -> change the value
 	*/
 	int	ret_value;
 
-	ret_value = infile_management(data->input, envp);
-	if (ret_value == -1)
-		;
-	ret_value = outfile_management(data->output);
-	if (ret_value == -1)
-		;
-
+	if (file_management(data->input, envp) == -1 || \
+		file_management(data->output, envp) == -1)
+		return (-1);
+	return (0);
 }
-// int	expand_management(t_table *tokens, char **envp)
-// {
-// 	int				i_tok;
-// 	enum e_rtype	type;
-
-// 	i_tok = 0;
-// 	while (i_tok < tokens->size)
-// 	{
-// 		type = find_type(tokens->tab[i_tok]);
-// 		if (type == PIPE || type == HEREDOC || )
-// 		if (tokens_treatment(&(tokens->tab[i_tok]), envp) == -1)
-// 			return (-1);
-// 		i_tok++;
-// 		// if (tokens->tab[i_tok][i] >= 48 && tokens->tab[i_tok][i] <= 57)
-// 		// {
-// 		// 	if (cut_str(&(tokens->tab)[i_tok], start, (i + 1)) == -1) // ignore the $7 and keep the rest of the string
-// 		// 		return (-1);
-// 		// }
-// 		// else if (tokens->tab[i_tok][i] == 9 || tokens->tab[i_tok][i] == 32)
-// 		// 	return (0);
-// 		// while (tokens->tab[i_tok][i] && tokens->tab[i_tok][i] != 9 && \
-// 		// 	tokens->tab[i_tok][i] != 32 && tokens->tab[i_tok][i] != '|' && \
-// 		// 	tokens->tab[i_tok][i] != '$' && tokens->tab[i_tok][i] != c)
-// 		// 	i++;
-// 		// if (extract_var(&(tokens->tab)[i_tok], envp, start, i) == -1) // change the value or cut it if not in envp
-// 		// 	return (-1);
-// 	}
-// 	return (0);
-// }
-

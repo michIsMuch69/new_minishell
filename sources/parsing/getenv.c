@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:03:17 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/12 10:57:25 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/14 11:11:05 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,6 @@
 size_t	ft_perror(char *err_message);
 
 // ###### PROTOTYPES ######
-
-char	*extract_word(char *str, int start, int end)
-{
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	tmp = ft_calloc((end - start) + 1, sizeof(char));
-	if (!tmp)
-		return (ft_perror("error-> alloc extract var\n"), NULL);
-	while (start < end)
-	{
-		tmp[i] = str[start];
-		i++;
-		start++;
-	}
-	return (tmp);
-}
 
 // char	*find_var(char *word, char *str)
 // {
