@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:04:48 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/10 20:25:48 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/13 17:08:51 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*final_build(char *token, char c)
 	return (final);
 }
 
-void	clear_buff(char *buffer, size_t start, size_t size)
+void	clear_buff(char *buffer, int start, int size)
 {
 	while (start < size)
 		buffer[start++] = '\0';

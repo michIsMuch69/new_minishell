@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:26:45 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/11 11:09:37 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:37:37 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ size_t	ft_perror(char *err_message);
 void	free_tab(t_table tab);
 
 int		quote_management(t_table *token, int i_token, char **envp, t_table *args);
-int		expand_management(char **token, char **envp, char c);
+int		expand_management(t_table *token, char **envp);
 
 // ###### PROTOTYPES ######
 

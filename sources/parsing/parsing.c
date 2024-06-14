@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 07:33:24 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/12 10:41:46 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/14 10:37:47 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,12 @@
 // ###### PROTOTYPES ######
 
 size_t	ft_perror(char *err_message);
-void	free_tab(t_table tab);
+void	free_tab(t_table tab, int start);
 
-char	*pre_treatment(char *prompt);
+char	*pre_treatment(char *prompt, int i);
 t_table	tokenizer(char *prompt);
 int		token_cleaner(t_table *tokens, char **envp, t_table *table);
+int		expand_management(t_data *data, char **envp);
 int		init_struct(t_data **data, t_table *tokens, size_t start, size_t data_size);
 
 void	print_tab(t_table tab);
@@ -46,57 +47,49 @@ void	print_struct(t_data *data, int tab_size);
 int	parse_prompt(char **prompt, char **env, t_data **data)
 {
 	t_table	args;
+	t_table	tokens; // only for test ?
 	int		struc_tab_size;
 	int		ret_value;
 
 // ### pre treatment ### //
-
-	*prompt = pre_treatment(*prompt);
+	*prompt = pre_treatment(*prompt, 0);
 	if (!*prompt)
 		return (-1);
-	
-	//printf("p_prompt == %s\n", *prompt);
-
-// ### pre treatment ### //
-
-
+	printf("p_prompt == %s\n", *prompt);
 // ### token initialization ### //
-	t_table	token; // only for test
 
-	token = tokenizer(*prompt);
-	if (!token.tab)
+	tokens = tokenizer(*prompt);
+	if (!tokens.tab)
 		return (free(*prompt), -1); // ! double free
 
-	//print_tab(token);
+	//print_tab(tokens);
 
-// ### token initialization END ### //
+// ### structure initialization ### //
+	struc_tab_size = init_struct(data, &tokens, 0, 0);
+	if (struc_tab_size == -1)
+		return (free_tab(tokens, 0), free(*prompt), -1);
+	
+	//print_struct(*data, struc_tab_size);
 
-	//printf("<- tokens\n\nclean tokens ->\n");
+// ### expand variables in token struct  ### //
+	// if (expand_management(*data, env) == -1)
+	// 	return (-1);
+	
+	print_struct(*data, struc_tab_size);
+// ### expand variables in token struct  ### //
+
 
 // ### clean tokens to real cmd / args ### //
 
-	ret_value = token_cleaner(&token, env, &args); //0 = ok -1 error_crash, 1 syntaxe
-	if (ret_value == 1)
-		return (free_tab(token), 0);
-	if (ret_value == -1)
-		return (free_tab(token), free(*prompt), -1); // free all is temporary, t_table token.tab is free in token_cleaner
-	//print_tab(*args);
-	free_tab(token);
+	// ret_value = token_cleaner(&tokens, env, &args); //0 = ok -1 error_crash, 1 syntaxe
+	// if (ret_value == 1)
+	// 	return (free_tab(tokens, 0), 0);
+	// if (ret_value == -1)
+	// 	return (free_tab(tokens, 0), free(*prompt), -1); // free all is temporary, t_table token.tab is free in token_cleaner
+	// //print_tab(*args);
+	// free_tab(tokens, 0);
 
 // ### clean tokens to real cmd / args END ### //
 
-
-// ### structure initialization ### //
-
-	struc_tab_size = init_struct(data, &args, 0, 0);
-	if (struc_tab_size == -1)
-		return (free_tab(args), free(*prompt), -1);
-
-	// print struct only for test //
-	// printf("struc_tab_size = %d\n", struc_tab_size);
-	print_struct(*data, struc_tab_size);
-	
-// ### structure initialization END ### //
-
-	return (free_tab(args), struc_tab_size);
+	return (free_tab(tokens, 0), struc_tab_size);
 }

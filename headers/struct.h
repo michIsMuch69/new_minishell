@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/07 09:56:00 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:08:14 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ typedef struct s_table
 
 enum e_rtype
 {
-	ERROR = -1,
+	NO_EXPAND = -1,
 	COMMAND,
 	PIPE,
 	INPUT,
 	OUTPUT,
 	HEREDOC,
-	APPEND
+	APPEND,
 };
 
 typedef struct s_data

@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:07:06 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/11 14:51:48 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:03:54 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,8 @@ static bool	quoting_count(char *token, char c)
 
 static int	double_quote(t_table *token, int i_tok, char **envp, t_table *args)
 {
-	int	tmp;
-
 	if (quoting_count(token->tab[i_tok], '"'))
 		return (ft_perror("error -> syntax\n"), 1);
-	tmp = expand_management(token, i_tok, envp, '"');
-	if (tmp == -1)
-		return (-1);
 	args->tab[args->size] = final_build(token->tab[i_tok], '"');
 	if (!args->tab[args->size])
 		return (ft_perror("error-> alloc db quotes\n"), -1);

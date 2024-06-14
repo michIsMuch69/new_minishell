@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:51:51 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/07 09:40:50 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/14 11:07:17 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,43 @@
 // ###### PROTOTYPES ######
 
 size_t	ft_perror(char *err_message);
-void	clear_buff(char *buffer, size_t start, size_t size);
+void	clear_buff(char *buffer, int start, int size);
+
+int		filter(int *i_prompt, int i_tmp, char *prompt, char *tmp);
+char	*init_treatment(char *prompt, int *i_tmp, int i_prompt);
+void	skip_spaces(char *str, int *i);
 
 // ###### PROTOTYPES ######
 
-static char	*init_treatment(char *prompt, size_t *i_tmp, size_t i_prompt)
+static char	*quote_treatment(char *prompt, int *i_prompt, char c)
 {
 	char	*tmp;
+	int		i_tmp;
+	int		f_index;
 
-	*i_tmp = i_prompt;
-	tmp = ft_calloc(ft_strlen(prompt) + 3, sizeof(char));
+	tmp = init_treatment(prompt, &i_tmp, *i_prompt);
 	if (!tmp)
-		return (free(prompt), ft_perror("error-> init pre_treatment\n"), NULL);
-	tmp = ft_memcpy(tmp, prompt, ft_strlen(prompt));
+		return (NULL);
+	tmp[i_tmp++] = 32;
+	tmp[i_tmp] = prompt[(*i_prompt)];
+	i_tmp++;
+	while (prompt[++(*i_prompt)] && prompt[*i_prompt] != c)
+		tmp[i_tmp++] = prompt[*i_prompt];
+	tmp[i_tmp++] = prompt[*i_prompt];
+	tmp[i_tmp++] = 32;
+	f_index = i_tmp;
+	while (prompt[++(*i_prompt)])
+		tmp[i_tmp++] = prompt[*i_prompt];
+	*i_prompt = f_index;
+	clear_buff(tmp, i_tmp, (ft_strlen(prompt) + 3));
 	return (tmp);
 }
 
-static char	*pipe_treatment(char *prompt, size_t *i_prompt)
+static char	*pipe_treatment(char *prompt, int *i_prompt)
 {
 	char	*tmp;
-	size_t	i_tmp;
-	size_t	f_index;
+	int		i_tmp;
+	int		f_index;
 
 	tmp = init_treatment(prompt, &i_tmp, *i_prompt);
 	if (!tmp)
@@ -51,9 +67,7 @@ static char	*pipe_treatment(char *prompt, size_t *i_prompt)
 	tmp[i_tmp++] = 32;
 	f_index = i_tmp;
 	(*i_prompt)++;
-	while (prompt[*i_prompt] && \
-			(prompt[*i_prompt] == 32 || prompt[*i_prompt] == 9))
-		(*i_prompt)++;
+	skip_spaces(prompt, i_prompt);
 	while (prompt[(*i_prompt)])
 	{
 		tmp[i_tmp] = prompt[(*i_prompt)++];
@@ -64,35 +78,10 @@ static char	*pipe_treatment(char *prompt, size_t *i_prompt)
 	return (free(prompt), tmp);
 }
 
-static size_t	filter(size_t *i_prompt, size_t i_tmp, char *prompt, char *tmp)
-{
-	size_t	f_index;
-
-	while (prompt[*i_prompt] && \
-			(prompt[*i_prompt] == 32 || prompt[*i_prompt] == 9))
-		(*i_prompt)++;
-	while (prompt[*i_prompt] && prompt[*i_prompt] != '<' && \
-			prompt[*i_prompt] != '>' && prompt[*i_prompt] != '|' && \
-			prompt[*i_prompt] != 9 && prompt[*i_prompt] != 32)
-	{
-		tmp[i_tmp] = prompt[(*i_prompt)++];
-		i_tmp++;
-	}
-	tmp[i_tmp] = 32;
-	f_index = i_tmp++;
-	while (prompt[*i_prompt])
-	{
-		tmp[i_tmp] = prompt[(*i_prompt)++];
-		i_tmp++;
-	}
-	clear_buff(tmp, i_tmp, (ft_strlen(prompt) + 3));
-	return (f_index);
-}
-
-static char	*redir_treatment(char *prompt, size_t *i_prompt, char c)
+static char	*redir_treatment(char *prompt, int *i_prompt, char c)
 {
 	char	*tmp;
-	size_t	i_tmp;
+	int		i_tmp;
 
 	tmp = init_treatment(prompt, &i_tmp, *i_prompt);
 	if (!tmp)
@@ -100,25 +89,27 @@ static char	*redir_treatment(char *prompt, size_t *i_prompt, char c)
 	tmp[i_tmp++] = 32;
 	while (prompt[*i_prompt] && prompt[*i_prompt] == c)
 	{
-		tmp[i_tmp] = prompt[(*i_prompt)++];
+		tmp[i_tmp] = prompt[*i_prompt];
+		(*i_prompt)++;
 		i_tmp++;
 	}
 	*i_prompt = filter(i_prompt, i_tmp, prompt, tmp);
 	return (free(prompt), tmp);
 }
 
-char	*pre_treatment(char *prompt)
+char	*pre_treatment(char *prompt, int i_prompt)
 {
-	size_t	i_prompt;
-
-	i_prompt = 0;
-	if (!prompt)
-		return (ft_perror("error-> prompt ptr is NULL\n"), NULL);
 	while (prompt[i_prompt])
 	{
 		if (prompt[i_prompt] == '|')
 		{
 			prompt = pipe_treatment(prompt, &i_prompt);
+			if (!prompt)
+				return (NULL);
+		}
+		else if (prompt[i_prompt] == '"' || prompt[i_prompt] == '\'')
+		{
+			prompt = quote_treatment(prompt, &i_prompt, prompt[i_prompt]);
 			if (!prompt)
 				return (NULL);
 		}
