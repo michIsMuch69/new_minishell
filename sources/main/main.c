@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/14 10:45:04 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/14 16:05:23 by jean-michel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 // ###### INCLUDES ######
 
 #include "exec.h"
+#include "libft.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "get_next_line.h"
 
 // ###### INCLUDES ######
 
@@ -156,7 +158,7 @@ int main (int argc, char **argv, char **envp)
 		return (ft_perror("error -> init structure\n"), 2);
 	while (1)
 	{
-		prompt = readline("mini$hell> ");
+		prompt = readline("\033[32mmini$hell>\033[0m ");
 		//test
 		if(ft_strcmp(prompt, "exit") == 0)
 			return (free_struct(data, tab_size),  3);
