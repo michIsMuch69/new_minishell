@@ -42,6 +42,7 @@ int		ft_strcmp(char *s1, char *s2);
 void	free_array(char **array);
 void	wait_all(int tab_size);
 char	*skip_redir_symbol(char *token_file, bool direction);
+size_t	ft_perror(char *err_message);
 
 
 /*===========================redirections.c===============================*/
@@ -53,6 +54,6 @@ int		arrow_count(char *str, char c);
 
 /*===========================exec_handler.c===============================*/
 
-int		exec_handler(int i, t_data *data, int tab_size);
+int		exec_handler(int i, t_data *data);
 
 #endif

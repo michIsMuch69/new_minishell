@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/14 09:54:49 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/14 11:26:37 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,40 +17,37 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-int here_docs(char *delimiter) 
+int	here_docs(char *delimiter)
 {
-    char *prompt;
-    int fd2;
+	char	*prompt;
+	int		fd2;
 
-    fd2 = open("temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    if (fd2 == -1)
-        return -1;  
-
-    while (1)
+	fd2 = open("temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd2 == -1)
+		return (-1);
+	while (1)
 	{
-        prompt = readline(">");
-        
-        if (strcmp(prompt, delimiter) == 0)
-            break;
+		prompt = readline(">");
+		if (strcmp(prompt, delimiter) == 0)
+			break ;
 		else
 		{
 			ft_putstr_fd(prompt, fd2);
 			ft_putstr_fd("\n", fd2);
 		}
-        free(prompt);
-    }
-    close(fd2); 
-    fd2 = open("temp.txt", O_RDONLY);
+		free(prompt);
+	}
+	close(fd2);
+	fd2 = open("temp.txt", O_RDONLY);
 	if (fd2 == -1)
-        return -1;  
-    return (fd2);
+		return (-1);
+	return (fd2);
 }
 
 int	redir_input(t_data *data, int i, int prev_fd)
@@ -64,7 +61,7 @@ int	redir_input(t_data *data, int i, int prev_fd)
 		if (arrow_count(data[i].input.tab[0], '<') - 1 == 1)
 		{
 			input_file = skip_redir_symbol(data[i].input.tab[0], 0);
-			input_fd = open(input_file, O_RDONLY);	
+			input_fd = open(input_file, O_RDONLY);
 		}
 		if (arrow_count(data[i].input.tab[0], '<') - 1 == 2)
 		{
@@ -89,7 +86,7 @@ int	redir_output(t_data *data, int i, int tab_size, int *fds)
 {
 	int		output_fd;
 	char	*output_file;
-	
+
 	if (data[i].output.size)
 	{
 		output_file = skip_redir_symbol(data[i].output.tab[0], 1);

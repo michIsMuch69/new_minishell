@@ -12,7 +12,7 @@
 
 #include "exec.h"
 
-int	exec_handler(int i, t_data *data, int tab_size)
+int	exec_handler(int i, t_data *data)
 {
 	char	*directory;
 	char	*cmd_path;
@@ -29,13 +29,15 @@ int	exec_handler(int i, t_data *data, int tab_size)
 		return (perror("execve failed"), free(cmd_path), -1);
 	return (0);
 }
+
 int	handle_child(int i, int *fds, int tab_size, int prev_fd, t_data *data)
 {
+	// ICI gestion built-ins ? Les builtins doivent cependant exit le processus
 	if (redir_input(data, i, prev_fd) == -1)
 		return (-1);
 	if (redir_output(data, i, tab_size, fds) == -1)
 		return (-1);
-	if (exec_handler(i, data, tab_size) == -1)
+	if (exec_handler(i, data) == -1)
 		return (-1);
 	close(fds[0]);
 	close(fds[1]);
@@ -44,7 +46,7 @@ int	handle_child(int i, int *fds, int tab_size, int prev_fd, t_data *data)
 // test : 
 // -  cat < file2.txt | rev > file1.txt
 
-void	handle_parent(int i, int *fds, int prev_fd, int tab_size)
+void	handle_parent(int i, int *fds, int prev_fd)
 {
 	if (i > 0)
 		close(prev_fd);
@@ -71,7 +73,7 @@ int	exec(int tab_size, t_data *data)
 			handle_child(i, fds, tab_size, prev_fd, data);
 		else
 		{
-			handle_parent(i, fds, prev_fd, tab_size);
+			handle_parent(i, fds, prev_fd);
 			prev_fd = fds[0];
 		}
 		i++;
@@ -79,4 +81,3 @@ int	exec(int tab_size, t_data *data)
 	wait_all(tab_size);
 	return (0);
 }
-
