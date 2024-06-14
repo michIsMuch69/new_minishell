@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:32:21 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/14 11:05:16 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/14 14:02:46 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int	filter(int *i, int i_tmp, char *str, char *tmp)
 		i_tmp++;
 		(*i)++;
 	}
-	while (str[*i] && str[*i] != '<' && str[*i] != '>' && str[*i] != '|' && \
-			str[*i] != '$' && str[*i] != 9 && str[*i] != 32)
+	while (str[*i] && str[*i] != '<' && str[*i] != '>' && \
+			str[*i] != '|' && str[*i] != 9 && str[*i] != 32)
 	{
 		tmp[i_tmp] = str[(*i)++];
 		i_tmp++;

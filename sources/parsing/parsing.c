@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 07:33:24 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/14 10:37:47 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/14 15:11:27 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,12 @@ int	parse_prompt(char **prompt, char **env, t_data **data)
 	//print_struct(*data, struc_tab_size);
 
 // ### expand variables in token struct  ### //
-	// if (expand_management(*data, env) == -1)
-	// 	return (-1);
-	
+	ret_value = expand_management(*data, env);
+	if (ret_value == -1)
+		return (free_tab(tokens, 0), -1);
+	if (ret_value == 1)
+		return(free_tab(tokens, 0), 0);
+
 	print_struct(*data, struc_tab_size);
 // ### expand variables in token struct  ### //
 

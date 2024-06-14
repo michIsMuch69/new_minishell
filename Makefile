@@ -6,7 +6,7 @@
 #    By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/06/14 11:41:10 by fberthou         ###   ########.fr        #
+#    Updated: 2024/06/14 14:42:26 by fberthou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c \
 			$(PARSING_PATH)/pre_treatment.c $(PARSING_PATH)/pre_treatment_utils.c \
 			$(PARSING_PATH)/tokenizer.c \
 			$(PARSING_PATH)/cleaner.c $(PARSING_PATH)/quoting.c \
-			$(PARSING_PATH)/expand.c $(PARSING_PATH)/expand_utils.c \
+			$(PARSING_PATH)/expand.c $(PARSING_PATH)/expand_utils.c $(PARSING_PATH)/expand_utils_nd.c \
 			$(PARSING_PATH)/getenv.c \
 			$(PARSING_PATH)/struct_filling.c \
 			\

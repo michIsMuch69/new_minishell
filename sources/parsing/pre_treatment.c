@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:51:51 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/14 11:07:17 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/14 14:47:58 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,30 +97,31 @@ static char	*redir_treatment(char *prompt, int *i_prompt, char c)
 	return (free(prompt), tmp);
 }
 
-char	*pre_treatment(char *prompt, int i_prompt)
+char	*pre_treatment(char *prompt, int i)
 {
-	while (prompt[i_prompt])
+	while (prompt[i])
 	{
-		if (prompt[i_prompt] == '|')
+		if (prompt[i] == '|')
 		{
-			prompt = pipe_treatment(prompt, &i_prompt);
+			prompt = pipe_treatment(prompt, &i);
 			if (!prompt)
 				return (NULL);
 		}
-		else if (prompt[i_prompt] == '"' || prompt[i_prompt] == '\'')
+		else if ((prompt[i] == '"' || prompt[i] == '\'') && \
+				i > 0 && (prompt[i - 1] == 9 || prompt[i - 1] == 32))
 		{
-			prompt = quote_treatment(prompt, &i_prompt, prompt[i_prompt]);
+			prompt = quote_treatment(prompt, &i, prompt[i]);
 			if (!prompt)
 				return (NULL);
 		}
-		else if (prompt[i_prompt] == '<' || prompt[i_prompt] == '>')
+		else if (prompt[i] == '<' || prompt[i] == '>')
 		{
-			prompt = redir_treatment(prompt, &i_prompt, prompt[i_prompt]);
+			prompt = redir_treatment(prompt, &i, prompt[i]);
 			if (!prompt)
 				return (NULL);
 		}
 		else
-			i_prompt++;
+			i++;
 	}
 	return (prompt);
 }
