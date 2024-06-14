@@ -67,7 +67,7 @@ int	exec_handler(int i, t_data *data)
 	cmd_path = ft_concat_path(directory, data[i].args.tab[0]);
 	if (!cmd_path)
 		return (free(directory), -1);
-	//execute_command(cmd_path, data, data[i].env.tab, i);
+	//execute_command(cmd_path, data[i].args.tab, data[i].env.tab, i);
 	if (execve(cmd_path, data[i].args.tab, data[i].env.tab) == -1)
 		return (perror("execve failed"), free(cmd_path), -1);
 	return (0);
@@ -75,7 +75,6 @@ int	exec_handler(int i, t_data *data)
 
 int	handle_child(int i, int *fds, int tab_size, int prev_fd, t_data *data)
 {
-	// ICI gestion built-ins ? Les builtins doivent cependant exit le processus
 	if (redir_input(data, i, prev_fd) == -1)
 		return (-1);
 	if (redir_output(data, i, tab_size, fds) == -1)
