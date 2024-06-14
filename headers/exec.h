@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   exec_handler.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -51,8 +51,8 @@ int		redir_output(t_data *data, int i, int tab_size, int *fds);
 int		arrow_count(char *str, char c);
 
 
-/*===========================exec.c===============================*/
+/*===========================exec_handler.c===============================*/
 
-int		exec(int i, t_data *data, int tab_size);
+int		exec_handler(int i, t_data *data, int tab_size);
 
 #endif
