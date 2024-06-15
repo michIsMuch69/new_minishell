@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 10:56:02 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/13 15:51:08 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:16:14 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,17 @@ size_t	ft_perror(char *err_message)
 	return (write(2, err_message, ft_strlen(err_message)));
 }
 
-void	free_tab(t_table tab, int start)
+void	free_tab(t_table *tab, int start)
 {
 	int	i;
 
 	i = start;
-	if (!tab.tab)
+	if (!tab->tab)
 		return ;
-	while (i < tab.size)
-		free(tab.tab[i++]);
-	free(tab.tab);
+	while (i < tab->size)
+		free(tab->tab[i++]);
+	free(tab->tab);
+	tab->tab = NULL;
 }
 
 void	free_struct(t_data *struc, size_t tab_size)
@@ -47,14 +48,14 @@ void	free_struct(t_data *struc, size_t tab_size)
 			free(struc[i].cmd_path);
 			struc[i].cmd_path = NULL;
 		}
-		free_tab(struc[i].args, 0);
+		free_tab(&(struc[i].args), 0);
 		struc[i].args.tab = NULL;
-		free_tab(struc[i].input, 0);
+		free_tab(&(struc[i].input), 0);
 		struc[i].input.tab = NULL;
-		free_tab(struc[i].output, 0);
+		free_tab(&(struc[i].output), 0);
 		struc[i].output.tab = NULL;
 		i++;
 	}
-	free_tab(struc[0].env, 0);
+	free_tab(&(struc->env), 0);
 	free(struc);
 }

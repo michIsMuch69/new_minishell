@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:10:11 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/14 16:31:49 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:46:53 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,23 +67,23 @@ char	*extract_word(char *str, int start)
 int	change_value(char **token, char **envp)
 {
 	int		i;
-	int		tmp;
+	int		ret_value;
 	char	*word;
 	char	*var_content;
 
-	i = include_char(token[0], '$', 0) + 1;
-	if (!i)
+	i = include_char(token[0], '$', 0);
+	if (i == -1)
 		return (0);
-	word = extract_word(token[0], i);
+	word = extract_word(token[0], ++i);
 	if (!word)
 		return (-1);
-	tmp = ft_getenv(word, envp, &var_content);
-	if (tmp == 1) // no varriable
+	ret_value = ft_getenv(word, envp, &var_content);
+	if (ret_value == 1) // no varriable
 		return (free(word), 1);
-	else if (tmp == -1)
+	else if (ret_value == -1)
 		return (free(word), -1); //malloc error
 	free(word);
-	return (join_str(token, i - 1, ft_strlen(*token), var_content)); // join var_content to the token	
+	return (join_str(token, i - 1, find_end(*token, i), var_content)); // join var_content to the token	
 }
 
 int	find_size(char *str, int start, int end)
@@ -107,7 +107,7 @@ int	cut_str(char **token, int start, int end)
 	start = include_char(token[0], '$', 0);
 	if (start == -1)
 		return (0);
-	end = find_end(token[0], start);
+	end = find_end(token[0], start + 1);
 	tmp = ft_calloc((ft_strlen(token[0]) - (end - start) + 1), sizeof(char));
 	if (!tmp)
 		return (ft_perror("error-> alloc cut_str\n"), -1);
@@ -121,7 +121,9 @@ int	cut_str(char **token, int start, int end)
 	}
 	free(token[0]);
 	token[0] = tmp;
-	return (0);	
+	if (token[0][1])
+		return (0);
+	return (1);	
 }
 
 int	count_sign(char *str, char sign)

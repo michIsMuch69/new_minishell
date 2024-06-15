@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:10:46 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/13 15:41:21 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:20:11 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 // ###### PROTOTYPES ######
 
 size_t	ft_perror(char *err_message);
-void	free_tab(t_table tab, int start);	
+void	free_tab(t_table *tab, int start);	
 size_t	find_end(char *prompt, char c, size_t *i);
 
 // ###### PROTOTYPES ###### 
@@ -110,13 +110,13 @@ t_table	tokenizer(char *prompt)
 	{
 		ret_value = split_tokens(prompt, &i, &token);
 		if (ret_value == -1)
-			return (free_tab(token, 0), token.tab = NULL, token);
+			return (free_tab(&token, 0), token.tab = NULL, token);
 		if (ret_value == 0)
 			break ;
 		tmp = ft_realloc(token.tab, ((token.size + 1) * sizeof(char *)), \
 									((token.size) * sizeof(char *)));
 		if (!tmp)
-			return (free_tab(token, 0), token.tab = NULL, \
+			return (free_tab(&token, 0), token.tab = NULL, \
 					ft_perror("error -> tab_arg memory allocation\n"), token);
 		token.tab = tmp;
 	}

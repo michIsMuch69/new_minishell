@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 07:33:24 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/14 15:11:27 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/15 15:42:57 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 // ###### PROTOTYPES ######
 
 size_t	ft_perror(char *err_message);
-void	free_tab(t_table tab, int start);
+void	free_tab(t_table *tab, int start);
 
 char	*pre_treatment(char *prompt, int i);
 t_table	tokenizer(char *prompt);
@@ -56,8 +56,8 @@ int	parse_prompt(char **prompt, char **env, t_data **data)
 	if (!*prompt)
 		return (-1);
 	printf("p_prompt == %s\n", *prompt);
-// ### token initialization ### //
 
+// ### token initialization ### //
 	tokens = tokenizer(*prompt);
 	if (!tokens.tab)
 		return (free(*prompt), -1); // ! double free
@@ -67,32 +67,31 @@ int	parse_prompt(char **prompt, char **env, t_data **data)
 // ### structure initialization ### //
 	struc_tab_size = init_struct(data, &tokens, 0, 0);
 	if (struc_tab_size == -1)
-		return (free_tab(tokens, 0), free(*prompt), -1);
+		return (free_tab(&tokens, 0), free(*prompt), -1);
 	
 	//print_struct(*data, struc_tab_size);
 
 // ### expand variables in token struct  ### //
 	ret_value = expand_management(*data, env);
 	if (ret_value == -1)
-		return (free_tab(tokens, 0), -1);
+		return (free_tab(&tokens, 0), -1);
 	if (ret_value == 1)
-		return(free_tab(tokens, 0), 0);
+		return(free_tab(&tokens, 0), 0);
 
 	print_struct(*data, struc_tab_size);
-// ### expand variables in token struct  ### //
 
 
 // ### clean tokens to real cmd / args ### //
 
 	// ret_value = token_cleaner(&tokens, env, &args); //0 = ok -1 error_crash, 1 syntaxe
 	// if (ret_value == 1)
-	// 	return (free_tab(tokens, 0), 0);
+	// 	return (free_tab(&tokens, 0), 0);
 	// if (ret_value == -1)
-	// 	return (free_tab(tokens, 0), free(*prompt), -1); // free all is temporary, t_table token.tab is free in token_cleaner
+	// 	return (free_tab(&tokens, 0), free(*prompt), -1); // free all is temporary, t_table token.tab is free in token_cleaner
 	// //print_tab(*args);
-	// free_tab(tokens, 0);
+	// free_tab(&tokens, 0);
 
 // ### clean tokens to real cmd / args END ### //
 
-	return (free_tab(tokens, 0), struc_tab_size);
+	return (free_tab(&tokens, 0), struc_tab_size);
 }

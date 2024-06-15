@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:39:14 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/14 14:41:29 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:59:25 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,5 @@ int	join_str(char **token, int start, int end, char *var_content)
 		str[i_str] = token[0][end++];
 		i_str++;
 	}
-	return (free(*token), free(var_content), *token = str, 0);
+	return (free(*token), free(var_content), *token = str, 2);
 }

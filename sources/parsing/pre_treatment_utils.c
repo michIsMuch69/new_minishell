@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:32:21 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/14 14:02:46 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/15 15:06:59 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,7 @@ void	skip_spaces(char *str, int *i)
 		(*i)++;
 }
 
-char	*init_treatment(char *prompt, int *i_tmp, int i_prompt)
-{
-	char	*tmp;
 
-	*i_tmp = i_prompt;
-	tmp = ft_calloc(ft_strlen(prompt) + 3, sizeof(char));
-	if (!tmp)
-		return (free(prompt), ft_perror("error-> init pre_treatment\n"), NULL);
-	tmp = ft_memcpy(tmp, prompt, ft_strlen(prompt));
-	return (tmp);
-}
 
 int	filter(int *i, int i_tmp, char *str, char *tmp)
 {
