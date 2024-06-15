@@ -149,8 +149,8 @@ int main (int argc, char **argv, char **envp)
 			return (free_struct(data, 1), /*free(prompt),*/ 3);
 		// if (tab_size)
 		// 	exec(data, tab_size);
-		// if (++index == 4)
-		// 	return (free(prompt), free_struct(data, tab_size), 0);
+		if (++index == 4)
+			return (free(prompt), free_struct(data, tab_size), 0);
 		free(prompt);
 		data = reset_env(data, tab_size);
 		if (!data)
