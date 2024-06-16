@@ -6,7 +6,7 @@
 /*   By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/16 19:10:50 by jean-michel      ###   ########.fr       */
+/*   Updated: 2024/06/16 19:12:34 by jean-michel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,10 @@ int	redir_output(t_data *data, int i, int tab_size, int *fds)
 			output_fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		}
 		if (arrow_count(data[i].output.tab[0], '>') - 1 == 2)
+		{
+			//check_access output file 
 			output_fd = open(output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		}
 		if (output_fd == -1)
 			return (perror("Failed to open output file"), -1);
 		if (dup2(output_fd, STDOUT_FILENO) == -1)
