@@ -17,12 +17,27 @@ int ft_exit(void)
     printf("exit function executed\n");
     exit(0);
 }
+
+int ft_cd(char **args)
+{
+    if (args[1] == NULL)
+    {
+        ft_perror("No arguments to \"cd\"\n");
+        return (-1);
+    }
+    else
+    {
+        if (chdir(args[1]) != 0)
+            perror("cd");
+    }
+    return 0;
+}
 int is_builtin(t_data *data, int i)
 {
     // if (ft_strcmp(data[i].args.tab[0], "echo") == 0)
 	// 	return (1);
-	// if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
-	// 	return (1);
+	if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
+		return (1);
 	// if (ft_strcmp(data[i].args.tab[0], "pwd") == 0)
 	// 	return (1);
     // if (ft_strcmp(data[i].args.tab[0], "export") == 0)
@@ -39,24 +54,9 @@ void exec_builtin(t_data *data, int i)
 {
 	if (ft_strcmp(data[i].args.tab[0], "exit") == 0)
         ft_exit();
+	if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
+        ft_cd(data->args.tab);
 }
-// void execute_command(char *cmd_path, t_data *data, char **envp, int i)
-// {
-//     if (is_builtin(data, i))
-// 	{		
-// 			exec_builtin(&data[i], i);
-// 			exit(EXIT_SUCCESS);
-//     }
-// 	else
-// 	{
-//         if (execve(cmd_path, data[i].args.tab, data[i].env.tab) == -1)
-// 		{
-//             perror("execve");
-//            // exit(EXIT_FAILURE);
-// 		}
-//     }
-
-// }
 
 int exec_handler(int i, t_data *data)
 {
