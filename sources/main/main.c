@@ -6,7 +6,7 @@
 /*   By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/14 16:50:15 by jean-michel      ###   ########.fr       */
+/*   Updated: 2024/06/16 17:41:06 by jean-michel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ int main (int argc, char **argv, char **envp)
 		if (tab_size == -1)
 			return (free_struct(data, 1), /*free(prompt),*/ 4);
 		// if (tab_size)
-		// 	exec_handler(data, tab_size);
+		//exec_handler(data, tab_size);
 		exec(tab_size, data, envp);
 		free(prompt);
 		data = reset_env(data, tab_size);
