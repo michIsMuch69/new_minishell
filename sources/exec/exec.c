@@ -22,7 +22,7 @@ int ft_cd(char **args)
 {
     if (args[1] == NULL)
     {
-        ft_perror("No arguments to \"cd\"\n");
+        ft_perror("No arguments to cd\n");
         return (-1);
     }
     else
@@ -55,7 +55,7 @@ void exec_builtin(t_data *data, int i)
 	if (ft_strcmp(data[i].args.tab[0], "exit") == 0)
         ft_exit();
 	if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
-        ft_cd(data->args.tab);
+        ft_cd(data[i].args.tab);
 }
 
 int exec_handler(int i, t_data *data)
