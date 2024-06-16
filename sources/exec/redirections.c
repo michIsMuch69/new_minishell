@@ -6,7 +6,7 @@
 /*   By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/16 17:16:50 by jean-michel      ###   ########.fr       */
+/*   Updated: 2024/06/16 18:55:19 by jean-michel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	redir_input(t_data *data, int i, int prev_fd)
 		{
 			delimiter = skip_redir_symbol(data[i].input.tab[0], 0);
 			input_fd = here_docs(delimiter);
+			unlink("temp.txt");
 		}
 		if (input_fd == -1)
 			return (perror("Failed to open input file"), -1);
