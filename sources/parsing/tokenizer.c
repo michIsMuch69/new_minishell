@@ -6,32 +6,16 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:10:46 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/10 16:23:48 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:49:44 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// ###### INCLUDES ######
+#include <tokenizer.h>
 
-#include "libft.h"
-#include "struct.h"
-#include <stdlib.h>
-
-// ###### INCLUDES ######
-
-
-// ###### PROTOTYPES ######
-
-size_t	ft_perror(char *err_message);
-void	free_tab(t_table tab);	
-size_t	find_end(char *prompt, char c, size_t *i);
-
-// ###### PROTOTYPES ###### 
-
-
-static int	build_token(char *prompt, size_t start, size_t end, t_table *token)
+static int	build_token(char *prompt, int start, int end, t_table *token)
 {
-	size_t	i;
-	size_t	tok_size;
+	int	i;
+	int	tok_size;
 
 	i = 0;
 	tok_size = end - start;
@@ -48,16 +32,21 @@ static int	build_token(char *prompt, size_t start, size_t end, t_table *token)
 	return (1);
 }
 
-static int	extract_token(char *prompt, size_t *i, char c, t_table *token)
+static int	extract_token(char *prompt, int *i, char c, t_table *token)
 {
-	size_t	start;
+	int	start;
 
 	start = *i;
 	if (c == '\'' || c == '"')
 	{
 		while (prompt[++(*i)])
-			if (prompt[*i] == c && (prompt[*i + 1] == 32 || !prompt[*i + 1]))
+		{
+			if (prompt[*i] == 9 || prompt[*i] == 32)
 				return (build_token(prompt, start, ++(*i), token));
+			else if (prompt[*i] == c && (prompt[(*i) + 1] == 9 || \
+					prompt[(*i) + 1] == 32))
+				return (build_token(prompt, start, ++(*i), token));
+		}
 		return (build_token(prompt, start, *i, token));
 	}
 	else if (c == '<' || c == '>')
@@ -67,7 +56,7 @@ static int	extract_token(char *prompt, size_t *i, char c, t_table *token)
 	return (0);
 }
 
-static int	split_tokens(char *prompt, size_t *i, t_table *token)
+static int	split_tokens(char *prompt, int *i, t_table *token)
 {
 	while (prompt[*i] == ' ' || prompt[*i] == '\t')
 		(*i)++;
@@ -85,7 +74,7 @@ static int	split_tokens(char *prompt, size_t *i, t_table *token)
 	return (0);
 }
 
-static size_t	init_tokens(t_table *token, char *prompt)
+static int	init_tokens(t_table *token, char *prompt)
 {
 	if (!prompt)
 		return (token->tab = NULL, -1);
@@ -98,7 +87,7 @@ static size_t	init_tokens(t_table *token, char *prompt)
 
 t_table	tokenizer(char *prompt)
 {
-	size_t	i;
+	int		i;
 	t_table	token;
 	char	**tmp;
 	int		ret_value;
@@ -110,13 +99,13 @@ t_table	tokenizer(char *prompt)
 	{
 		ret_value = split_tokens(prompt, &i, &token);
 		if (ret_value == -1)
-			return (free_tab(token), token.tab = NULL, token);
+			return (free_tab(&token, 0), token.tab = NULL, token);
 		if (ret_value == 0)
 			break ;
 		tmp = ft_realloc(token.tab, ((token.size + 1) * sizeof(char *)), \
 									((token.size) * sizeof(char *)));
 		if (!tmp)
-			return (free_tab(token), token.tab = NULL, \
+			return (free_tab(&token, 0), token.tab = NULL, \
 					ft_perror("error -> tab_arg memory allocation\n"), token);
 		token.tab = tmp;
 	}

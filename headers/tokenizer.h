@@ -1,41 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   struct.h                                           :+:      :+:    :+:   */
+/*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/17 11:47:19 by fberthou         ###   ########.fr       */
+/*   Created: 2024/06/16 14:38:05 by fberthou          #+#    #+#             */
+/*   Updated: 2024/06/17 10:58:01 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCT_H
-# define STRUCT_H
+#ifndef TOKENIZER_H
+# define TOKENIZER_H
 
-typedef struct s_table
-{
-	char	**tab;
-	int		size;
-} t_table;
+# include <libft.h>
+# include <struct.h>
+# include <stdlib.h>
 
-enum e_rtype
-{
-	NO_EXPAND = -1,
-	COMMAND,
-	PIPE,
-	INPUT,
-	OUTPUT
-};
+// main/utils.c
+int		ft_perror(char *err_message);
+void	free_tab(t_table *tab, int start);	
 
-typedef struct s_data
-{
-	enum e_rtype	cmd_type;
-	char			*cmd_path;
-	t_table			args;
-	t_table			env;
-	t_table			input;
-	t_table			output;
-} t_data;
+// parsing/parsing_utils.c
+int		find_end(char *prompt, char c, int *i);
 
 #endif

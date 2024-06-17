@@ -6,67 +6,52 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:26:45 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/12 14:33:22 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:48:10 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// ###### INCLUDES ######
-
-#include <stdlib.h>
 #include "struct.h"
 #include "libft.h"
 
-#include <stdio.h>
+// main/utils.c
+int		ft_perror(char *err_message);
+void	free_tab(t_table *tab, int start);
 
-// ###### INCLUDES ######
+// parsing/quote_management.c
+int		quote_management(t_table args, t_table tmp);
 
-
-// ###### PROTOTYPES ######
-
-size_t	ft_perror(char *err_message);
-void	free_tab(t_table tab);
-
-int		quote_management(char **token, char **envp, t_table *args);
-int		expand_management(char **token, char **envp, char c);
-
-// ###### PROTOTYPES ######
-
-
-static int	clean_token(char **token, char **envp, t_table *args)
+static int	clean_token(t_table args, t_table tmp)
 {
-	int	ret_value;
-
-	if (token[0][0] == '\'' || token[0][0] == '"')
-		return (quote_management(token, envp, args));
+	if (args.tab[tmp.size][0] == '\'' || args.tab[tmp.size][0] == '"')
+		return (quote_management(args, tmp));
 	else
 	{
-		if (expand_management(token, envp, 0) == -1)
-			return (-1);
-		args->tab[args->size] = ft_strdup(token[0]);
-		if (!args->tab[args->size])
+		tmp.tab[tmp.size] = ft_strdup(args.tab[tmp.size]);
+		if (!tmp.tab[tmp.size])
 			return (-1);
 	}
 	return (0);
 }
 
-int	token_cleaner(t_table *tokens, char **env, t_table *args)
+int	token_cleaner(t_data *data)
 {
-	int	ret_value;
+	int		ret_value;
+	t_table	tmp;
 
-	if (!tokens->tab)
-		return (-1);
-	args->tab = ft_calloc(sizeof(char *), tokens->size + 1);
-	if (!args->tab)
+	tmp.tab = ft_calloc(sizeof(char *), data->args.size + 1);
+	if (!tmp.tab)
 		return (ft_perror("error-> cleaner tab alloc\n"), -1);
-	args->size = 0;
-	while (args->size < tokens->size)
+	tmp.size = 0;
+	while (tmp.size < data->args.size)
 	{
-		ret_value = clean_token(&(tokens->tab[args->size]), env, args);
+		ret_value = clean_token(data->args, tmp);
 		if (ret_value == -1)
-			return (free_tab(*args), -1);
+			return (free_tab(&tmp, 0), -1); // crash alloc have to free data->args
 		if (ret_value == 1)
-			return (free_tab(*args), 1);
-		(args->size)++;
+			return (free_tab(&tmp, 0), 1); // syntax error
+		(tmp.size)++;
 	}
+	free_tab(&(data->args), 0);
+	data->args = tmp;
 	return (0);
 }

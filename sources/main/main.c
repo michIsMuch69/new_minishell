@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+        */
+/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/16 17:41:06 by jean-michel      ###   ########.fr       */
+/*   Updated: 2024/06/17 13:12:19 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,11 @@
 
 // ###### PROTO ######
 
-size_t	ft_perror(char *err_message);
+int		ft_perror(char *err_message);
 int		parse_prompt(char **prompt, char **envp, t_data **data);
-void	free_struct(t_data *struc, size_t tab_size);
-void	free_tab(t_table tab);
-
-
-int		exec(int tab_size, t_data *data, char **envp);
+void	free_struct(t_data *struc, int tab_size);
+void	free_tab(t_table *tab, int start);
+int		exec(t_data *data, int tab_size);
 
 void	print_tab(t_table tab);
 
@@ -103,7 +101,7 @@ static t_table	ft_tabdup(char **envp)
 	{
 		tab_env.tab[tab_env.size] = ft_strdup(envp[tab_env.size]);
 		if (!tab_env.tab[tab_env.size])
-			return (free_tab(tab_env), tab_env.tab = NULL, tab_env);
+			return (free_tab(&tab_env, 0), tab_env.tab = NULL, tab_env);
 		(tab_env.size)++;
 	}
 	return (tab_env);
@@ -122,7 +120,7 @@ static t_data	*init_data(char **envp)
 	return (data);
 }
 
-static t_data	*reset_env(t_data *data, size_t tab_size)
+static t_data	*reset_env(t_data *data, int tab_size)
 {
 	t_table	tmp;
 
@@ -135,7 +133,7 @@ static t_data	*reset_env(t_data *data, size_t tab_size)
 	free_struct(data, tab_size);
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
-		return (free_tab(tmp), ft_perror("error -> reset env\n"), NULL);
+		return (free_tab(&tmp, 0), ft_perror("error -> reset env\n"), NULL);
 	data->env.tab = tmp.tab;
 	data->env.size = tmp.size;
 	return (data);
@@ -147,7 +145,7 @@ int main (int argc, char **argv, char **envp)
 	int		tab_size;
 	t_data	*data;
 
-	static int i = 0;
+	// static int index = 0;
 
 	(void) argc;
 	(void) argv;
@@ -165,7 +163,7 @@ int main (int argc, char **argv, char **envp)
 			return (free_struct(data, 1), /*free(prompt),*/ 4);
 		// if (tab_size)
 		//exec_handler(data, tab_size);
-		exec(tab_size, data, envp);
+		exec(tab_size, data);
 		free(prompt);
 		data = reset_env(data, tab_size);
 		if (!data)
@@ -173,3 +171,4 @@ int main (int argc, char **argv, char **envp)
 	}
 	return (0);
 }
+

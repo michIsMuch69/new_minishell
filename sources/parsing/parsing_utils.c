@@ -6,24 +6,14 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:04:48 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/10 20:25:48 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:48:48 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// ###### INCLUDES ######
-
-#include <stdlib.h>
-#include <stdbool.h>
-#include "struct.h"
 #include "libft.h"
 
-// ###### INCLUDES ######
-
-// ###### PROTOTYPES ######
-
-size_t	ft_perror(char *err_message);
-
-// ###### PROTOTYPES ######
+// main/utils.c
+int	ft_perror(char *err_message);
 
 int	include_char(char *token, char c, int start)
 {
@@ -38,8 +28,8 @@ int	include_char(char *token, char c, int start)
 
 char	*init_str(char *token, char c)
 {
-	size_t	i;
-	size_t	size;
+	int	i;
+	int	size;
 	char	*final;
 
 	i = 0;
@@ -59,8 +49,8 @@ char	*init_str(char *token, char c)
 
 char	*final_build(char *token, char c)
 {
-	size_t	i;
-	size_t	size;
+	int	i;
+	int	size;
 	char	*final;
 
 	i = 0;
@@ -85,13 +75,7 @@ char	*final_build(char *token, char c)
 	return (final);
 }
 
-void	clear_buff(char *buffer, size_t start, size_t size)
-{
-	while (start < size)
-		buffer[start++] = '\0';
-}
-
-size_t	find_end(char *prompt, char c, size_t *i)
+int	find_end(char *prompt, char c, int *i)
 {
 	if (c == '<' || c == '>' || c == '$')
 	{

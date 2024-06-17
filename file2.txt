@@ -1,0 +1,10 @@
+asciiart.txt
+file2.txt
+file3.txt
+headers
+libft
+Makefile
+minishell
+minishell_tester
+run.sh
+sources
