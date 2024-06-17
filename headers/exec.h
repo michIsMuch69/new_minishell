@@ -46,8 +46,8 @@ size_t	ft_perror(char *err_message);
 
 /*===========================builtins.c===============================*/
 
-int ft_exit(void);
-int ft_cd(char **args);
+int		ft_exit(void);
+int		ft_cd(char **args);
 
 /*===========================redirections.c===============================*/
 

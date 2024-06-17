@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:46:39 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/17 08:47:39 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/17 09:42:53 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	exec_handler(int i, t_data *data)
 		return (-1);
 	if (is_builtin(data, i))
 	{
-		if (redir_output(data, i, 1, NULL) == -1)
+		if (redir_output(data, i, 0, NULL) == -1)
 			return (-1);
 		exec_builtin(data, i);
 		return (0);
