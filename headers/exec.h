@@ -44,6 +44,10 @@ void	wait_all(int tab_size);
 char	*skip_redir_symbol(char *token_file, bool direction);
 size_t	ft_perror(char *err_message);
 
+/*===========================builtins.c===============================*/
+
+int ft_exit(void);
+int ft_cd(char **args);
 
 /*===========================redirections.c===============================*/
 
