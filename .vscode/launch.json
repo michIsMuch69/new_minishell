@@ -8,13 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-<<<<<<< HEAD
       "cwd": "/home/jedusser/Documents/minishell/sources/parsing",
       "program": "/home/jedusser/Documents/minishell/sources/parsing/build/Debug/outDebug",
-=======
-      "cwd": "/home/jedusser/Documents/minishell/sources/exec",
-      "program": "/home/jedusser/Documents/minishell/sources/exec/build/Debug/outDebug",
->>>>>>> parsing
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

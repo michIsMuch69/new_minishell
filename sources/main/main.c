@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/17 13:12:19 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:22:29 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,9 +161,10 @@ int main (int argc, char **argv, char **envp)
 		tab_size = parse_prompt(&prompt, data->env.tab, &data);
 		if (tab_size == -1)
 			return (free_struct(data, 1), /*free(prompt),*/ 4);
-		// if (tab_size)
-		//exec_handler(data, tab_size);
-		exec(tab_size, data);
+		if (tab_size)
+			exec(data, tab_size);
+		// if (++index == 4)
+		// 	return (free(prompt), free_struct(data, tab_size), 0);
 		free(prompt);
 		data = reset_env(data, tab_size);
 		if (!data)

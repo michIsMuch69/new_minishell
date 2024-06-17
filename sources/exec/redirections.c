@@ -6,29 +6,18 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/17 13:16:01 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:19:38 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
-int	here_docs(char *delimiter)
+static int	here_docs(char *delimiter)
 {
 	char	*prompt;
 	int		fd2;
 
-	fd2 = open("temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);//1
+	fd2 = open("temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);//1 Ecriture
 	if (fd2 == -1)
 		return (-1);
 	while (1)
@@ -44,13 +33,13 @@ int	here_docs(char *delimiter)
 		free(prompt);
 	}
 	close(fd2);
-	fd2 = open("temp.txt", O_RDONLY); //0
+	fd2 = open("temp.txt", O_RDONLY); //0 Lecture
 	if (fd2 == -1)
 		return (-1);
 	return (fd2);
 }
 
-int	define_input_fd(t_data *data, int i)
+static int	define_input_fd(t_data *data, int i)
 {
 	int		input_fd;
 	char	*input_file;
@@ -72,7 +61,7 @@ int	define_input_fd(t_data *data, int i)
 	return (input_fd);
 }
 
-int	define_output_fd(t_data *data, int i)
+static int	define_output_fd(t_data *data, int i)
 {
 	int		output_fd;
 	char	*output_file;
