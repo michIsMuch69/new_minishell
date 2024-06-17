@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:41:19 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/17 12:28:26 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:18:42 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	fill_struct(t_data *struc, t_table *tokens, int *i_tokens)
 	}
 	else if (struc->cmd_type == OUTPUT)
 	{
-		if (fill_tab(&(struc->input), tokens->tab[*i_tokens]))
+		if (fill_tab(&(struc->output), tokens->tab[*i_tokens]))
 			return (1);
 	}
 	(*i_tokens)++;	

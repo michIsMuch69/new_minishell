@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:46:39 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/17 12:37:38 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:26:59 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static void	handle_parent(int i, int *fds, int prev_fd)
 	close(fds[1]);
 }
 
-int	exec(int tab_size, t_data *data)
+int	exec(t_data *data,int tab_size)
 {
 	int		i;
 	int		prev_fd;
