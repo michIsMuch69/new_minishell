@@ -6,40 +6,48 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:46:39 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/17 08:47:39 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/17 12:37:38 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	is_builtin(t_data *data, int i)
-{
-	// if (ft_strcmp(data[i].args.tab[0], "echo") == 0)
-	// 	return (1);
-	if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
-		return (1);
-	// if (ft_strcmp(data[i].args.tab[0], "pwd") == 0)
-	// 	return (1);
-	// if (ft_strcmp(data[i].args.tab[0], "export") == 0)
-	// 	return (1);
-	// if (ft_strcmp(data[i].args.tab[0], "unset") == 0)
-	// 	return (1);
-	// if (ft_strcmp(data[i].args.tab[0], "env") == 0)
-	// 	return (1);
-	if (ft_strcmp(data[i].args.tab[0], "exit") == 0)
-		return (1);
-	return (0);
-}
+// int	is_builtin(t_data *data, int i)
+// {
+// 	// if (ft_strcmp(data[i].args.tab[0], "echo") == 0)
+// 	// 	return (1);
+// 	if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
+// 		return (1);
+// 	// if (ft_strcmp(data[i].args.tab[0], "pwd") == 0)
+// 	// 	return (1);
+// 	// if (ft_strcmp(data[i].args.tab[0], "export") == 0)
+// 	// 	return (1);
+// 	// if (ft_strcmp(data[i].args.tab[0], "unset") == 0)
+// 	// 	return (1);
+// 	// if (ft_strcmp(data[i].args.tab[0], "env") == 0)
+// 	// 	return (1);
+// 	if (ft_strcmp(data[i].args.tab[0], "exit") == 0)
+// 		return (1);
+// 	return (0);
+// }
 
-void	exec_builtin(t_data *data, int i)
-{
-	if (ft_strcmp(data[i].args.tab[0], "exit") == 0)
-		ft_exit();
-	if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
-		ft_cd(data[i].args.tab);
-}
+// void	exec_builtin(t_data *data, int i)
+// {
+// 	if (ft_strcmp(data[i].args.tab[0], "exit") == 0)
+// 		ft_exit();
+// 	if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
+// 		ft_cd(data[i].args.tab);
+// }
 
-int	exec_handler(int i, t_data *data)
+// int	format_cmd_path()
+// {
+// 	char *directory;
+// 	char *cmd_path;
+
+	
+// }
+
+static int	exec_handler(int i, t_data *data)
 {
 	char	*directory;
 	char	*cmd_path;
@@ -48,7 +56,7 @@ int	exec_handler(int i, t_data *data)
 		return (-1);
 	if (is_builtin(data, i))
 	{
-		if (redir_output(data, i, 1, NULL) == -1)
+		if (redir_output(data, i, 0, NULL) == -1)
 			return (-1);
 		exec_builtin(data, i);
 		return (0);
@@ -67,7 +75,7 @@ int	exec_handler(int i, t_data *data)
 	return (0);
 }
 
-int	handle_child(int i, int *fds, int tab_size, int prev_fd, t_data *data)
+static int	handle_child(int i, int *fds, int tab_size, int prev_fd, t_data *data)
 {
 	if (redir_input(data, i, prev_fd) == -1)
 		return (-1);
@@ -82,12 +90,13 @@ int	handle_child(int i, int *fds, int tab_size, int prev_fd, t_data *data)
 // test : 
 // -  cat < file2.txt | rev > file1.txt
 
-void	handle_parent(int i, int *fds, int prev_fd)
+static void	handle_parent(int i, int *fds, int prev_fd)
 {
 	if (i > 0)
 		close(prev_fd);
 	close(fds[1]);
 }
+
 int	exec(int tab_size, t_data *data)
 {
 	int		i;
@@ -99,6 +108,13 @@ int	exec(int tab_size, t_data *data)
 	i = 0;
 	while (i < tab_size)
 	{
+		
+
+
+
+
+		
+		
 		if (pipe(fds) == -1)
 			return (perror("Pipe failed"), -1);
 		pid = fork();

@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/17 12:29:47 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/17 12:36:35 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		ft_perror(char *err_message);
 int		parse_prompt(char **prompt, char **envp, t_data **data);
 void	free_struct(t_data *struc, int tab_size);
 void	free_tab(t_table *tab, int start);
-int		exec(t_data *data, int tab_size);
+int		exec(int tab_size, t_data *data);
 
 void	print_tab(t_table tab);
 
@@ -161,8 +161,8 @@ int main (int argc, char **argv, char **envp)
 		tab_size = parse_prompt(&prompt, data->env.tab, &data);
 		if (tab_size == -1)
 			return (free_struct(data, 1), /*free(prompt),*/ 4);
-		// if (tab_size)
-		// 	exec(data, tab_size);
+		if (tab_size)
+			exec(tab_size, data);
 		// if (++index == 4)
 		// 	return (free(prompt), free_struct(data, tab_size), 0);
 		free(prompt);
