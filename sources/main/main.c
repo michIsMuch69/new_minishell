@@ -1,9 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
+/*   Updated: 2024/06/16 17:41:06 by jean-michel      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 // ###### INCLUDES ######
 
+#include "exec.h"
 #include "libft.h"
-#include "struct.h"
-#include <readline/readline.h> 
+#include <readline/readline.h>
 #include <readline/history.h>
+#include "get_next_line.h"
 
 // ###### INCLUDES ######
 
@@ -14,7 +28,9 @@ size_t	ft_perror(char *err_message);
 int		parse_prompt(char **prompt, char **envp, t_data **data);
 void	free_struct(t_data *struc, size_t tab_size);
 void	free_tab(t_table tab);
-int		exec(t_data *data, int tab_size);
+
+
+int		exec(int tab_size, t_data *data, char **envp);
 
 void	print_tab(t_table tab);
 
@@ -28,7 +44,7 @@ void	print_tab(t_table tab);
 // function only for tests
 void	print_tab(t_table tab)
 {
-	size_t	i = 0;
+	int	i = 0;
 
 	while(i < tab.size)
 		printf("%s\n", tab.tab[i++]);
@@ -37,12 +53,12 @@ void	print_tab(t_table tab)
 // function only for tests
 void	print_struct(t_data *data, int tab_size)
 {
-	size_t	i = 0;
-	size_t	y = 0;
+	int	i = 0;
+	int	y = 0;
 	
 	while (i < tab_size)
 	{
-		printf("\nSTRUC %zu\n\n", i+1);
+		printf("\nSTRUC %d\n\n", i+1);
 		printf("cmd  = %s\n", data[i].cmd_path);
 		y = 0;
 		if (data[i].args.tab)
@@ -131,6 +147,10 @@ int main (int argc, char **argv, char **envp)
 	int		tab_size;
 	t_data	*data;
 
+	static int i = 0;
+
+	(void) argc;
+	(void) argv;
 	if (argc != 1)
 		return (ft_perror("arguments are invalid\n"), 1);
 	data = init_data(envp);
@@ -138,16 +158,18 @@ int main (int argc, char **argv, char **envp)
 		return (ft_perror("error -> init structure\n"), 2);
 	while (1)
 	{
-		prompt = readline("mini$hell> ");
-		add_history(prompt);
+		prompt = readline("\033[32mmini$hell>\033[0m ");
+		add_history(prompt); // !! need to clear history
 		tab_size = parse_prompt(&prompt, data->env.tab, &data);
 		if (tab_size == -1)
-			return (free_struct(data, 1), free(prompt), 3);
-		// exec(data, tab_size);
+			return (free_struct(data, 1), /*free(prompt),*/ 4);
+		// if (tab_size)
+		//exec_handler(data, tab_size);
+		exec(tab_size, data, envp);
 		free(prompt);
 		data = reset_env(data, tab_size);
 		if (!data)
-			return (4);
+			return (5);
 	}
 	return (0);
 }

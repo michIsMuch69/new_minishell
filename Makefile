@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+         #
+#    By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/06/06 14:52:21 by fberthou         ###   ########.fr        #
+#    Updated: 2024/06/14 17:04:52 by jean-michel      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,16 +38,19 @@ BUILD_EXEC_PATH			= $(BUILD_PATH)/exec
 
 # --- COMPILATION FLAGS --- #
 LIB_FLAGS	=	-I$(LIBFT_HDR_PATH)
-COMPFLAGS	=	-I$(HDR_PATH) $(LIB_FLAGS) -g  #-Wall -Wextra -Werror 
+COMPFLAGS	=	-I$(HDR_PATH) $(LIB_FLAGS) -g # -Wall -Wextra -Werror 
 
-SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c $(MAIN_PATH)/init_env.c \
+SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c \
 			\
 			$(PARSING_PATH)/parsing.c $(PARSING_PATH)/pre_treatment.c $(PARSING_PATH)/parsing_utils.c \
 			$(PARSING_PATH)/tokenizer.c \
-			$(PARSING_PATH)/parser.c $(PARSING_PATH)/quoting.c \
+			$(PARSING_PATH)/cleaner.c $(PARSING_PATH)/quoting.c \
+			$(PARSING_PATH)/expand.c $(PARSING_PATH)/getenv.c \
 			$(PARSING_PATH)/struct_filling.c \
 			\
-			$(EXEC_PATH)/exec.c
+			$(EXEC_PATH)/exec.c $(EXEC_PATH)/build_exec_path.c $(EXEC_PATH)/exec_utils.c \
+			$(EXEC_PATH)/redirections.c $(EXEC_PATH)/redirections_utils.c \
+			$(EXEC_PATH)/builtins.c
 
 ### ---- TEMPORARY FILES ---- ###
 OBJ	= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)
@@ -58,7 +61,7 @@ all		: $(LIBFT) $(NAME)
 
 ### --- MINISHELL --- ###
 $(NAME)	: $(OBJ) $(LIBFT)
-	$(CC) $(COMPFLAGS) -lreadline $^ -o $@
+	$(CC) $(COMPFLAGS)  $^ -lreadline -o $@
 	@echo "$(GREEN)-- minishell ready --$(RESET_COLOR)"
 
 ### --- LIBFT --- ###

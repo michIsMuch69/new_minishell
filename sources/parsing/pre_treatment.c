@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:51:51 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/06 14:59:07 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/07 09:40:50 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*init_treatment(char *prompt, size_t *i_tmp, size_t i_prompt)
 	return (tmp);
 }
 
-static char	*pipe_treatment(char *prompt, size_t *i_prompt, char c)
+static char	*pipe_treatment(char *prompt, size_t *i_prompt)
 {
 	char	*tmp;
 	size_t	i_tmp;
@@ -112,11 +112,13 @@ char	*pre_treatment(char *prompt)
 	size_t	i_prompt;
 
 	i_prompt = 0;
+	if (!prompt)
+		return (ft_perror("error-> prompt ptr is NULL\n"), NULL);
 	while (prompt[i_prompt])
 	{
 		if (prompt[i_prompt] == '|')
 		{
-			prompt = pipe_treatment(prompt, &i_prompt, prompt[i_prompt]);
+			prompt = pipe_treatment(prompt, &i_prompt);
 			if (!prompt)
 				return (NULL);
 		}
