@@ -60,6 +60,7 @@
     "stdbool.h": "c",
     "stdlib.h": "c",
     "struct.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "libft.h": "c"
   }
 }

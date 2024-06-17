@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
+/*   pre_treatment.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/28 08:09:19 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/17 10:57:38 by fberthou         ###   ########.fr       */
+/*   Created: 2024/06/16 14:32:27 by fberthou          #+#    #+#             */
+/*   Updated: 2024/06/17 10:58:13 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
+#ifndef PRE_TREATMENT_H
+# define PRE_TREATMENT_H
 
-# include <stdlib.h>
-# include <struct.h>
+#include <stdlib.h>
+#include <libft.h>
 
 // main/utils.c
-void	free_tab(t_table *tab, int start);
+int		ft_perror(char *err_message);
 
-// parsing/pre_treatment.c
-char	*pre_treatment(char *prompt, int i);
-
-// parsing/tokenizer.c
-t_table	tokenizer(char *prompt);
-
-// parsing/struct_filling.c
-int		init_struct(t_data **data, t_table *tokens, int start, int data_size);
+// parsing/parsing_utils.c
+void	clear_buff(char *buffer, int start, int size);
+int		filter(int *i_prompt, int i_tmp, char *prompt, char *tmp);
+void	skip_spaces(char *str, int *i);
 
 #endif

@@ -10,9 +10,9 @@
 
 // ###### PROTO ######
 
-size_t	ft_perror(char *err_message);
+int		ft_perror(char *err_message);
 int		parse_prompt(char **prompt, char **envp, t_data **data);
-void	free_struct(t_data *struc, size_t tab_size);
+void	free_struct(t_data *struc, int tab_size);
 void	free_tab(t_table *tab, int start);
 int		exec(t_data *data, int tab_size);
 
@@ -106,7 +106,7 @@ static t_data	*init_data(char **envp)
 	return (data);
 }
 
-static t_data	*reset_env(t_data *data, size_t tab_size)
+static t_data	*reset_env(t_data *data, int tab_size)
 {
 	t_table	tmp;
 
@@ -131,7 +131,7 @@ int main (int argc, char **argv, char **envp)
 	int		tab_size;
 	t_data	*data;
 
-	static int index = 0;
+	// static int index = 0;
 
 	(void) argc;
 	(void) argv;
@@ -149,8 +149,8 @@ int main (int argc, char **argv, char **envp)
 			return (free_struct(data, 1), /*free(prompt),*/ 3);
 		// if (tab_size)
 		// 	exec(data, tab_size);
-		if (++index == 4)
-			return (free(prompt), free_struct(data, tab_size), 0);
+		// if (++index == 4)
+		// 	return (free(prompt), free_struct(data, tab_size), 0);
 		free(prompt);
 		data = reset_env(data, tab_size);
 		if (!data)
@@ -158,3 +158,4 @@ int main (int argc, char **argv, char **envp)
 	}
 	return (0);
 }
+

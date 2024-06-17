@@ -6,14 +6,12 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/15 15:54:00 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/17 10:52:48 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
-
-#include <stdbool.h>
 
 typedef struct s_table
 {
@@ -27,9 +25,7 @@ enum e_rtype
 	COMMAND,
 	PIPE,
 	INPUT,
-	OUTPUT,
-	HEREDOC,
-	APPEND,
+	OUTPUT
 };
 
 typedef struct s_data

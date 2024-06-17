@@ -6,50 +6,19 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:03:17 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/14 11:11:05 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:04:07 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// ###### INCLUDES ######
+#include <libft.h>
 
-#include "libft.h"
-
-#include <stdio.h>
-
-// ###### INCLUDES ######
-
-
-// ###### PROTOTYPES ######
-
-size_t	ft_perror(char *err_message);
-
-// ###### PROTOTYPES ######
-
-// char	*find_var(char *word, char *str)
-// {
-// 	int	i_word;
-// 	int	i_str;
-
-// 	i_str = 0;
-// 	i_word = 0;
-// 	while (word[i_word] && str[i_str])
-// 	{
-// 		if (word[i_word] != str[i_str])
-// 			return (NULL);
-// 		i_word++;
-// 		i_str++;
-// 	}
-// 	if (!word[i_word] && str[i_str] == '=')
-// 		return (str);
-// 	else
-// 		return (NULL);
-// }
-
+// main/utils.c
+int	ft_perror(char *err_message);
 
 static int	extract_value(char *var, char *word, char **var_content)
 {
-	size_t	i_var;
-	size_t	i_content;
+	int	i_var;
+	int	i_content;
 
 	i_content = 0;
 	i_var = ft_strlen(word) + 1;
@@ -68,9 +37,9 @@ static int	extract_value(char *var, char *word, char **var_content)
 
 static char	*var_exist(char *word, char **env)
 {
-	size_t	i_env;
-	size_t	i_word;
-	size_t	i_str;
+	int	i_env;
+	int	i_word;
+	int	i_str;
 
 	i_str = 0;
 	i_word = 0;

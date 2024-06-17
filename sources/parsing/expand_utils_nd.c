@@ -6,26 +6,16 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:39:14 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/15 14:59:25 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:03:52 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// ###### INCLUDES ######
-
-#include "struct.h"
-#include "libft.h"
-
-// ###### INCLUDES ######
-
-
-// ###### PROTOTYPES ######
+#include <libft.h>
 
 // main/utils.c
-size_t	ft_perror(char *err_message);
+int	ft_perror(char *err_message);
 
-// ###### PROTOTYPES ######
-
-static char	*init_join_str(size_t size, size_t *i_str, size_t *i_tok)
+static char	*init_join_str(int size, int *i_str, int *i_tok)
 {
 	char	*tmp;
 
@@ -43,14 +33,14 @@ static char	*init_join_str(size_t size, size_t *i_str, size_t *i_tok)
 int	join_str(char **token, int start, int end, char *var_content)
 {
 	char	*str;
-	size_t	i_str;
-	size_t	i_tok;
+	int		i_str;
+	int		i_tok;
 
 	str = init_join_str((ft_strlen(*token) - (end - start) + \
 		ft_strlen(var_content) + 1), &i_str, &i_tok);
 	if (!str)
 		return (free(var_content), -1);
-	while(i_str < start)
+	while (i_str < start)
 	{
 		str[i_str] = token[0][i_str];
 		i_str++;

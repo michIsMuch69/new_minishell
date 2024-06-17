@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 10:56:02 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/15 15:52:45 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/16 14:01:57 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 // ###### INCLUDES ######
 
-size_t	ft_perror(char *err_message)
+int	ft_perror(char *err_message)
 {
 	return (write(2, err_message, ft_strlen(err_message)));
 }
@@ -36,9 +36,9 @@ void	free_tab(t_table *tab, int start)
 	tab->tab = NULL;
 }
 
-void	free_struct(t_data *struc, size_t tab_size)
+void	free_struct(t_data *struc, int tab_size)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (i < tab_size)

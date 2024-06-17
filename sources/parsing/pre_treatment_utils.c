@@ -6,32 +6,26 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:32:21 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/15 15:06:59 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/16 14:44:10 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// ###### INCLUDES ######
+#include <libft.h>
 
-#include <stdlib.h>
-#include "libft.h"
+//	main/utils.c
+int	ft_perror(char *err_message);
 
-// ###### INCLUDES ######
-
-
-// ###### PROTOTYPES ######
-
-size_t	ft_perror(char *err_message);
-void	clear_buff(char *buffer, int start, int size);
-
-// ###### PROTOTYPES ######
+void	clear_buff(char *buffer, int start, int size)
+{
+	while (start < size)
+		buffer[start++] = '\0';
+}
 
 void	skip_spaces(char *str, int *i)
 {
 	while (str[*i] && (str[*i] == 32 || str[*i] == 9))
 		(*i)++;
 }
-
-
 
 int	filter(int *i, int i_tmp, char *str, char *tmp)
 {

@@ -6,27 +6,11 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:51:51 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/15 15:55:11 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:05:28 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// ###### INCLUDES ######
-
-#include <stdlib.h>
-#include "libft.h"
-
-// ###### INCLUDES ######
-
-
-// ###### PROTOTYPES ######
-
-size_t	ft_perror(char *err_message);
-void	clear_buff(char *buffer, int start, int size);
-
-int		filter(int *i_prompt, int i_tmp, char *prompt, char *tmp);
-void	skip_spaces(char *str, int *i);
-
-// ###### PROTOTYPES ######
+#include <pre_treatment.h>
 
 static char	*init_treatment(char *prompt, int *i_tmp, int i_prompt)
 {
@@ -52,8 +36,13 @@ static char	*quote_treatment(char *prompt, int *i_prompt, char c)
 	tmp[i_tmp++] = 32;
 	tmp[i_tmp] = prompt[(*i_prompt)];
 	i_tmp++;
-	while (prompt[++(*i_prompt)] && prompt[*i_prompt] != c)
+	while (prompt[++(*i_prompt)])
+	{
+		if (prompt[*i_prompt] == c && \
+			(prompt[(*i_prompt) + 1] == 9 || prompt[(*i_prompt) + 1] == 32))
+			break ;
 		tmp[i_tmp++] = prompt[*i_prompt];
+	}
 	tmp[i_tmp++] = prompt[*i_prompt];
 	tmp[i_tmp++] = 32;
 	f_index = i_tmp;

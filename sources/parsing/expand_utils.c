@@ -6,34 +6,11 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:10:11 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/15 14:46:53 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:02:46 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// ###### INCLUDES ######
-
-#include "libft.h"
-
-#include <stdio.h>
-
-// ###### INCLUDES ######
-
-
-// ###### PROTOTYPES ######
-
-// main/utils.c
-size_t	ft_perror(char *err_message);
-
-// parsing/getenv.c
-int		ft_getenv(char *word, char **env, char **var_content);
-
-// parsing/parsing_utils.c
-int		include_char(char *token, char c, int start);
-
-// parsing/parsing_utils_nd
-int		join_str(char **token, int start, int end, char *var_content);
-
-// ###### PROTOTYPES ######
+#include <expand.h>
 
 static int	find_end(char *str, int start)
 {
@@ -44,7 +21,7 @@ static int	find_end(char *str, int start)
 	return (start);
 }
 
-char	*extract_word(char *str, int start)
+static char	*extract_word(char *str, int start)
 {
 	char	*tmp;
 	int		end;
@@ -86,18 +63,6 @@ int	change_value(char **token, char **envp)
 	return (join_str(token, i - 1, find_end(*token, i), var_content)); // join var_content to the token	
 }
 
-int	find_size(char *str, int start, int end)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && i < start)
-		i++;
-	while (str[end++])
-		i++;
-	return (i);
-}
-
 int	cut_str(char **token, int start, int end)
 {
 	char	*tmp;
@@ -123,7 +88,7 @@ int	cut_str(char **token, int start, int end)
 	token[0] = tmp;
 	if (token[0][1])
 		return (0);
-	return (1);	
+	return (1);
 }
 
 int	count_sign(char *str, char sign)
@@ -135,4 +100,3 @@ int	count_sign(char *str, char sign)
 		i++;
 	return (i);
 }
-

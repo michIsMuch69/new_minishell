@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
+/*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/28 08:09:19 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/17 10:57:38 by fberthou         ###   ########.fr       */
+/*   Created: 2024/06/16 14:38:05 by fberthou          #+#    #+#             */
+/*   Updated: 2024/06/17 10:58:01 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
+#ifndef TOKENIZER_H
+# define TOKENIZER_H
 
-# include <stdlib.h>
+# include <libft.h>
 # include <struct.h>
+# include <stdlib.h>
 
 // main/utils.c
-void	free_tab(t_table *tab, int start);
+int		ft_perror(char *err_message);
+void	free_tab(t_table *tab, int start);	
 
-// parsing/pre_treatment.c
-char	*pre_treatment(char *prompt, int i);
-
-// parsing/tokenizer.c
-t_table	tokenizer(char *prompt);
-
-// parsing/struct_filling.c
-int		init_struct(t_data **data, t_table *tokens, int start, int data_size);
+// parsing/parsing_utils.c
+int		find_end(char *prompt, char c, int *i);
 
 #endif
