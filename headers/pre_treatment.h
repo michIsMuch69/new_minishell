@@ -1,41 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   struct.h                                           :+:      :+:    :+:   */
+/*   pre_treatment.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/17 11:47:19 by fberthou         ###   ########.fr       */
+/*   Created: 2024/06/16 14:32:27 by fberthou          #+#    #+#             */
+/*   Updated: 2024/06/17 10:58:13 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCT_H
-# define STRUCT_H
+#ifndef PRE_TREATMENT_H
+# define PRE_TREATMENT_H
 
-typedef struct s_table
-{
-	char	**tab;
-	int		size;
-} t_table;
+#include <stdlib.h>
+#include <libft.h>
 
-enum e_rtype
-{
-	NO_EXPAND = -1,
-	COMMAND,
-	PIPE,
-	INPUT,
-	OUTPUT
-};
+// main/utils.c
+int		ft_perror(char *err_message);
 
-typedef struct s_data
-{
-	enum e_rtype	cmd_type;
-	char			*cmd_path;
-	t_table			args;
-	t_table			env;
-	t_table			input;
-	t_table			output;
-} t_data;
+// parsing/parsing_utils.c
+void	clear_buff(char *buffer, int start, int size);
+int		filter(int *i_prompt, int i_tmp, char *prompt, char *tmp);
+void	skip_spaces(char *str, int *i);
 
 #endif
