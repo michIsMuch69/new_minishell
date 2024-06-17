@@ -6,7 +6,7 @@
 #    By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/06/17 10:41:57 by fberthou         ###   ########.fr        #
+#    Updated: 2024/06/17 11:50:22 by fberthou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ BUILD_EXEC_PATH			= $(BUILD_PATH)/exec
 
 # --- COMPILATION FLAGS --- #
 LIB_FLAGS	=	-I$(LIBFT_HDR_PATH)
-COMPFLAGS	=	-I$(HDR_PATH) $(LIB_FLAGS) -g -Wall -Wextra -Werror 
+COMPFLAGS	=	-I$(HDR_PATH) $(LIB_FLAGS) -g #-Wall -Wextra -Werror 
 
 SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c \
 			\

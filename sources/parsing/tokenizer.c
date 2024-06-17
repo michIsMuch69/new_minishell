@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:10:46 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/17 11:07:22 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:49:44 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,3 @@ t_table	tokenizer(char *prompt)
 	}
 	return (token);
 }
-
-// metacharactere separators | space tab > < >> <<
