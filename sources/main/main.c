@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/17 10:51:58 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:38:56 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ int main (int argc, char **argv, char **envp)
 		return (ft_perror("error -> init structure\n"), 2);
 	while (1)
 	{
-		prompt = readline("\033[32mmini$hell>\033[0m ");
+		prompt = readline("\033[32mmini$hell>\033[0m");
 		add_history(prompt); // !! need to clear history
 		tab_size = parse_prompt(&prompt, data->env.tab, &data);
 		if (tab_size == -1)

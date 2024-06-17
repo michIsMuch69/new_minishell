@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:46:39 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/17 10:47:05 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:52:13 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,15 @@
 // 		ft_cd(data[i].args.tab);
 // }
 
-int	exec_handler(int i, t_data *data)
+// int	format_cmd_path()
+// {
+// 	char *directory;
+// 	char *cmd_path;
+
+	
+// }
+
+static int	exec_handler(int i, t_data *data)
 {
 	char	*directory;
 	char	*cmd_path;
@@ -67,7 +75,7 @@ int	exec_handler(int i, t_data *data)
 	return (0);
 }
 
-int	handle_child(int i, int *fds, int tab_size, int prev_fd, t_data *data)
+static int	handle_child(int i, int *fds, int tab_size, int prev_fd, t_data *data)
 {
 	if (redir_input(data, i, prev_fd) == -1)
 		return (-1);
@@ -82,7 +90,7 @@ int	handle_child(int i, int *fds, int tab_size, int prev_fd, t_data *data)
 // test : 
 // -  cat < file2.txt | rev > file1.txt
 
-void	handle_parent(int i, int *fds, int prev_fd)
+static void	handle_parent(int i, int *fds, int prev_fd)
 {
 	if (i > 0)
 		close(prev_fd);
