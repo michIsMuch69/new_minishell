@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/14 10:45:04 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/16 17:41:06 by jean-michel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 // ###### INCLUDES ######
 
 #include "exec.h"
+#include "libft.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "get_next_line.h"
 
 // ###### INCLUDES ######
 
@@ -156,17 +158,13 @@ int main (int argc, char **argv, char **envp)
 		return (ft_perror("error -> init structure\n"), 2);
 	while (1)
 	{
-		prompt = readline("mini$hell> ");
-		//test
-		if(ft_strcmp(prompt, "exit") == 0)
-			return (free_struct(data, tab_size),  3);
-		//test
+		prompt = readline("\033[32mmini$hell>\033[0m ");
 		add_history(prompt); // !! need to clear history
 		tab_size = parse_prompt(&prompt, data->env.tab, &data);
 		if (tab_size == -1)
 			return (free_struct(data, 1), /*free(prompt),*/ 4);
 		// if (tab_size)
-		// 	exec_handler(data, tab_size);
+		//exec_handler(data, tab_size);
 		exec(tab_size, data, envp);
 		free(prompt);
 		data = reset_env(data, tab_size);
