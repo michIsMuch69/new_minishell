@@ -6,38 +6,38 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:46:39 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/17 09:42:53 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/17 10:47:05 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	is_builtin(t_data *data, int i)
-{
-	// if (ft_strcmp(data[i].args.tab[0], "echo") == 0)
-	// 	return (1);
-	if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
-		return (1);
-	// if (ft_strcmp(data[i].args.tab[0], "pwd") == 0)
-	// 	return (1);
-	// if (ft_strcmp(data[i].args.tab[0], "export") == 0)
-	// 	return (1);
-	// if (ft_strcmp(data[i].args.tab[0], "unset") == 0)
-	// 	return (1);
-	// if (ft_strcmp(data[i].args.tab[0], "env") == 0)
-	// 	return (1);
-	if (ft_strcmp(data[i].args.tab[0], "exit") == 0)
-		return (1);
-	return (0);
-}
+// int	is_builtin(t_data *data, int i)
+// {
+// 	// if (ft_strcmp(data[i].args.tab[0], "echo") == 0)
+// 	// 	return (1);
+// 	if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
+// 		return (1);
+// 	// if (ft_strcmp(data[i].args.tab[0], "pwd") == 0)
+// 	// 	return (1);
+// 	// if (ft_strcmp(data[i].args.tab[0], "export") == 0)
+// 	// 	return (1);
+// 	// if (ft_strcmp(data[i].args.tab[0], "unset") == 0)
+// 	// 	return (1);
+// 	// if (ft_strcmp(data[i].args.tab[0], "env") == 0)
+// 	// 	return (1);
+// 	if (ft_strcmp(data[i].args.tab[0], "exit") == 0)
+// 		return (1);
+// 	return (0);
+// }
 
-void	exec_builtin(t_data *data, int i)
-{
-	if (ft_strcmp(data[i].args.tab[0], "exit") == 0)
-		ft_exit();
-	if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
-		ft_cd(data[i].args.tab);
-}
+// void	exec_builtin(t_data *data, int i)
+// {
+// 	if (ft_strcmp(data[i].args.tab[0], "exit") == 0)
+// 		ft_exit();
+// 	if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
+// 		ft_cd(data[i].args.tab);
+// }
 
 int	exec_handler(int i, t_data *data)
 {
@@ -88,6 +88,7 @@ void	handle_parent(int i, int *fds, int prev_fd)
 		close(prev_fd);
 	close(fds[1]);
 }
+
 int	exec(int tab_size, t_data *data)
 {
 	int		i;

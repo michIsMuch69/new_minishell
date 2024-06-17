@@ -49,6 +49,13 @@ size_t	ft_perror(char *err_message);
 int		ft_exit(void);
 int		ft_cd(char **args);
 
+/*===========================builtins_utils.c===============================*/
+
+int		is_builtin(t_data *data, int i);
+void	exec_builtin(t_data *data, int i);
+
+
+
 /*===========================redirections.c===============================*/
 
 int		redir_input(t_data *data, int i, int prev_fd);
@@ -59,5 +66,7 @@ int		arrow_count(char *str, char c);
 /*===========================exec_handler.c===============================*/
 
 int		exec_handler(int i, t_data *data);
+
+
 
 #endif
