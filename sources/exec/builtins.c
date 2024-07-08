@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:39:26 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/07 11:56:45 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/08 15:08:18 by jean-michel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,27 +152,26 @@ void	set_env(char *key, char *value, char **env)
     printf("env var added : %s\n", env[i]);
 }
 
-int ft_export(char *var, char *new_value, t_table *env)
+int ft_export(char **args, char **env)
 {
-    int i;
-    int var_len;
-    char *temp = NULL;
+    char *key;
+    char *value;
 
-    //ft_getenv(var, )
-
-    // ft_getenv ---> store the VALUE of the variable;
-    i = 0;
-    var_len = ft_strlen(var);
-    
-    //si pas de var : creer et realloc le tableau.
-    // sinon : assigner.
-    while (env->tab[i])
+    value = args[3];
+    key = args[1];
+    if (!args[1])
     {
-        if (ft_strncmp(env->tab[i], var, var_len) == 0)
-        {
-            ft_m
-        }
+        ft_env(env);
+        return 0;
     }
+    if (args[2] && ft_strcmp(args[2], "=") == 0 && value)
+        set_env(key, value, env);
+    else
+    {
+        ft_putstr_fd("export: invalid format\n", 2);
+        return (1);
+    }
+    return 0;
 }
 
 int ft_unset(char *var, t_table *env)
@@ -201,8 +200,8 @@ int ft_unset(char *var, t_table *env)
             printf("env var set : %s\n", env->tab[i]);
             return (1);
         }
-		else 
-			return ("variable don't exit", -1);
+		// else 
+		// 	return ("variable don't exit", -1);
         i++;
     }
     env->tab[i + 1] = NULL; 

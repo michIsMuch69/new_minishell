@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 10:46:50 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/05 12:46:50 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/08 15:10:46 by jean-michel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	exec_builtin_parent(t_data *data)
 		printf("Executing built-in cd in parent process\n");
 
 		status = ft_cd(data->args.tab, data->env.tab);
-		if (status = -1)
+		if (status == -1)
 			perror("cd failed");
 		close_fds(data->in_out_fd);
 		return ;
@@ -65,12 +65,11 @@ void	exec_builtin_parent(t_data *data)
 
 		ft_exit(data->args.tab, data->exit_status);
 	}
-	//printf("Unexpected exit from exec_builtin_parent\n");
-	// else if (ft_strcmp(data->args.tab[0], "export") == 0)
-	// {
-	//     status = ft_export(data->args.tab);
-	//     return;  // cd doesn't exit the shell, so no exit(status) at the end.
-	// }
+	else if (ft_strcmp(data->args.tab[0], "export") == 0)
+	{
+		status = ft_export(data->args.tab, data->env.tab);
+	    return;  // cd doesn't exit the shell, so no exit(status) at the end.
+	}
 	else if (ft_strcmp(data->args.tab[0], "unset") == 0)
 	{
 	    status = ft_unset(data->args.tab[1], &(data->env));
