@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/05 09:16:39 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/07 11:47:33 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,36 +164,39 @@ static t_data	*reset_env(t_data *data, int tab_size)
 
 int main (int argc, char **argv, char **envp)
 {
-	char 	*prompt;
-	int		tab_size;
-	t_data	*data;
+	// char 	*prompt;
+	// int		tab_size;
+	// t_data	*data;
 
-	// static int index = 0;
+	// // static int index = 0;
 
-	(void) argc;
-	(void) argv;
-	if (argc != 1)
-		return (ft_perror("arguments are invalid\n"), 1);
-	data = init_data(envp);
-	if (!data)
-		return (ft_perror("error -> init structure\n"), 2);
-	while (1)
-	{
-		prompt = readline("\033[32mmini$hell>\033[0m ");
-		add_history(prompt); // !! need to clear history
-		tab_size = parse_prompt(&prompt, data->env.tab, &data);
-		if (tab_size == -1)
-			return (free_struct(data, 1), 4);
-		if (tab_size)
-      if (exec(tab_size, data) == -1)
-			  return (free_struct(data, 1), free(prompt), 5);
-		// if (++index == 4)
-		// 	return (free(prompt), free_struct(data, tab_size), 0);
-		if (prompt)
-      	free(prompt);
-		data = reset_env(data, tab_size);
-		if (!data)
-			return (5);
-	}
+	// (void) argc;
+	// (void) argv;
+	// if (argc != 1)
+	// 	return (ft_perror("arguments are invalid\n"), 1);
+	// data = init_data(envp);
+	// if (!data)
+	// 	return (ft_perror("error -> init structure\n"), 2);
+	// while (1)
+	// {
+	// 	prompt = readline("\033[32mmini$hell>\033[0m ");
+	// 	add_history(prompt); // !! need to clear history
+	// 	tab_size = parse_prompt(&prompt, data->env.tab, &data);
+	// 	if (tab_size == -1)
+	// 		return (free_struct(data, 1), 4);
+	// 	if (tab_size)
+    //   if (exec(tab_size, data) == -1)
+	// 		  return (free_struct(data, 1), free(prompt), 5);
+	// 	// if (++index == 4)
+	// 	// 	return (free(prompt), free_struct(data, tab_size), 0);
+	// 	if (prompt)
+    //   	free(prompt);
+	// 	data = reset_env(data, tab_size);
+	// 	if (!data)
+	// 		return (5);
+	// }
+	char *str = NULL;
+	ft_getenv("PATH", envp, &str);
+	printf("%s\n", str);
 	return (0);
 }

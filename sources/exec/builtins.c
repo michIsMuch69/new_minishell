@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:39:26 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/05 12:14:59 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/07 11:56:45 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,29 @@ void	set_env(char *key, char *value, char **env)
     printf("env var added : %s\n", env[i]);
 }
 
+int ft_export(char *var, char *new_value, t_table *env)
+{
+    int i;
+    int var_len;
+    char *temp = NULL;
+
+    //ft_getenv(var, )
+
+    // ft_getenv ---> store the VALUE of the variable;
+    i = 0;
+    var_len = ft_strlen(var);
+    
+    //si pas de var : creer et realloc le tableau.
+    // sinon : assigner.
+    while (env->tab[i])
+    {
+        if (ft_strncmp(env->tab[i], var, var_len) == 0)
+        {
+            ft_m
+        }
+    }
+}
+
 int ft_unset(char *var, t_table *env)
 {
     int i;
@@ -178,6 +201,8 @@ int ft_unset(char *var, t_table *env)
             printf("env var set : %s\n", env->tab[i]);
             return (1);
         }
+		else 
+			return ("variable don't exit", -1);
         i++;
     }
     env->tab[i + 1] = NULL; 
