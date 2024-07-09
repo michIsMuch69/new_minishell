@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: florian <florian@student.42.fr>            +#+  +:+       +#+         #
+#    By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/07/02 13:17:24 by florian          ###   ########.fr        #
+#    Updated: 2024/07/09 08:42:44 by jedusser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,8 @@ SRC_PATH				= sources
 MAIN_PATH				= $(SRC_PATH)/main
 PARSING_PATH			= $(SRC_PATH)/parsing
 EXEC_PATH				= $(SRC_PATH)/exec
+SIG_PATH				= $(SRC_PATH)/signals
+BUILTINS_PATH			= $(SRC_PATH)/builtins
 #LIBFT#
 LIBFT_PATH				= libft
 LIBFT_HDR_PATH			= $(LIBFT_PATH)/hdr
@@ -35,6 +37,8 @@ BUILD_PATH				= .build
 BUILD_MAIN_PATH			= $(BUILD_PATH)/main
 BUILD_PARS_PATH			= $(BUILD_PATH)/parsing
 BUILD_EXEC_PATH			= $(BUILD_PATH)/exec
+BUILD_SIG_PATH			= $(BUILD_PATH)/signals
+BUILD_BUILTINS_PATH		= $(BUILD_PATH)/builtins
 
 # --- COMPILATION FLAGS --- #
 LIB_FLAGS	=	-I$(LIBFT_HDR_PATH)
@@ -52,8 +56,11 @@ SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c \
 			\
 			$(EXEC_PATH)/exec.c $(EXEC_PATH)/init_exec.c $(EXEC_PATH)/build_exec_path.c $(EXEC_PATH)/exec_utils.c \
 			$(EXEC_PATH)/redirections.c $(EXEC_PATH)/redirections_utils.c $(EXEC_PATH)/fds_management.c \
-			$(EXEC_PATH)/builtins.c	$(EXEC_PATH)/builtins_utils.c $(EXEC_PATH)/heredoc.c \
-			$(EXEC_PATH)/pipe.c
+			$(EXEC_PATH)/heredoc.c	$(EXEC_PATH)/pipe.c	 \
+			\
+			$(SIG_PATH)/sig_manager.c	\
+			\
+			$(BUILTINS_PATH)/builtins_parent.c	$(BUILTINS_PATH)/builtins_child.c	$(BUILTINS_PATH)/builtins_utils.c $(BUILTINS_PATH)/builtins_exec.c
 
 ### ---- TEMPORARY FILES ---- ###
 OBJ	= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)
@@ -73,7 +80,8 @@ $(LIBFT)	: FORCE
 
 #########     OBJECTS    #########
 $(BUILD_PATH)/%.o : $(SRC_PATH)/%.c
-	@mkdir -p $(BUILD_PATH) $(BUILD_MAIN_PATH) $(BUILD_PARS_PATH) $(BUILD_EXEC_PATH)
+	@mkdir -p $(BUILD_PATH) $(BUILD_MAIN_PATH) $(BUILD_PARS_PATH) \
+	$(BUILD_EXEC_PATH) $(BUILD_SIG_PATH) $(BUILD_BUILTINS_PATH)
 	$(CC) $(COMPFLAGS) -c $< -o $@
 
 FORCE	:

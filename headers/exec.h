@@ -52,14 +52,15 @@ void	handle_error(const char *message, int exit_code);
 
 /*===========================builtins.c===============================*/
 
-void	ft_exit(char **args, int last_status);
+void	ft_exit(t_data *data, int tab_size, int last_status);
 int		ft_cd(char **args, char **env);
 int		ft_pwd(void);
 int		ft_echo(char **args);
 int		ft_env(char **env);
 int		ft_unset(char *var, t_table *env);
-int ft_export(char **args, char **env);
+int		ft_export(char **args, char **env);
 
+void	free_struct(t_data *struc, int tab_size);
 
 
 
@@ -69,8 +70,10 @@ int ft_export(char **args, char **env);
 int		is_builtin_parent(t_data *data);
 int		is_builtin_child(t_data *data);
 
-void	exec_builtin_parent(t_data *data);
+void	exec_builtin_parent(t_data *data, int tab_size);
 void	exec_builtin_child(t_data *data, int **pipe_ptr, int tab_size);
+int		is_numeric_str(char *str);
+
 
 //void	exec_builtin(t_data *data);
 

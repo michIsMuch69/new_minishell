@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:16:08 by fberthou          #+#    #+#             */
-/*   Updated: 2024/07/02 16:03:21 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/08 16:51:01 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ typedef struct s_data
 	char			*cmd_path;
 	int				exit_status;
 	int				in_out_fd[2];
-    int             backup_fd[2];
 	t_table	  		args;
 	t_table		  	env;
 	t_table		  	input;
 	t_table		  	output;
   	t_table			docs_files;
+    int             tab_size;
+    char            *prompt;
 } t_data;
 
 #endif

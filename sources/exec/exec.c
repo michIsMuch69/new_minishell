@@ -6,12 +6,11 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:46:39 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/05 13:24:15 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/09 10:10:21 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-
 
 static int parent_routine(t_data *data, int i, int tab_size, int **fd)
 {
@@ -80,33 +79,36 @@ static int	exec_all(t_data *data, int tab_size, int **fd)
         if(is_builtin_parent(&data[i]))
         {
             printf("Executing parent built-in: %s\n", data[i].args.tab[0]);
-            exec_builtin_parent(&data[i]);
+            exec_builtin_parent(&data[i], tab_size);
             i++;
         }
-        pid = fork();
-        if (pid < 0)
-            return (perror("Fork failed "), pid);  // -1 -> crash
-        if (pid == 0)
-        {
-            if (child_routine(data, tab_size, i, fd) == -1)
-                return (free_pipes(fd, tab_size -1), exit(1), 1);
-            free_pipes(fd, tab_size - 1);
-            if(!is_builtin_child(&data[i]))
-            {
-                if (execve(data[i].cmd_path, data[i].args.tab, data[i].env.tab) == -1)
-                    exit(EXIT_FAILURE);    
-            }
-            exit(0);
-        }
-        else if (pid > 0)
-            if (parent_routine(data, i, tab_size, fd) == -1)
-                return (free_pipes(fd, tab_size - 1), -1);
+		else
+		{
+			pid = fork();
+			if (pid < 0)
+				return (perror("Fork failed "), pid);  // -1 -> crash
+			if (pid == 0)
+			{
+				if (child_routine(data, tab_size, i, fd) == -1)
+					return (free_pipes(fd, tab_size -1), exit(1), 1);
+				free_pipes(fd, tab_size - 1);
+				if(!is_builtin_child(&data[i]))
+				{
+					if (execve(data[i].cmd_path, data[i].args.tab, data[i].env.tab) == -1)
+						exit(EXIT_FAILURE);    
+				}
+				exit(0);
+			}
+			else if (pid > 0)
+				if (parent_routine(data, i, tab_size, fd) == -1)
+					return (free_pipes(fd, tab_size - 1), -1);
+		}
     }
     free_pipes(fd, tab_size - 1);
     return (wait_all(data, tab_size));
 }
 
-static int exec_one(t_data *data)
+static int exec_one(t_data *data, int tab_size)
 {
     pid_t pid;
 
@@ -114,7 +116,7 @@ static int exec_one(t_data *data)
     {
         printf("Executing parent built-in: %s\n", data->args.tab[0]);
 
-        exec_builtin_parent(data);
+        exec_builtin_parent(data, tab_size);
         return (0);
     }
     pid = fork();
@@ -181,7 +183,7 @@ int	exec(int tab_size, t_data *data)
         return (ret_value); // -1 -> crash : 1 -> back to prompt CLOSE ALL IN_OUT
     }
     if (tab_size == 1)
-        ret_value = exec_one(&(data[0]));
+        ret_value = exec_one(&(data[0]), tab_size);
     else
     {
         pipe_fd = init_pipe(data, tab_size - 1);
