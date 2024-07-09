@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:39:26 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/09 07:19:56 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/07/09 12:47:26 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,13 +156,10 @@ void	set_env(char *key, char *value, char **env)
 //     int i;
 //     int var_len;
 //     char *temp = NULL;
-
 //     //ft_getenv(var, )
-
 //     // ft_getenv ---> store the VALUE of the variable;
 //     i = 0;
 //     var_len = ft_strlen(var);
-
 //     //si pas de var : creer et realloc le tableau.
 //     // sinon : assigner.
 //     while (env->tab[i])
