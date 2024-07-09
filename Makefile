@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+         #
+#    By: florian <florian@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/03 11:07:17 by fberthou          #+#    #+#              #
-#    Updated: 2024/06/17 13:19:55 by jedusser         ###   ########.fr        #
+#    Updated: 2024/07/08 15:38:43 by florian          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC_PATH				= sources
 MAIN_PATH				= $(SRC_PATH)/main
 PARSING_PATH			= $(SRC_PATH)/parsing
 EXEC_PATH				= $(SRC_PATH)/exec
+SIG_PATH				= $(SRC_PATH)/signals
 #LIBFT#
 LIBFT_PATH				= libft
 LIBFT_HDR_PATH			= $(LIBFT_PATH)/hdr
@@ -35,10 +36,11 @@ BUILD_PATH				= .build
 BUILD_MAIN_PATH			= $(BUILD_PATH)/main
 BUILD_PARS_PATH			= $(BUILD_PATH)/parsing
 BUILD_EXEC_PATH			= $(BUILD_PATH)/exec
+BUILD_SIG_PATH			= $(BUILD_PATH)/signals
 
 # --- COMPILATION FLAGS --- #
 LIB_FLAGS	=	-I$(LIBFT_HDR_PATH)
-COMPFLAGS	=	-I$(HDR_PATH) $(LIB_FLAGS) -g # -Wall -Wextra -Werror 
+COMPFLAGS	=	-I$(HDR_PATH) $(LIB_FLAGS) -g # -Wall -Wextra -Werror
 
 SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c \
 			\
@@ -50,15 +52,18 @@ SRC		=	$(MAIN_PATH)/main.c $(MAIN_PATH)/utils.c \
 			$(PARSING_PATH)/getenv.c \
 			$(PARSING_PATH)/struct_filling.c \
 			\
-			$(EXEC_PATH)/exec.c $(EXEC_PATH)/build_exec_path.c $(EXEC_PATH)/exec_utils.c \
-			$(EXEC_PATH)/redirections.c $(EXEC_PATH)/redirections_utils.c \
-			$(EXEC_PATH)/builtins.c	$(EXEC_PATH)/builtins_utils.c
+			$(EXEC_PATH)/exec.c $(EXEC_PATH)/init_exec.c $(EXEC_PATH)/build_exec_path.c $(EXEC_PATH)/exec_utils.c \
+			$(EXEC_PATH)/redirections.c $(EXEC_PATH)/redirections_utils.c $(EXEC_PATH)/fds_management.c \
+			$(EXEC_PATH)/builtins.c	$(EXEC_PATH)/builtins_utils.c $(EXEC_PATH)/heredoc.c \
+			$(EXEC_PATH)/pipe.c \
+			\
+			$(SIG_PATH)/sig_manager.c
 
 ### ---- TEMPORARY FILES ---- ###
 OBJ	= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)
 
 ### --- CALL --- ###
-default	: all 
+default	: all
 all		: $(LIBFT) $(NAME)
 
 ### --- MINISHELL --- ###
@@ -72,7 +77,8 @@ $(LIBFT)	: FORCE
 
 #########     OBJECTS    #########
 $(BUILD_PATH)/%.o : $(SRC_PATH)/%.c
-	@mkdir -p $(BUILD_PATH) $(BUILD_MAIN_PATH) $(BUILD_PARS_PATH) $(BUILD_EXEC_PATH)
+	@mkdir -p $(BUILD_PATH) $(BUILD_MAIN_PATH) $(BUILD_PARS_PATH) \
+	$(BUILD_EXEC_PATH) $(BUILD_SIG_PATH)
 	$(CC) $(COMPFLAGS) -c $< -o $@
 
 FORCE	:

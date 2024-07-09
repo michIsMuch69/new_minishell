@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 11:00:41 by fberthou          #+#    #+#             */
-/*   Updated: 2024/05/28 07:40:09 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/20 20:47:29 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void			ft_putchar_fd(char c, int fd);
 int				putcharac(char c);
 int				put_hexa(unsigned int x, const char **flag, int firstCall);
 int				put_int(long nbr, int firstCall);
-void			ft_putstr_fd(char *s, int fd);
+ssize_t		ft_putstr_fd(char *s, int fd);
 int				putstring(char *str);
 void			ft_putendl_fd(char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);

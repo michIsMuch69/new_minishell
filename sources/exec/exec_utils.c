@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 08:59:06 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/14 10:38:34 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/05 09:01:31 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+
+int wait_all(t_data *data, int tab_size)
+{
+    int i;
+
+    i = -1;
+    while (++i < tab_size)
+    {
+        if (wait(&(data[0].exit_status)) == -1)
+        {
+            perror("errno wait ");
+            printf("errno == %d\n", errno);
+        }
+    }
+    return (0);
+}
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -32,16 +48,4 @@ void	free_array(char **array)
 	while (array[i])
 		free(array[i++]);
 	free(array);
-}
-
-void	wait_all(int tab_size)
-{
-	int	i;
-
-	i = 0;
-	while (i < tab_size)
-	{
-		waitpid(-1, NULL, 0);
-		i++;
-	}
 }

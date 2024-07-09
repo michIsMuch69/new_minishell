@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:51:51 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/17 11:49:47 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:02:51 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,10 @@ char	*pre_treatment(char *prompt, int i)
 		}
 		else if (prompt[i] == '"' || prompt[i] == '\'')
 		{
-			prompt = quote_treatment(prompt, &i, prompt[i]);
+			if (i == 0 || (prompt[i - 1] == 9 || prompt[i - 1] == 32))
+				prompt = quote_treatment(prompt, &i, prompt[i]);
+			else
+				i++;
 			if (!prompt)
 				return (NULL);
 		}

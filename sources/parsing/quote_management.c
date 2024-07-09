@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:07:06 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/17 11:07:56 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:08:59 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,16 @@ static int	simple_quote(char *token, t_table tmp)
 
 int	quote_management(t_table args, t_table tmp)
 {
-	if (args.tab[tmp.size][0] == '\'')
-		return (simple_quote(args.tab[tmp.size], tmp));
-	else if (args.tab[tmp.size][0] == '"')
-		return (double_quote(args.tab[tmp.size], tmp));
+	int	i;
+
+	i = 0;
+	while (args.tab[tmp.size][i])
+	{
+		if (args.tab[tmp.size][i] == '\'')
+			return (simple_quote(args.tab[tmp.size], tmp));
+		else if (args.tab[tmp.size][i] == '"')
+			return (double_quote(args.tab[tmp.size], tmp));
+		i++;
+	}
 	return (0);
 }

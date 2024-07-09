@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:26:45 by fberthou          #+#    #+#             */
-/*   Updated: 2024/06/07 07:54:14 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:20:07 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,27 @@
 
 // ###### PROTOTYPES ######
 
-void	free_tab(t_table tab);
-void	free_struct(t_data *struc, size_t tab_size);
+void	free_tab(t_table *tab, int start);
+void	free_struct(t_data *struc, int tab_size);
 char	*quote_management(char *token, char **envp);
 size_t	ft_perror(char *err_message);
 
 // ###### PROTOTYPES ######
 
 
-static char	*clean_token(char *token, char **envp)
+static char	*clean_token(char *token)
 {
 	char	*arg;
 	size_t	i;
 
 	i = 0;
-	if (token[i] == '\'' || token[i] == '"')
-		return (quote_management(token, envp));
-	// else if (token[i] == '$')
-	// 	arg = expand_management(token, envp);
-	else
-		return (ft_strdup(token));
+	while (token[i])
+	{
+		if (token[i] == '\'' || token[i] == '"')
+			return (quote_management(token, envp));
+		i++;
+	}
+	return (ft_strdup(token));
 }
 
 t_table	*token_cleaner(t_table tokens, char **env)
@@ -61,7 +62,7 @@ t_table	*token_cleaner(t_table tokens, char **env)
 	table->size = 0;
 	while (table->size < tokens.size)
 	{
-		table->tab[table->size] = clean_token(tokens.tab[table->size], env);
+		table->tab[table->size] = clean_token(tokens.tab[table->size]);
 		if (!table->tab[table->size])
 			return (free_tab(*table), free(table), NULL);
 		(table->size)++;

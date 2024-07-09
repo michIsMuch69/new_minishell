@@ -3,121 +3,110 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:47:54 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/17 13:19:38 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/05 09:15:56 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static int	here_docs(char *delimiter)
+/*
+  * check if files exist
+  * return inputfile fd
+  * or -1 -> error crash
+  * or -2 -> error back to prompt
+*/
+static int	define_input_fd(t_table infile, t_table heredocs)
 {
-	char	*prompt;
-	int		fd2;
-
-	fd2 = open("temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);//1 Ecriture
-	if (fd2 == -1)
-		return (-1);
-	while (1)
-	{
-		prompt = readline(">");
-		if (strcmp(prompt, delimiter) == 0)
-			break ;
-		else
-		{
-			ft_putstr_fd(prompt, fd2);
-			ft_putstr_fd("\n", fd2);
-		}
-		free(prompt);
-	}
-	close(fd2);
-	fd2 = open("temp.txt", O_RDONLY); //0 Lecture
-	if (fd2 == -1)
-		return (-1);
-	return (fd2);
-}
-
-static int	define_input_fd(t_data *data, int i)
-{
+  char  *inputfile;
 	int		input_fd;
-	char	*input_file;
-	char	*delimiter;
 
-	if (arrow_count(data[i].input.tab[0], '<') - 1 == 1)
-	{
-		input_file = skip_redir_symbol(data[i].input.tab[0], 0);
-		if (access(input_file, F_OK) == -1)
-			return (perror("Files doesn't exit"), -1);
-		input_fd = open(input_file, O_RDONLY);
-	}
-	if (arrow_count(data[i].input.tab[0], '<') - 1 == 2)
-	{
-		delimiter = skip_redir_symbol(data[i].input.tab[0], 0);
-		input_fd = here_docs(delimiter);
-		unlink("temp.txt");
-	}
+  if (arrow_count(infile.tab[(infile.size - 1)], '<') == 2)
+  {
+    input_fd = open(heredocs.tab[heredocs.size - 1], O_RDONLY | __O_CLOEXEC);
+    if (input_fd == -1)
+      perror("open heredoc file");
+    return (input_fd);
+  }
+  inputfile = skip_redir_symbol(infile.tab[(infile.size - 1)], 0);
+  if (!inputfile)
+    return (ft_perror("error-> alloc inputfile\n"), -1);
+  input_fd = open(inputfile, O_RDONLY | __O_CLOEXEC);
+  if (input_fd == -1)
+    perror("open infile ");
+  free(inputfile);
 	return (input_fd);
 }
 
-static int	define_output_fd(t_data *data, int i)
+/*
+  * check_all
+    - check if nb arrow is correct
+    - check file access
+    - return -1 crash
+    - return -2 back to prompt
+    - return 0 if all ok
+  * return define_input_fd
+*/
+static int  redir_input(t_data *data)
 {
+	int ret_value;
+
+  ret_value = check_all(data->input);
+  if (ret_value == -1 || ret_value == -2)
+    return (ret_value);
+  return (define_input_fd(data->input, data->docs_files));
+}
+
+/*
+	* create files and check permissions
+  * get fd of the last outfile
+	* return -1 if an error occured
+  * else return outfile_fd
+*/
+static int	redir_output(t_data *data)
+{
+    int   ret_value;
 	int		output_fd;
 	char	*output_file;
 
-	output_file = skip_redir_symbol(data[i].output.tab[0], 1);
-	if (arrow_count(data[i].output.tab[0], '>') - 1 == 1)
-	{
-		output_fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	}
-	if (arrow_count(data[i].output.tab[0], '>') - 1 == 2)
-	{
-		//check_access output file 
-		output_fd = open(output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	}
-	return (output_fd);
+	// create all files and check permissions
+    ret_value = create_all(data->output);
+    if (ret_value == -1) // crash
+        return (-1);
+    if (ret_value == -2) // back to prompt
+        return (-2);
+    // get the fd of the last file created
+    output_file = skip_redir_symbol(data->output.tab[(data->output.size - 1)], 1);
+    if (!output_file)
+        return (-1); // crash
+    if (arrow_count(data->output.tab[(data->output.size - 1)], '>') == 1)
+        output_fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC | __O_CLOEXEC, 0644);
+    else if (arrow_count(data->output.tab[(data->output.size - 1)], '>') == 2)
+        output_fd = open(output_file, O_WRONLY | O_CREAT | O_APPEND | __O_CLOEXEC, 0644);
+    else
+        return (ft_perror("unexpected \'>\' token\n"), -2);
+    if (output_fd == -1)
+        perror("open outfile fail");
+    return (free(output_file), output_fd);
 }
 
-int	redir_input(t_data *data, int i, int prev_fd)
+int handle_redirection(t_data *data)
 {
-	int		input_fd;
-
-	if (data[i].input.size)
-	{
-		input_fd = define_input_fd(data, i);
-		if (input_fd == -1)
-			return (perror("Failed to open input file"), -1);
-		if (dup2(input_fd, STDIN_FILENO) == -1)
-			return (perror("Failed to redirect "), close(input_fd), -1);
-	}
-	else if (i > 0)
-	{
-		if (dup2(prev_fd, STDIN_FILENO) == -1)
-			return (perror("Failed to duplicate previous fd"), -1);
-		close(prev_fd);
-	}
-	return (0);
-}
-
-int	redir_output(t_data *data, int i, int tab_size, int *fds)
-{
-	int		output_fd;
-
-	if (data[i].output.size)
-	{
-		output_fd = define_output_fd(data, i);
-		if (output_fd == -1)
-			return (perror("Failed to open output file"), -1);
-		if (dup2(output_fd, STDOUT_FILENO) == -1)
-			return (perror("Failed to redirect standard output"), -1);
-		close(output_fd);
-	}
-	else if (i < tab_size - 1)
-	{
-		if (dup2(fds[1], STDOUT_FILENO) == -1)
-			return (perror("Failed to duplicate pipe fd for output"), -1);
-		close(fds[1]);
-	}
-	return (0);
+  if (data->output.size)
+  {
+    data->in_out_fd[1] = redir_output(data);
+    if (data->in_out_fd[1] == -1)
+      return (-1); // crash
+  }
+  if (data->input.size)
+  {
+    data->in_out_fd[0] = redir_input(data);
+    if (data->in_out_fd[0] == -1)
+      return (-1); // crash
+  }
+  if (data->in_out_fd[0] == -2 || data->in_out_fd[1] == -2)
+    return (1); // -> back to prompt
+  return (0);
 }
