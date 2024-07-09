@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:46:39 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/09 07:18:27 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/07/09 11:30:17 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static int exec_one(t_data *data)
     if (is_builtin_parent(data))
     {
         printf("Executing parent built-in: %s\n", data->args.tab[0]);
-
+        print_struct(data, data->tab_size);
         exec_builtin_parent(data);
         return (0);
     }
@@ -141,7 +141,6 @@ static int exec_one(t_data *data)
         exec_builtin_child(data, NULL, 0);
         exit(0);
     }
-  //  exit(EXIT_FAILURE);
     return (-1);
 }
 
@@ -177,7 +176,7 @@ int	exec(int tab_size, t_data *data)
     {
         while (++i < tab_size)
             close_fds(data[i].in_out_fd);
-        return (ret_value); // -1 -> crash : 1 -> back to prompt CLOSE ALL IN_OUT
+        return (ret_value);
     }
     if (tab_size == 1)
         ret_value = exec_one(&(data[0]));
@@ -185,7 +184,7 @@ int	exec(int tab_size, t_data *data)
     {
         pipe_fd = init_pipe(data, tab_size - 1);
         if (!pipe_fd)
-            return (-1); // CLOSE ALL IN_OUT
+            return (-1);
         ret_value = exec_all(data, tab_size, pipe_fd);
     }
     return (ret_value);

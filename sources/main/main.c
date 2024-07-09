@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/09 07:30:07 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/07/09 10:34:41 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,11 +132,11 @@ int main (int argc, char **argv, char **envp)
 		data->prompt = readline("\033[32mmini$hell>\033[0m ");
         if (!data->prompt)
             return (free_struct(data, 1), exit(EXIT_SUCCESS), 0);
-		add_history(data->prompt); // !! need to clear history
+		add_history(data->prompt);
 		data->tab_size = parse_prompt(data->env.tab, &data);
 		if (data->tab_size == -1)
 			return (free_struct(data, 1), 4);
-		if (data->tab_size)
+		if (data->tab_size && data->tab_size > 0)
             if (exec(data->tab_size, data) == -1)
 			    return (free_struct(data, 1), 5);
 		data = reset_env(data, data->tab_size);

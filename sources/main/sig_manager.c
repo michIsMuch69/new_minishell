@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:34:59 by florian           #+#    #+#             */
-/*   Updated: 2024/07/09 07:28:48 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/07/09 07:40:39 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 
 int		ft_perror(char *err_message);
 
-
 void    sig_manager(int signum)
 {
-    write(1, "\n", 1);
+    if (write(1, "\n", 1) == -1)
+        exit(EXIT_FAILURE);
     rl_on_new_line();
     rl_replace_line("", 0);
     rl_redisplay();
