@@ -6,11 +6,17 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 08:27:25 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/10 09:52:53 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/10 14:04:23 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+
+//setenv pour cd 
+// int maj_env()
+// {
+	
+// }
 
 int ft_cd(char **args, char **env)
 {
@@ -51,25 +57,43 @@ int ft_cd(char **args, char **env)
     return 0;
 }
 
-int	ft_export(char **args, char **env)
-{
-    char	*key;
-    char	*value;
 
-    value = args[3];
-    key = args[1];
-    if (!args[1])
-    {
-        ft_env(env);
-        return 0;
-    }
-    if (args[2] && ft_strcmp(args[2], "=") == 0 && value)
-        set_env(key, value, env);
-    else
-    {
-        ft_putstr_fd("export: invalid format\n", 2);
-        return (1);
-    }
+//copie pour export, copie env.
+//buffer static export (t_table)
+//si entree non complete, copie unisuqment dans export + error message print_error
+//si entree complete : ok pour copie dans env ++ export.
+t_table	ft_tabdup(char **envp);
+
+int	ft_export(t_table args, t_table env)
+{
+    char	**key;
+    char	**value;
+	int		i;
+	static t_table export_tab;	
+	
+	i = 0;
+	if (!args.tab || !env.tab)
+		return (0);
+	if (!export_tab.tab)
+	{
+		export_tab = ft_tabdup(env.tab);
+		if (!export_tab.tab)
+			return (ft_perror("error _. malloc tab\n") -1);
+	}
+    if (args.size == 1)
+        return (ft_env(export_tab.tab));
+
+	// key = get_all_keys();
+	// value = get_all_values();
+    // while (i < args.size)
+	// {
+   	// 	key = args.tab[i];
+	// 	i++;
+	// 	value = args.tab[i];
+    //     set_env(key, value, env.tab);
+	// 	i++;
+	// }
+	//fill_env tab
     return 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 08:28:16 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/09 08:32:55 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/10 13:55:43 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,22 @@ int ft_echo(char **args)
     }
     while (args[i])
     {
-        ft_printf("%s", args[i]);
+        printf("%s", args[i]);
         i++;
     }
     if (!flag)
-        ft_printf("\n");
-    return 0;
+        printf("\n");
+    return (0);
 }
 
 int	ft_env(char **env)
 {
 	int	i;
-
+	//env also sets envronment variables. 
 	i = 0;
     while (env[i])
 	{
-        ft_printf("%s\n", env[i]);
+        printf("%s\n", env[i]);
 		i++;
 	}
     return 0;
@@ -56,7 +56,7 @@ int	ft_pwd(void)
 	temp = getcwd(cwd, sizeof(cwd));
 	if (temp != NULL)
 	{
-		ft_printf("%s\n", cwd);
+		printf("%s\n", cwd);
 		return (0);
 	}
 	else
