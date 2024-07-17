@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: michismuch <michismuch@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/11 11:47:31 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/07/15 12:29:57 by michismuch       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 // ###### INCLUDES ######
 
 
+
 // ###### PROTO ######
 
 int		ft_perror(char *err_message);
@@ -32,6 +33,7 @@ void	free_tab(t_table *tab, int start);
 int		exec(int tab_size, t_data *data);
 int     ft_getenv(char *word, char **env, char **var_content);
 t_table ft_tabdup(char **envp);
+
 
 // ###### PROTO ######
 

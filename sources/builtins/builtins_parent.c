@@ -3,30 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parent.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 08:27:25 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/10 14:04:23 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:43:37 by jean-michel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-//setenv pour cd 
-// int maj_env()
-// {
-	
-// }
-
 int ft_cd(char **args, char **env)
 {
-   	char	cwd[1024];
-    char	*home = NULL;
-    char	*oldpwd = NULL;
-    char	*new_dir = NULL;
-	char	*temp;
+    char cwd[1024];
+    char *home = NULL;
+    char *oldpwd = NULL;
+    char *new_dir = NULL;
+    char *temp;
 
-	temp = getcwd(cwd, sizeof(cwd));
+    temp = getcwd(cwd, sizeof(cwd));
     if (!args[1] || ft_strcmp(args[1], "~") == 0)
     {
         if (ft_getenv("HOME", env, &home) != 0)
@@ -38,23 +32,23 @@ int ft_cd(char **args, char **env)
         if (ft_getenv("OLDPWD", env, &oldpwd) != 0)
             return (ft_putstr_fd("cd: OLDPWD not set\n", 2), -1);
         new_dir = oldpwd;
+        ft_printf("%s\n", new_dir);  // Print the new directory after switching
     }
-    //  ft_strncmp;
-	else if (ft_strcmp(args[1], "..") == 0)
-		new_dir = "..";
+    else if (ft_strcmp(args[1], "..") == 0)
+        new_dir = "..";
     else
         new_dir = args[1];
     if (chdir(new_dir) != 0)
         return (perror("cd"), free(home), free(oldpwd), -1);
-	set_env("OLDPWD", temp, env);
-	temp = getcwd(cwd, sizeof(cwd) * sizeof(char));
+    set_env("OLDPWD", temp, env);
+    temp = getcwd(cwd, sizeof(cwd) * sizeof(char));
     if (temp != NULL)
-	    set_env("PWD", temp, env);
+        set_env("PWD", temp, env);
     else
         perror("getcwd");
-	free(home);
+    free(home);
     free(oldpwd);
-    return 0;
+    return (0);
 }
 
 
@@ -62,40 +56,6 @@ int ft_cd(char **args, char **env)
 //buffer static export (t_table)
 //si entree non complete, copie unisuqment dans export + error message print_error
 //si entree complete : ok pour copie dans env ++ export.
-t_table	ft_tabdup(char **envp);
-
-int	ft_export(t_table args, t_table env)
-{
-    char	**key;
-    char	**value;
-	int		i;
-	static t_table export_tab;	
-	
-	i = 0;
-	if (!args.tab || !env.tab)
-		return (0);
-	if (!export_tab.tab)
-	{
-		export_tab = ft_tabdup(env.tab);
-		if (!export_tab.tab)
-			return (ft_perror("error _. malloc tab\n") -1);
-	}
-    if (args.size == 1)
-        return (ft_env(export_tab.tab));
-
-	// key = get_all_keys();
-	// value = get_all_values();
-    // while (i < args.size)
-	// {
-   	// 	key = args.tab[i];
-	// 	i++;
-	// 	value = args.tab[i];
-    //     set_env(key, value, env.tab);
-	// 	i++;
-	// }
-	//fill_env tab
-    return 0;
-}
 
 int ft_unset(char *var, t_table *env)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jean-micheldusserre <jean-micheldusserr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 08:28:16 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/10 13:55:43 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:43:20 by jean-michel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 int ft_echo(char **args)
 {
-    int flag = 0;
-    int i = 1;
+    int flag;
+    int i;
 
+    flag = 0;
+    i = 1;
     if (args[1] && ft_strcmp(args[1], "-n") == 0)
     {
         flag = 1;
@@ -25,42 +27,39 @@ int ft_echo(char **args)
     while (args[i])
     {
         printf("%s", args[i]);
+        if (args[i + 1])
+            ft_printf(" ");
         i++;
     }
     if (!flag)
-        printf("\n");
+        ft_printf("\n");
     return (0);
 }
 
-int	ft_env(char **env)
+int ft_env(char **env)
 {
 	int	i;
-	//env also sets envronment variables. 
+
 	i = 0;
     while (env[i])
 	{
-        printf("%s\n", env[i]);
+        ft_printf("%s\n", env[i]);
 		i++;
 	}
     return 0;
 }
 
-
-
-int	ft_pwd(void)
+int ft_pwd(void)
 {
-	char	cwd[1024];
-	char *temp;
+	char    cwd[1024];
+	char    *temp;
 
-	ft_printf("My pwd\n"); //last exit code
 	temp = getcwd(cwd, sizeof(cwd));
 	if (temp != NULL)
 	{
-		printf("%s\n", cwd);
+		ft_printf("%s\n", cwd);
 		return (0);
 	}
 	else
-	{
 		return (1);
-	}
 }
