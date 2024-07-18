@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 13:15:17 by florian           #+#    #+#             */
-/*   Updated: 2024/07/18 12:30:35 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/18 12:40:54 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static int	init_structure(t_data *data)
 
 static int	is_executable_path(t_data *data)
 {
+	if (!data->args.tab[0])
+		return (1);
 	if (!ft_strlen(data->args.tab[0]))
 		return (0);
 	if (data->args.tab[0][0] == '/' || data->args.tab[0][0] == '.')
