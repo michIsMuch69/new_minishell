@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 08:27:25 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/18 11:52:22 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:44:15 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void	ft_exit(t_data *data, int tab_size, int last_status)
 	int	status;
 
 	status = 0;
+	printf("tab_size in ft_exit = %d\n", tab_size);
+
 	if (data->args.tab[1])
 	{
 		if (is_numeric_str(data->args.tab[1]) == 0)

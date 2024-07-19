@@ -1,0 +1,5 @@
+exec_redirection: fork_redir result = 0
+child_routine: ret_value after exec_redirection = 0
+child_routine: final ret_value = 0
+execve: cmd_path = /usr/bin/cat
+execve: args[0] = cat

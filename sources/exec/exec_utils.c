@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 08:59:06 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/18 12:28:48 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:53:07 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	count_p_process(t_data *data, int tab_size)
 
 	i = 0;
 	count = 0;
+	printf("tab_size in count_p_process = %d\n", tab_size);
+
 	while (i < tab_size)
 	{
 		if (is_builtin_parent(&data[i]))
@@ -33,6 +35,8 @@ int	wait_all(t_data *data, int tab_size, int pid)
 	int	i;
 
 	i = -1;
+	printf("tab_size in wait_all = %d\n", tab_size);
+
 	if (!is_builtin_parent(&data[tab_size - 1]))
 	{
 		if (waitpid(pid, &(data[0].exit_status), 0) == -1)
@@ -45,7 +49,10 @@ int	wait_all(t_data *data, int tab_size, int pid)
 		else
 			data[0].exit_status = -1;
 	}
+	printf("tab_size in wait_all = %d\n", tab_size);
+
 	tab_size -= count_p_process(data, tab_size);
+
 	while (++i < tab_size)
 		if (wait(NULL) == -1)
 			return (perror("wait_all wait() "), -1);

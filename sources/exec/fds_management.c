@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:38:31 by fberthou          #+#    #+#             */
-/*   Updated: 2024/07/18 12:31:05 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:47:40 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static int	fork_redir(t_data data, int *fds, int last_read)
 
 int	exec_redirection(t_data data, int *fds, int last_read)
 {
+
 	if (data.input.size && data.output.size)
 	{
 		if (ft_dup(data.in_out_fd[0], data.in_out_fd[1]) == -1)
@@ -100,6 +101,7 @@ int	exec_redirection(t_data data, int *fds, int last_read)
 int	manage_redirection(t_data *data, int tab_size, int i, int **fd)
 {
 	int	ret_value;
+	printf("tab_size in manage_redirectio = %d\n", tab_size);
 
 	if (i < tab_size - 1 && fd)
 	{

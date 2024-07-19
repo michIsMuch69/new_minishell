@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:46:39 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/19 12:31:44 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:50:07 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int			exec_redirection(t_data data, int *fds, int last_read);
 int	parent_routine(t_data *data, int i, int tab_size, int **fd)
 {
 	int	ret_value;
+	printf("tab_size in parent routine = %d\n", tab_size);
 
 	if (fd)
 	{
@@ -42,6 +43,8 @@ static int	child_routine(t_data *data, int tab_size, int i, int **fd)
 	int	ret_value;
 
 	ret_value = 0;
+	printf("tab_size at start of child_routine : %d\n", tab_size);
+
 	if (i < tab_size - 1 && fd)
 	{
 		if (i)
@@ -55,8 +58,6 @@ static int	child_routine(t_data *data, int tab_size, int i, int **fd)
 		ret_value = exec_redirection(data[i], NULL, 0);
 	if (is_builtin_child(&data[i]))
 		exec_builtin_child(data, tab_size, i, fd);
-	if (is_builtin_parent(&data[i]))
-		exec_builtin_parent(data, tab_size, i, fd);
 	if (i == tab_size - 1 && fd)
 	{
 		if (close(fd[i - 1][0]) == -1)
@@ -69,6 +70,8 @@ static int	child_routine(t_data *data, int tab_size, int i, int **fd)
 		else if (!i && close_pipes(fd, (tab_size - 1), i, 0) == -1)
 			return (-1);
 	}
+	printf("tab_size at end of child_routine : %d\n", tab_size);
+
 	return (ret_value);
 }
 
@@ -79,6 +82,7 @@ static int	exec_all(t_data *data, int tab_size, int **fd)
 	int		ret_value;
 
 	i = -1;
+	printf("tab_size in exec_all : %d\n", tab_size);
 	while (++i < tab_size)
 	{
 		if (is_builtin_parent(&data[i]))
@@ -114,6 +118,7 @@ int	exec(int tab_size, t_data *data)
 
 	i = -1;
 	ret_value = init_exec(data, tab_size);
+	printf("tab_size dans exec = %d\n", tab_size);
 	if (ret_value)
 	{
 		while (++i < tab_size)

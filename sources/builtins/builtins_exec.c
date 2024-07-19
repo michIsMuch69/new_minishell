@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:39:26 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/19 12:28:20 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:46:09 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	exec_builtin_child(t_data *data, int tab_size, int i, int **fd)
 	int	status;
 
 	status = 0;
+	printf("tab_size in exec_builtin_child = %d\n", tab_size);
 	if (ft_strcmp(data->args.tab[0], "pwd") == 0)
 	{
 		status = ft_pwd();
@@ -46,6 +47,8 @@ int	exec_builtin_child(t_data *data, int tab_size, int i, int **fd)
 int	exec_builtin_parent(t_data *data, int tab_size, int i, int **fd)
 {
 	static t_table	export;
+
+	printf("tab_size in exec_builtin_parent = %d\n", tab_size);
 
 	if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
 		data[0].exit_status = ft_cd(data);

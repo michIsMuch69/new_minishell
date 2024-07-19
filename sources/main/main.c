@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/18 12:33:30 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:41:45 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 
+
 	if (argc != 1)
 		return (ft_perror("arguments are invalid\n"), 1);
 	data = init_data(envp);
@@ -134,6 +135,7 @@ int	main(int argc, char **argv, char **envp)
 			return (free_struct(data, 1), exit(EXIT_SUCCESS), 0);
 		add_history(data->prompt);
 		data->tab_size = parse_prompt(data->env.tab, &data);
+		printf("tabsize in main = %d\n", data->tab_size);
 		if (data->tab_size == -1)
 			return (free_struct(data, 1), 4);
 		if (data->tab_size > 0)
