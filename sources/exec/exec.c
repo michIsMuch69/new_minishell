@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:46:39 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/18 12:28:50 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/19 12:31:44 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	exec_all(t_data *data, int tab_size, int **fd)
 	i = -1;
 	while (++i < tab_size)
 	{
-		if (is_builtin_parent(&data[i]) && tab_size == 1)
+		if (is_builtin_parent(&data[i]))
 			exec_builtin_parent(data, tab_size, i, fd);
 		else
 		{

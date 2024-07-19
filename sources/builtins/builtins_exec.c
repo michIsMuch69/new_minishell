@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:39:26 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/18 11:53:38 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/19 12:28:20 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,6 @@ int	exec_builtin_parent(t_data *data, int tab_size, int i, int **fd)
 	else if (ft_strcmp(data[i].args.tab[0], "unset") == 0)
 		data[0].exit_status = ft_unset(data);
 	parent_routine(data, i, tab_size, fd);
-	close_fds(data[i].in_out_fd);
+	// close_fds(data[i].in_out_fd);
 	return (data[0].exit_status);
 }
