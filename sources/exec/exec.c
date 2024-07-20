@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:46:39 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/19 18:50:07 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/20 14:02:42 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,17 @@ int	parent_routine(t_data *data, int i, int tab_size, int **fd)
 {
 	int	ret_value;
 	printf("tab_size in parent routine = %d\n", tab_size);
-
+	if (i < tab_size - 1 && fd)
+	{
+		if (i)
+			ret_value = exec_redirection(data[i], fd[i], fd[i - 1][0]);
+		else
+			ret_value = exec_redirection(data[i], fd[i], 0);
+	}
+	else if (fd)
+		ret_value = exec_redirection(data[i], NULL, fd[i - 1][0]);
+	else
+		ret_value = exec_redirection(data[i], NULL, 0);
 	if (fd)
 	{
 		if (i == 0)
