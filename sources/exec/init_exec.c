@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 13:15:17 by florian           #+#    #+#             */
-/*   Updated: 2024/07/23 07:44:01 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/23 08:01:15 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ int init_exec(t_data *data, int tab_size)
 			return (ret_value);
 		if (!is_builtin(&data[i]))
 		{
-			printf("ICI\n");
 			ret_value = get_cmd_path(&(data[i]));
 			if (ret_value)
 				return (ret_value);

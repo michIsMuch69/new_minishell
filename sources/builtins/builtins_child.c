@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 08:28:16 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/18 10:52:55 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/23 08:21:38 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int ft_echo(t_data *data)
     }
     while (data->args.tab[i])
     {
-        printf("%s", data->args.tab[i]);
+        ft_printf("%s", data->args.tab[i]);
         if (data->args.tab[i + 1])
             ft_printf(" ");
         i++;

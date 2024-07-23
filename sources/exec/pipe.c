@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:42:26 by florian           #+#    #+#             */
-/*   Updated: 2024/07/23 07:51:36 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/23 08:03:04 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,36 +26,28 @@ void  free_pipes(int **tab, int size)
 
 int	close_pipes(int **fds, int size, int i_start, int last_fd)
 {
-	int status;
+    int status;
 
-	status = 0;
+    status = 0;
     if (last_fd)
         status = close(last_fd);
     if (!fds)
         return (status);
-	while (i_start < size)
-	{
-		if (fds[i_start][0] > STDIN_FILENO)
-		{
-			if (close(fds[i_start][0]) == -1)
-			{
-				status = -1;
-			}
-		}
-		if (fds[i_start][1] > STDOUT_FILENO)
-		{
-			if (close(fds[i_start][1]) == -1)
-			{
-				status = -1;
-			}
-		}
-		fds[i_start][0] = -1;
-		fds[i_start][1] = -1;
-		i_start++;
-	}
-	if (status == -1)
-		perror("close_fds ");
-	return (status);
+    while (i_start < size)
+    {
+      if (fds[i_start][0] > STDIN_FILENO)
+        if (close(fds[i_start][0]) == -1)
+          status = -1;
+      if (fds[i_start][1] > STDOUT_FILENO)
+        if (close(fds[i_start][1]) == -1)
+          status = -1;
+      fds[i_start][0] = -1;
+      fds[i_start][1] = -1;
+      i_start++;
+    }
+    if (status == -1)
+      perror("close_fds ");
+    return (status);
 }
 
 int **init_pipe(t_data *data, int size)

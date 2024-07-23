@@ -3,16 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:46:39 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/23 07:46:18 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/23 08:31:21 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
 int exec_redirection(t_data data, int *fds, int last_read);
+
+int exec_one_built(t_data *data, int tab_size, int i)
+{
+    if (ft_strcmp(data->args.tab[0], "pwd") == 0)
+		data[i].exit_status = ft_pwd();
+	else if (ft_strcmp(data->args.tab[0], "echo") == 0)
+		data[i].exit_status = ft_echo(data);
+	else if (ft_strcmp(data->args.tab[0], "env") == 0)
+		data[i].exit_status = ft_env(data);
+    else if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
+        data[i].exit_status = ft_cd(data);
+    else if (ft_strcmp(data[i].args.tab[0], "exit") == 0)
+        ft_exit(data, tab_size, data[i].exit_status);
+    else if (ft_strcmp(data[i].args.tab[0], "export") == 0)
+    {
+		static t_table	export;
+		
+		if (!export.tab)
+			init_exported_env(data, &export);
+        if (data[i].args.tab[1] == NULL)
+            data[i].exit_status = ft_export_print(&export);
+        else
+            data[i].exit_status = ft_export(data, &export);
+    }
+    else if (ft_strcmp(data[i].args.tab[0], "unset") == 0)
+        data[i].exit_status = ft_unset(data);
+    return (data[i].exit_status);
+}
 
 int parent_routine(t_data *data, int i, int tab_size, int **fd)
 {
@@ -21,19 +49,12 @@ int parent_routine(t_data *data, int i, int tab_size, int **fd)
     if (fd)
     {
         if (i == 0)
-        {
-            print_fd_operation("Parent close", fd[i][1]);
             ret_value = close(fd[i][1]);
-        }
         else
         {
-            print_fd_operation("Parent close", fd[i - 1][0]);
             ret_value = close(fd[i - 1][0]);
             if (i < tab_size - 1)
-            {
-                print_fd_operation("Parent close", fd[i][1]);
                 ret_value = close(fd[i][1]);
-            }
         }
         if (ret_value)
             perror("close pipe in parent ");
@@ -48,45 +69,20 @@ static int child_routine(t_data *data, int tab_size, int i, int **fd)
 {
     int ret_value;
 
-    ret_value = 0;
-    if (i < tab_size - 1 && fd)
-    {
-        if (i)
-        {
-            print_fd_operation("child redirect", fd[i - 1][0]);
-            ret_value = exec_redirection(data[i], fd[i], fd[i - 1][0]);
-        }
-        else
-        {
-            print_fd_operation("child redirect", 0);
-            ret_value = exec_redirection(data[i], fd[i], 0);
-        }
-    }
-    else if (fd)
-    {
-        print_fd_operation("child redirect", fd[i - 1][0]);
-        ret_value = exec_redirection(data[i], NULL, fd[i - 1][0]);
-    }
-    else
-    {
-        print_fd_operation("child redirect", 0);
-        ret_value = exec_redirection(data[i], NULL, 0);
-    }
-
+    ret_value = manage_redirection(data, tab_size, i, fd);
+    
     if (is_builtin(&data[i]))
     {
         exec_builtin(data, tab_size, i, fd);
         exit(data[i].exit_status);
     }
-    else
-    {
-        if (execve(data[i].cmd_path, data[i].args.tab, data[i].env.tab) == -1)
-            exit(EXIT_FAILURE);
-    }
-
+    // else
+    // {
+    //     if (execve(data[i].cmd_path, data[i].args.tab, data[i].env.tab) == -1)
+    //         exit(EXIT_FAILURE);
+    // }
     if (i == tab_size - 1 && fd)
     {
-        print_fd_operation("Child close", fd[i - 1][0]);
         if (close(fd[i - 1][0]) == -1)
             return (-1);
     }
@@ -94,13 +90,11 @@ static int child_routine(t_data *data, int tab_size, int i, int **fd)
     {
         if (i)
         {
-            print_fd_operation("Child close", fd[i - 1][0]);
             if (close_pipes(fd, (tab_size - 1), i, fd[i - 1][0]) == -1)
                 return (-1);
         }
         else
         {
-            print_fd_operation("Child close", 0);
             if (close_pipes(fd, (tab_size - 1), i, 0) == -1)
                 return (-1);
         }
@@ -118,7 +112,7 @@ static int	exec_all(t_data *data, int tab_size, int **fd)
     while (++i < data->tab_size)
 	{
         if(is_builtin(&data[i]) && tab_size == 1)
-            exec_builtin(data, tab_size, i, fd);
+            return (exec_one_built(data, tab_size, i));
         else
         {
             pid = fork();
@@ -129,7 +123,6 @@ static int	exec_all(t_data *data, int tab_size, int **fd)
                 if (child_routine(data, tab_size, i, fd) == -1)
                     return (free_pipes(fd, tab_size -1), exit(1), 1);
                 free_pipes(fd, tab_size - 1);
-				printf("cmdpath == %s\n", data[i].cmd_path);
 				if (!is_builtin(&data[i]))
 					if (execve(data[i].cmd_path, data[i].args.tab, data[i].env.tab) == -1)
 						exit(EXIT_FAILURE);
@@ -165,9 +158,6 @@ int exec(int tab_size, t_data *data)
         pipe_fd = init_pipe(data, tab_size - 1);
         if (!pipe_fd)
             return (-1);
-
-        print_fd_array(pipe_fd, tab_size - 1, "Initial state of pipe_fd");
-
         ret_value = exec_all(data, tab_size, pipe_fd);
     }
     return (ret_value);

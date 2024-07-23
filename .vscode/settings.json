@@ -59,6 +59,7 @@
   "files.associations": {
     "string.h": "c",
     "libft.h": "c",
-    "struct.h": "c"
+    "struct.h": "c",
+    "exec.h": "c"
   }
 }

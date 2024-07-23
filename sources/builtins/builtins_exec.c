@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:39:26 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/22 10:52:53 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/23 08:12:18 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ int	exec_builtin(t_data *data, int tab_size, int i, int **fd)
 	else if (ft_strcmp(data->args.tab[0], "echo") == 0)
 		data[0].exit_status = ft_echo(data);
 	else if (ft_strcmp(data->args.tab[0], "env") == 0)
-	{
-		ft_printf("My env\n");
 		data[0].exit_status = ft_env(data);
-	}
     else if (ft_strcmp(data[i].args.tab[0], "cd") == 0)
         data[0].exit_status = ft_cd(data);
     else if (ft_strcmp(data[i].args.tab[0], "exit") == 0)
@@ -45,6 +42,8 @@ int	exec_builtin(t_data *data, int tab_size, int i, int **fd)
     }
     else if (ft_strcmp(data[i].args.tab[0], "unset") == 0)
         data[0].exit_status = ft_unset(data);
+
+
 	if (tab_size == 1)
 	{
 		while (i < tab_size)
