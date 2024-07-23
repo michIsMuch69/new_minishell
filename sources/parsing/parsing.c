@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 07:33:24 by fberthou          #+#    #+#             */
-/*   Updated: 2024/07/19 18:22:15 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/11 12:17:09 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	parse_prompt(char **env, t_data **data)
 	t_table	tokens;
 	int		struc_tab_size;
 	int		ret_value;
+
 	if (!(*data)[0].prompt)
 		return (1);
 	(*data)[0].prompt = pre_treatment((*data)[0].prompt, 0);
@@ -56,6 +57,6 @@ int	parse_prompt(char **env, t_data **data)
 	if (struc_tab_size == -2)
 		return (free_tab(&tokens, 0), free((*data)->prompt), -2);
 	free_tab(&tokens, 0);
-	printf("tab_size in parse_prompt = %d\n", struc_tab_size);
+	//print_struct(*data, data[0][0].tab_size);
 	return (struc_tab_size);
 }

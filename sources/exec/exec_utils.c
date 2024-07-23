@@ -6,57 +6,67 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 08:59:06 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/19 18:53:07 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/23 07:18:39 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	count_p_process(t_data *data, int tab_size)
+void print_fd_array(int **fds, int size, char *message)
 {
-	int	count;
-	int	i;
+    printf("%s:\n", message);
+
+	int i;
 
 	i = 0;
-	count = 0;
-	printf("tab_size in count_p_process = %d\n", tab_size);
-
-	while (i < tab_size)
-	{
-		if (is_builtin_parent(&data[i]))
-			count++;
+    while( i < size )
+    {
+        printf("fds[%d]: [%d, %d]\n", i, fds[i][0], fds[i][1]);
 		i++;
-	}
-	return (count);
+    }
 }
 
-int	wait_all(t_data *data, int tab_size, int pid)
+void print_fd_operation(char *operation, int fd)
 {
-	int	i;
+    printf("%s: fd = %d\n", operation, fd);
+}
+int count_p_process(t_data *data, int tab_size)
+{
+    int count;
+    int i;
 
-	i = -1;
-	printf("tab_size in wait_all = %d\n", tab_size);
+    i = 0;
+    count = 0;
+    while (i < tab_size)
+    {
+        if (is_builtin(&data[i]))
+            count++;
+        i++;
+    }
+    return (count);
+}
 
-	if (!is_builtin_parent(&data[tab_size - 1]))
-	{
-		if (waitpid(pid, &(data[0].exit_status), 0) == -1)
-			return (perror("wait_all waitpid() "), -1);
-		tab_size--;
-		if (WIFEXITED(data[0].exit_status))
-			data[0].exit_status = WEXITSTATUS(data[0].exit_status);
-		else if (WIFSIGNALED(data[0].exit_status))
-			data[0].exit_status = WTERMSIG(data[0].exit_status);
-		else
-			data[0].exit_status = -1;
-	}
-	printf("tab_size in wait_all = %d\n", tab_size);
-
-	tab_size -= count_p_process(data, tab_size);
-
-	while (++i < tab_size)
-		if (wait(NULL) == -1)
-			return (perror("wait_all wait() "), -1);
-	return (0);
+int wait_all(t_data *data, int tab_size, int pid)
+{
+    int i;
+    i = -1;
+    if (!is_builtin(&data[tab_size - 1]))
+    {
+        if (waitpid(pid, &(data[0].exit_status), 0) == -1)
+            return (perror("wait_all waitpid() "), -1);
+        tab_size--;
+        if (WIFEXITED(data[0].exit_status))
+            data[0].exit_status = WEXITSTATUS(data[0].exit_status);
+        else if (WIFSIGNALED(data[0].exit_status))
+            data[0].exit_status = WTERMSIG(data[0].exit_status);
+        else
+            data[0].exit_status = -1;
+    }
+    tab_size -= count_p_process(data, tab_size);
+    while (++i < tab_size)
+        if (wait(NULL) == -1)
+            return (perror("wait_all wait() "), -1);
+    return (0);
 }
 
 int	ft_strcmp(char *s1, char *s2)
