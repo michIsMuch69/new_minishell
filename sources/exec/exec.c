@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 08:46:39 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/23 13:07:30 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/07/23 13:31:30 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,6 @@ static int child_routine(t_data *data, int tab_size, int i, int **fd)
     // have to redirect STD IN OUT
     ret_value = manage_redirection(data, tab_size, i, fd);
     
-    
-    // if (is_builtin(&data[i]))
-    // {
-    //     exec_builtin(data, tab_size, i, fd);
-    //     exit(data[i].exit_status);
-    // }
-
-
-
-
     if (i == tab_size - 1 && fd)
     {
         if (close(fd[i - 1][0]) == -1)
@@ -81,7 +71,6 @@ static int	exec_all(t_data *data, int tab_size, int **fd)
 {
     int     i;
 	pid_t   pid;
-    int     ret_value;
 
     i = -1;
     while (++i < data->tab_size)
