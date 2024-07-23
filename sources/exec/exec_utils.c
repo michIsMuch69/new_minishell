@@ -6,7 +6,7 @@
 /*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 08:59:06 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/23 08:38:42 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/07/23 11:33:37 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int wait_all(t_data *data, int tab_size, int pid)
 {
     int i;
     i = -1;
-    if (tab_size > 1)
+    if (tab_size)
     {
         if (waitpid(pid, &(data[0].exit_status), 0) == -1)
             return (perror("wait_all waitpid() "), -1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 10:46:50 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/22 09:54:28 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/23 11:41:27 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ int	is_builtin(t_data *data)
 	if (ft_strcmp(data->args.tab[0], "unset") == 0)
 		return (1);
 	return (0);
-	return (0);
 }
-
 
 int	is_numeric_str(char *str)
 {
@@ -46,8 +44,6 @@ int	is_numeric_str(char *str)
 	}
 	return (1);
 }
-
-
 
 void	set_env(char *key, char *value, char **env)
 {

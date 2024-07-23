@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 08:58:22 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/23 07:16:55 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/23 13:03:02 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,12 @@ int     wait_all(t_data *data, int tab_size, int pid);
 int     init_exec(t_data *data, int tab_size);
 void print_fd_array(int **fds, int size, char *message);
 void print_fd_operation(char *operation, int fd);
+
+/*===========================exec_one_utils.c===============================*/
+
+int	save_std_fileno(t_data *data, int saved_fd[]);
+int redir_file(t_data *data);
+int	reset_std_fileno(t_data *data, int saved_fd[]);
+int	close_all_redir(t_data *data, int saved_std[]);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fds_management.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:38:31 by fberthou          #+#    #+#             */
-/*   Updated: 2024/07/23 07:48:02 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/23 10:52:11 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,23 @@
 int  ft_dup(int read_fd, int write_fd)
 {
   if (read_fd > STDIN_FILENO)
+  {
     if (dup2(read_fd, STDIN_FILENO) == -1)
     {
       if (write_fd > STDOUT_FILENO)
         close(write_fd);
       return (close(read_fd), perror("dup read_fd "), -1);
     }
+  }
   if (write_fd > STDOUT_FILENO)
+  {
     if (dup2(write_fd, STDOUT_FILENO) == -1)
     {
       if (read_fd > STDIN_FILENO)
         close(read_fd);
       return (close(write_fd), perror("dup write_fd "), -1);
     }
+  }
   return(0);
 }
 
@@ -65,8 +69,11 @@ static int fork_redir(t_data data, int *fds, int last_read)
     }
     else
     {
-        if (!data.input.size && ft_dup(last_read, data.in_out_fd[1]) == -1)
-            return (-1);
+        if (!data.input.size)
+        {
+            if (ft_dup(last_read, data.in_out_fd[1]) == -1)
+                return (-1);
+        }
         else if (data.input.size && \
             ft_dup(data.in_out_fd[0], data.in_out_fd[1]) == -1)
             return (-1);
@@ -81,7 +88,7 @@ int exec_redirection(t_data data, int *fds, int last_read)
         if (ft_dup(data.in_out_fd[0], data.in_out_fd[1]) == -1)
             return (-1);
     }
-    if (!last_read && fds)
+    else if (!last_read && fds)
     {
         if (!data.output.size)
         {
@@ -101,9 +108,16 @@ int manage_redirection(t_data *data, int tab_size, int i, int **fd)
 {
     int ret_value;
 
+    if (tab_size == 1)
+    {
+        if (data->input.size || data->output.size)
+            return (ft_dup(data->in_out_fd[0], data->in_out_fd[1]));
+        return (0);
+    }
+
     if (i < tab_size - 1 && fd)
     {
-        if (i)
+        if (i != 0)
             ret_value = exec_redirection(data[i], fd[i], fd[i - 1][0]);
         else
             ret_value = exec_redirection(data[i], fd[i], 0);

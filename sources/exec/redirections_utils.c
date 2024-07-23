@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 09:14:53 by jedusser          #+#    #+#             */
-/*   Updated: 2024/06/23 16:00:25 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/23 11:55:53 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,6 @@ int	arrow_count(char *str, char c)
 	return (i);
 }
 
-/*
-	* direction 1 == output; 0 == input;
-*/
 char	*skip_redir_symbol(char *token_file, bool direction)
 {
 	char	*file;
@@ -92,12 +89,10 @@ char	*skip_redir_symbol(char *token_file, bool direction)
 		tok_nb = arrow_count(token_file, '>');
 	else
 		tok_nb = arrow_count(token_file, '<');
-  //printf("token_file = %d\ntok_nm = %d\n", ft_strlen(token_file), tok_nb);
 	size = (ft_strlen(token_file) - tok_nb + 1);
 	file = ft_calloc(size, sizeof(char));
 	if (!file)
 		return (ft_perror("error -> alloc skip_redir_sym\n"), NULL);
 	file = ft_strcpy(file, &token_file[tok_nb]);
-	//ft_printf("file == %s\n", file);
 	return (file);
 }

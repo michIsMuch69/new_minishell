@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/22 10:43:17 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/23 10:53:25 by fberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int main (int argc, char **argv, char **envp)
 		return (2);
 	while (1)
 	{
-		data->prompt = readline("\033[32mmini$hell>\033[0m ");
+		data->prompt = readline("mini$hell> ");
         if (!data->prompt)
             return (free_struct(data, 1), exit(EXIT_SUCCESS), 0);
 		add_history(data->prompt);
@@ -145,7 +145,6 @@ int main (int argc, char **argv, char **envp)
 		if (data->tab_size > 0)
             if (exec(data->tab_size, data) == -1)
 			    return (free_struct(data, 1), 5);
-		print_struct(data, data->tab_size);
 		data = reset_env(data, data->tab_size);
 		if (!data)
 			return (5);
