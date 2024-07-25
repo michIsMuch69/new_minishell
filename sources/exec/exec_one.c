@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_one.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:04:55 by fberthou          #+#    #+#             */
-/*   Updated: 2024/07/23 20:03:06 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/25 12:45:57 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int  exec_built(t_data *data, int saved_std[])
 		return (1);
 	if (redir_file(data))
 		return (1);
-	exit_stat = exec_builtin(data, 1, 0, NULL);
+	exit_stat = exec_builtin(data, 0, NULL, 0);
 	if (reset_std_fileno(data, saved_std))
 		return (close_all_redir(data, saved_std), 1);
 	return (close_all_redir(data, saved_std), exit_stat);

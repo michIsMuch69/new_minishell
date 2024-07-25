@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 08:27:25 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/25 08:54:10 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/25 13:33:48 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,58 +19,34 @@ int	ft_cd(t_data *data)
 
 	new_dir = NULL;
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
-	{
-		perror("getcwd");
-		data->exit_status = 1;
-		return (data->exit_status);
-	}
+		return (perror("getcwd"), 1);
+	if (data->args.size > 2)
+		return (ft_putstr_fd("cd: too many arguments\n", 2), 1);
 	if (!data->args.tab[1] || ft_strcmp(data->args.tab[1], "~") == 0)
 	{
 		if (ft_getenv("HOME", data->env.tab, &new_dir) != 0)
-		{
-			ft_putstr_fd("cd: HOME not set\n", 2);
-			data->exit_status = 1;
-			return (data->exit_status);
-		}
+			return (ft_putstr_fd("cd: HOME not set\n", 2), 1);
 	}
 	else if (ft_strcmp(data->args.tab[1], "-") == 0)
 	{
 		if (ft_getenv("OLDPWD", data->env.tab, &new_dir) != 0)
-		{
-			ft_putstr_fd("cd: OLDPWD not set\n", 2);
-			data->exit_status = 1;
-			return (data->exit_status);
-		}
+			return (ft_putstr_fd("cd: OLDPWD not set\n", 2), 1);
 		ft_printf("%s\n", new_dir);
 	}
 	else
-	{
 		new_dir = data->args.tab[1];
-	}
 	if (chdir(new_dir) != 0)
-	{
-		printf("No such\n");
-		data->exit_status = 1;
-		perror("cd");
-		return (data->exit_status);
-	}
-	printf("oco\n");
+		return (perror("cd"), 1);
 	set_env("OLDPWD", cwd, data->env.tab);
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-	{
 		set_env("PWD", cwd, data->env.tab);
-	}
 	else
-	{
-		perror("getcwd");
-		data->exit_status = 1;
-		return (data->exit_status);
-	}
+		return (perror("getcwd"), 1);
 	data->exit_status = 0;
 	return (data->exit_status);
 }
 
-int	ft_unset(t_data *data)
+int	ft_unset_env(t_data *data)
 {
 	int	i;
 	int	j;
@@ -103,34 +79,81 @@ int	ft_unset(t_data *data)
 	return (0);
 }
 
-int	ft_exit(t_data *data, int tab_size, int last_status)
+int	ft_unset_export(t_data *data)
 {
-	int	status;
+	int	i;
+	int	j;
+	int	k;
 
-	status = 0;
-	if (data->args.size > 2)
+	i = 1;
+	while (i < data->args.size)
 	{
-		ft_putstr_fd("exit: too many arguments\n", 2);
-		data->exit_status = 1;
-		return (status);
-	}
-	if (data->args.tab[1])
-	{
-		if (is_numeric_str(data->args.tab[1]) == 0)
+		j = 0;
+		while (data->export.tab[j])
 		{
-			ft_putstr_fd("exit: numeric argument required\n", 2);
-			status = 2;
+			if (ft_strncmp(data->export.tab[j], data->args.tab[i],
+					ft_strlen(data->args.tab[i])) == 0)
+			{
+				free(data->export.tab[j]);
+				k = j;
+				while (data->export.tab[k])
+				{
+					data->export.tab[k] = data->export.tab[k + 1];
+					k++;
+				}
+				data->export.tab[k] = NULL;
+				data->export.size--;
+				break ;
+			}
+			j++;
 		}
+		i++;
+	}
+	return (0);
+}
+int	ft_unset(t_data *data)
+{
+	ft_unset_env(data);
+	ft_unset_export(data);
+	return (0);
+}
+
+int	ft_exit(t_data *data, int i, int **fds, int last_fd)
+{
+	int	arg;
+
+	arg = 0;
+	if (data[i].args.size > 2)
+		return (ft_putstr_fd("exit: too many arguments\n", 2), 1);
+	if (data[i].args.size == 2 && data[i].args.tab[1])
+	{
+		if (is_numeric_str(data[i].args.tab[1]) == 0)
+			return (ft_putstr_fd("exit: numeric argument required\n", 2), 2);
 		else
 		{
-			status = ft_atoi(data->args.tab[1]) % 256;
-			if (status < 0)
-				status += 256;
+			arg = ft_atoi(data[i].args.tab[1]) % 256;
+			if (arg < 0)
+				arg += 256;
 		}
 	}
-	else
-		status = last_status;
-	return (free_struct(data, tab_size), exit(status), 0);
+	
+	// for (i = 0; i < data->tab_size; i++)
+	// {
+	// 	printf("0 = %d\n", fd[i][0]);
+	// 	printf("1 = %d\n", fd[i][1]);
+	// }
+	// printf("tabsize = %d\n", data->tab_size);
+	// printf("last fd = %d\n", last_fd);
+	// printf("fd = %d\n", fd[0][1]);
+	
+	
+	if (data->tab_size > 1)
+	{
+		close_pipes(fds, data->tab_size - 1, 0, last_fd); 
+		free_pipes(fds, data->tab_size - 1);
+	}
+    free_struct(data, data[i].tab_size);
+	return (exit(arg), 0);
 }
 
 //close_fds --> input output files.

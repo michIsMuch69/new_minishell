@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 12:39:55 by jean-michel       #+#    #+#             */
-/*   Updated: 2024/07/25 08:33:24 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/25 12:50:42 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*===========================builtins.c===============================*/
 
-int		ft_exit(t_data *data, int tab_size, int last_status);
+int		ft_exit(t_data *data, int last_status, int **fd, int last_fd);
 int		ft_cd(t_data *data);
 int     ft_pwd(void);
 int     ft_echo(t_data *data);
@@ -45,5 +45,6 @@ int     process_unquoted_key(t_vars *vars, t_data *data, t_table *export, int i)
 /*===========================builtins_utils.c===============================*/
 
 int     is_builtin(t_data *data);
-int     exec_builtin(t_data *data, int tab_size, int i, int **fd);
+int     exec_builtin(t_data *data, int i, int **fd, int last_read);
 int     is_numeric_str(char *str);
+int close_in_out_files(t_data *data);

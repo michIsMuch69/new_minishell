@@ -6,7 +6,7 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/25 08:41:11 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/25 10:32:39 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <readline/history.h>
 #include <signal.h>
 #include "exec.h"
+#include "includes.h"
 
 // ###### INCLUDES ######
 
@@ -33,6 +34,7 @@ void	free_tab(t_table *tab, int start);
 int		exec(int tab_size, t_data *data);
 int     ft_getenv(char *word, char **env, char **var_content);
 t_table ft_tabdup(char **envp);
+int     init_exported_env(t_data *data, t_table *export);
 
 
 // ###### PROTO ######
@@ -89,22 +91,31 @@ void	print_struct(t_data *data, int tab_size)
 
 static t_data	*reset_env(t_data *data, int tab_size)
 {
-	t_table	tmp;
+	t_table	tmp_env;
+	t_table tmp_export;
     int     last_exit;
 
     last_exit = data[0].exit_status;
-	tmp = ft_tabdup(data[0].env.tab);
-	if (!tmp.tab)
+	tmp_env = ft_tabdup(data[0].env.tab);
+	tmp_export = ft_tabdup(data[0].export.tab);
+	if (!tmp_env.tab)
 	{
 		free_struct(data, tab_size);
 		return (ft_perror("error -> reset env\n"), NULL);
 	}
+	if (!tmp_export.tab)
+	{
+		free_struct(data, tab_size);
+		return (ft_perror("error -> reset export\n"), NULL);
+	}
 	free_struct(data, tab_size);
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
-		return (free_tab(&tmp, 0), ft_perror("error -> reset env\n"), NULL);
-	data[0].env.tab = tmp.tab;
-	data[0].env.size = tmp.size;
+		return (free_tab(&tmp_env, 0), ft_perror("error -> reset env\n"), NULL);
+	data[0].env.tab = tmp_env.tab;
+	data[0].env.size = tmp_env.size;
+	data[0].export.tab = tmp_export.tab;
+	data[0].export.size = tmp_export.size;
     data[0].exit_status = last_exit;
 	return (data);
 }
@@ -119,6 +130,9 @@ static t_data	*init_data(char **envp)
     if (init_sighandler(data) == -1)
         return (NULL);
 	data->env = ft_tabdup(envp);
+	init_exported_env(data, &data->export);
+	if (!data->export.tab)
+		return (free(data), ft_perror("error -> init export\n"), NULL);
 	if (!data->env.tab)
 		return (free(data), ft_perror("error -> init structure\n"), NULL);
 	return (data);
@@ -127,20 +141,15 @@ static t_data	*init_data(char **envp)
 int main (int argc, char **argv, char **envp)
 {
 	t_data	*data;
-	//static t_table export;
 
 	if (argc != 1)
 		return (ft_perror("arguments are invalid\n"), 1);
 	data = init_data(envp);
-	init_exported_env(data, &data->export);
 	if (!data)
 		return (2);
 	while (1)
 	{
-		if (isatty (STDIN_FILENO))
-			data->prompt = readline("\033[32mmini$hell>\033[0m ");
-		else
-			data->prompt=readline(NULL);
+		data->prompt = readline("\033[32mmini$hell>\033[0m ");
         if (!data->prompt)
             return (free_struct(data, 1), exit(EXIT_SUCCESS), 0);
 		add_history(data->prompt);
@@ -150,7 +159,6 @@ int main (int argc, char **argv, char **envp)
 		if (data->tab_size > 0)
             if (exec(data->tab_size, data) == -1)
 			    return (free_struct(data, 1), 5);
-		//print_struct(data, data->tab_size);
 		data = reset_env(data, data->tab_size);
 		if (!data)
 			return (5);

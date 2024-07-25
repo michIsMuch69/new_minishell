@@ -6,13 +6,13 @@
 /*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 09:26:24 by jean-michel       #+#    #+#             */
-/*   Updated: 2024/07/25 08:58:26 by jedusser         ###   ########.fr       */
+/*   Updated: 2024/07/25 09:51:02 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	init_exported_env(t_data *data, t_table *export)
+int     init_exported_env(t_data *data, t_table *export)
 {
 	int		i;
 	t_vars	vars;
@@ -83,7 +83,6 @@ int	ft_export_print(t_data *data)
 
 int	ft_export(t_data *data, t_table *export)
 {
-	init_exported_env(data, &data->export);
 	if (data->args.tab[1] == NULL)
 		ft_export_print(data);
 	else

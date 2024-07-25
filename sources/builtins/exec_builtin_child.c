@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin_child.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:00:59 by florian           #+#    #+#             */
-/*   Updated: 2024/07/23 20:47:45 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/25 12:46:50 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void exec_builtin_child(t_data *data, int i, int **fd, int last_read)
             close(fd[y][1]);
         }
     }
-    exit_status = exec_builtin(data, tab_size, i, fd);
+    exit_status = exec_builtin(data, i, fd, last_read);
     // close used pipes
     if (i == 0)
         close(fd[i][1]);

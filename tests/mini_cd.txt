@@ -1,18 +1,13 @@
 Testing Bash exit command:
-cd headers
-oco
-Exit status: 0
-cd bobo
-No such
-Exit status: 0
-unset HOME
-cd ~
-Exit status: 0
-cd headers
-oco
-cd unset OLDPWD
-No such
-cd -
+[32mmini$hell>[0m cd headers
+[32mmini$hell>[0m Exit status: 0
+[32mmini$hell>[0m cd bobo
+[32mmini$hell>[0m Exit status: 0
+[32mmini$hell>[0m unset HOME
+[32mmini$hell>[0m cd ~
+[32mmini$hell>[0m Exit status: 0
+[32mmini$hell>[0m cd headers
+[32mmini$hell>[0m cd unset OLDPWD
+[32mmini$hell>[0m cd -
 /home/jedusser/Documents/minishell
-oco
-Exit status: 0
+[32mmini$hell>[0m Exit status: 0

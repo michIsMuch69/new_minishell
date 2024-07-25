@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fberthou <fberthou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 08:28:16 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/23 08:21:38 by fberthou         ###   ########.fr       */
+/*   Updated: 2024/07/25 10:29:29 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int ft_env(t_data *data)
         ft_printf("%s\n", data->env.tab[i]);
 		i++;
 	}
-    return 0;
+    return (0);
 }
 
 int ft_pwd(void)
@@ -61,5 +61,5 @@ int ft_pwd(void)
 		return (0);
 	}
 	else
-		return (1);
+		return (perror("pwd "), 1);
 }
