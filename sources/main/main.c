@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jedusser <jedusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:58:11 by jedusser          #+#    #+#             */
-/*   Updated: 2024/07/23 16:28:33 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/25 08:41:11 by jedusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,28 +127,34 @@ static t_data	*init_data(char **envp)
 int main (int argc, char **argv, char **envp)
 {
 	t_data	*data;
-    int     tab_size;
+	//static t_table export;
 
 	if (argc != 1)
 		return (ft_perror("arguments are invalid\n"), 1);
 	data = init_data(envp);
+	init_exported_env(data, &data->export);
 	if (!data)
 		return (2);
 	while (1)
 	{
-		data->prompt = readline("\033[32mmini$hell>\033[0m ");
+		if (isatty (STDIN_FILENO))
+			data->prompt = readline("\033[32mmini$hell>\033[0m ");
+		else
+			data->prompt=readline(NULL);
         if (!data->prompt)
             return (free_struct(data, 1), exit(EXIT_SUCCESS), 0);
 		add_history(data->prompt);
-		tab_size = parse_prompt(data->env.tab, &data);
-		if (tab_size == -1)
+		data->tab_size = parse_prompt(data->env.tab, &data);
+		if (data->tab_size == -1)
 			return (free_struct(data, 1), 4);
-		if (tab_size > 0)
-            if (exec(tab_size, data) == -1)
+		if (data->tab_size > 0)
+            if (exec(data->tab_size, data) == -1)
 			    return (free_struct(data, 1), 5);
-		data = reset_env(data, tab_size);
+		//print_struct(data, data->tab_size);
+		data = reset_env(data, data->tab_size);
 		if (!data)
 			return (5);
 	}
 	return (0);
 }
+

@@ -1,0 +1,18 @@
+Testing Bash exit command:
+cd headers
+oco
+Exit status: 0
+cd bobo
+No such
+Exit status: 0
+unset HOME
+cd ~
+Exit status: 0
+cd headers
+oco
+cd unset OLDPWD
+No such
+cd -
+/home/jedusser/Documents/minishell
+oco
+Exit status: 0
